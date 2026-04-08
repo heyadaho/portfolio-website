@@ -1,0 +1,115 @@
+---
+import CaseStudyCard from './CaseStudyCard.astro';
+
+interface CaseStudy {
+  title: string;
+  company: string;
+  summary: string;
+  role: string;
+  year: number;
+  slug: string;
+  tags?: string[];
+}
+
+interface Props {
+  studies: CaseStudy[];
+}
+
+const { studies } = Astro.props;
+const count = studies.length;
+---
+
+<section class="work section" id="work">
+  <div class="container">
+
+    <div class="work__header">
+      <span class="label">Selected work</span>
+    </div>
+
+    {count === 0 && (
+      <p class="work__empty">Case studies coming soon.</p>
+    )}
+
+    {count === 1 && (
+      <div class="work__single">
+        <CaseStudyCard {...studies[0]} featured={true} />
+      </div>
+    )}
+
+    {count >= 2 && count <= 3 && (
+      <div class="work__grid work__grid--large">
+        {studies.map((study, i) => (
+          <CaseStudyCard {...study} featured={i === 0} />
+        ))}
+      </div>
+    )}
+
+    {count >= 4 && (
+      <div class="work__grid work__grid--standard">
+        {studies.map(study => (
+          <CaseStudyCard {...study} />
+        ))}
+      </div>
+    )}
+
+  </div>
+</section>
+
+<style>
+  .work__header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .work__empty {
+    color: var(--c-ink-subtle);
+    font-size: var(--text-md);
+  }
+
+  /* Single featured card */
+  .work__single {
+    max-width: 900px;
+  }
+
+  /* 2–3 cards: first spans full width, rest are 2-col */
+  .work__grid--large {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .work__grid--large > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  /* 2-col for second and third */
+  @media (min-width: 768px) {
+    .work__grid--large {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .work__grid--large > :first-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* 4+ cards: responsive 2–3 column grid */
+  .work__grid--standard {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .work__grid--standard {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .work__grid--standard {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+</style>

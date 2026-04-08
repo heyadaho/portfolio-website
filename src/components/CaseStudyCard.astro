@@ -1,0 +1,222 @@
+---
+interface Props {
+  title: string;
+  company: string;
+  summary: string;
+  role: string;
+  year: number;
+  slug: string;
+  tags?: string[];
+  featured?: boolean;
+}
+
+const { title, company, summary, role, year, slug, tags = [], featured = false } = Astro.props;
+---
+
+<a
+  href={`/work/${slug}`}
+  class:list={['card', { 'card--featured': featured }]}
+  aria-label={`${title} — ${company}`}
+>
+  <!-- Visual block -->
+  <div class="card__visual">
+    <div class="card__placeholder" aria-hidden="true">
+      <span class="card__placeholder-label">{company}</span>
+    </div>
+    <div class="card__hover-overlay" aria-hidden="true"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="card__content">
+    <div class="card__header">
+      <p class="card__company label">{company}</p>
+      <span class="card__arrow" aria-hidden="true">↗</span>
+    </div>
+
+    <h3 class="card__title">{title}</h3>
+    <p class="card__summary">{summary}</p>
+
+    <div class="card__footer">
+      <div class="card__meta">
+        <span>{role}</span>
+        <span class="card__meta-sep" aria-hidden="true">·</span>
+        <span>{year}</span>
+      </div>
+
+      {tags.length > 0 && (
+        <ul class="card__tags" aria-label="Tags">
+          {tags.map(tag => (
+            <li class="card__tag">{tag}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </div>
+</a>
+
+<style>
+  .card {
+    display: block;
+    border: 1px solid var(--c-border);
+    border-radius: 2px;
+    overflow: hidden;
+    background: var(--c-surface);
+    transition:
+      border-color var(--dur-mid) var(--ease-in-out),
+      transform var(--dur-mid) var(--ease-expo);
+    text-decoration: none;
+  }
+
+  .card:hover {
+    border-color: var(--c-border-strong);
+    transform: translateY(-3px);
+  }
+
+  /* Visual placeholder */
+  .card__visual {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--c-surface-raised);
+  }
+
+  .card--featured .card__visual {
+    aspect-ratio: 21 / 9;
+  }
+
+  .card__placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+      135deg,
+      var(--c-surface-raised) 0%,
+      var(--c-surface) 100%
+    );
+  }
+
+  .card__placeholder-label {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--c-border-strong);
+    user-select: none;
+  }
+
+  .card__hover-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--c-accent);
+    opacity: 0;
+    transition: opacity var(--dur-mid) var(--ease-in-out);
+    mix-blend-mode: overlay;
+  }
+
+  .card:hover .card__hover-overlay {
+    opacity: 0.06;
+  }
+
+  /* Content */
+  .card__content {
+    padding: 1.6rem 1.8rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .card--featured .card__content {
+    padding: 2rem 2.2rem 2.2rem;
+  }
+
+  .card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card__company {
+    color: var(--c-accent);
+  }
+
+  .card__arrow {
+    font-size: var(--text-base);
+    color: var(--c-ink-subtle);
+    transition: transform var(--dur-fast), color var(--dur-fast);
+    display: block;
+  }
+
+  .card:hover .card__arrow {
+    transform: translate(2px, -2px);
+    color: var(--c-ink-mid);
+  }
+
+  .card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--c-ink);
+  }
+
+  .card--featured .card__title {
+    font-size: var(--text-2xl);
+  }
+
+  .card__summary {
+    font-size: var(--text-base);
+    font-weight: 300;
+    color: var(--c-ink-mid);
+    line-height: 1.6;
+    max-width: 55ch;
+  }
+
+  .card__footer {
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .card__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--text-sm);
+    color: var(--c-ink-subtle);
+    font-weight: 400;
+  }
+
+  .card__meta-sep {
+    color: var(--c-border-strong);
+  }
+
+  .card__tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .card__tag {
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-ink-subtle);
+    border: 1px solid var(--c-border);
+    padding: 0.2em 0.6em;
+    border-radius: 1px;
+    transition: border-color var(--dur-fast), color var(--dur-fast);
+  }
+
+  .card:hover .card__tag {
+    border-color: var(--c-border-strong);
+    color: var(--c-ink-mid);
+  }
+</style>

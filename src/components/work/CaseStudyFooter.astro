@@ -1,0 +1,103 @@
+---
+interface NextStudy {
+  title: string;
+  company: string;
+  slug: string;
+}
+
+interface Props {
+  next?: NextStudy;
+}
+
+const { next } = Astro.props;
+---
+
+<footer class="cs-footer">
+  <div class="container">
+    <div class="cs-footer__inner">
+
+      <a href="/#work" class="cs-footer__back">
+        <span class="label cs-footer__back-label">
+          <span aria-hidden="true">←</span> All work
+        </span>
+      </a>
+
+      {next && (
+        <a href={`/work/${next.slug}`} class="cs-footer__next">
+          <span class="label cs-footer__next-label">
+            Next <span aria-hidden="true">→</span>
+          </span>
+          <span class="cs-footer__next-title">{next.title}</span>
+          <span class="cs-footer__next-company label">{next.company}</span>
+        </a>
+      )}
+
+    </div>
+  </div>
+</footer>
+
+<style>
+  .cs-footer {
+    padding-block: var(--space-xl) var(--space-lg);
+    margin-top: var(--space-xl);
+    border-top: 1px solid var(--c-border);
+  }
+
+  .cs-footer__inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .cs-footer__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--c-ink-subtle);
+    transition: color var(--dur-fast);
+    padding-top: 0.25rem;
+  }
+
+  .cs-footer__back:hover {
+    color: var(--c-ink-mid);
+  }
+
+  .cs-footer__next {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+    text-align: right;
+    transition: opacity var(--dur-fast);
+    max-width: 380px;
+  }
+
+  .cs-footer__next:hover {
+    opacity: 0.8;
+  }
+
+  .cs-footer__next-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--c-ink);
+    line-height: 1.2;
+  }
+
+  .cs-footer__next-company {
+    color: var(--c-accent);
+  }
+
+  @media (max-width: 560px) {
+    .cs-footer__inner {
+      flex-direction: column;
+    }
+
+    .cs-footer__next {
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+</style>

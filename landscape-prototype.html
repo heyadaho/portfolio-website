@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ed Lake — Principal Product Designer</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --page-bg: #0B140E;
+    --ink:     #F0EDE8;
+    --accent:  #C4A882;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--page-bg);
+    overflow-x: hidden;
+  }
+
+  /* ── SCENE ─────────────────────────────────────── */
+  #scene {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    min-height: 600px;
+    overflow: hidden;
+    cursor: none;
+  }
+
+  #c {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Dissolve canvas into page */
+  #scene::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 40%,
+      rgba(11, 20, 14, 0.45) 68%,
+      var(--page-bg) 100%
+    );
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* ── HERO TEXT ─────────────────────────────────── */
+  .hero {
+    position: absolute;
+    bottom: 13%;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+    padding: 0 2rem;
+    pointer-events: none;
+  }
+
+  .hero-name {
+    font-family: 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+    font-size: clamp(3.2rem, 8.5vw, 7.5rem);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 0.92;
+    color: rgba(240, 237, 232, 0.96);
+    opacity: 0;
+    animation: riseIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+  }
+
+  .hero-meta {
+    margin-top: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.4rem;
+    opacity: 0;
+    animation: riseIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) 1.15s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(0.65rem, 1.1vw, 0.82rem);
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(240, 237, 232, 0.42);
+  }
+
+  .hero-rule {
+    width: 1px;
+    height: 14px;
+    background: rgba(196, 168, 130, 0.28);
+    flex-shrink: 0;
+  }
+
+  .hero-open {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(0.6rem, 0.95vw, 0.72rem);
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(196, 168, 130, 0.85);
+    border: 1px solid rgba(196, 168, 130, 0.28);
+    padding: 0.3em 0.85em 0.28em;
+    border-radius: 1px;
+  }
+
+  /* ── SCROLL CUE ────────────────────────────────── */
+  .scroll-cue {
+    position: absolute;
+    bottom: 3.5%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeUp 1s ease 2.4s forwards;
+  }
+
+  .scroll-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(240, 237, 232, 0.22);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 38px;
+    background: linear-gradient(to bottom, rgba(196, 168, 130, 0.55), transparent);
+    animation: linePulse 2.8s ease-in-out 2.9s infinite;
+  }
+
+  /* ── ANIMATIONS ────────────────────────────────── */
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  @keyframes linePulse {
+    0%, 100% { opacity: 0.35; transform: scaleY(0.85); }
+    50%      { opacity: 1;    transform: scaleY(1.1); }
+  }
+
+  /* ── PAGE BODY ─────────────────────────────────── */
+  .page-body {
+    position: relative;
+    z-index: 5;
+    background: var(--page-bg);
+    min-height: 100vh;
+    padding: 6rem 2rem 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .page-body p {
+    font-family: 'Palatino Linotype', Georgia, serif;
+    font-size: 1.1rem;
+    color: rgba(240, 237, 232, 0.3);
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<section id="scene">
+  <canvas id="c"></canvas>
+
+  <div class="hero">
+    <h1 class="hero-name">Ed Lake</h1>
+    <div class="hero-meta">
+      <span class="hero-title">Principal Product Designer</span>
+      <span class="hero-rule"></span>
+      <span class="hero-open">Open to work</span>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <span class="scroll-label">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<main class="page-body">
+  <p>Portfolio content continues here</p>
+</main>
+
+<script>
+(() => {
+'use strict';
+
+// ═══════════════════════════════════════════════════════
+//  MATH
+// ═══════════════════════════════════════════════════════
+
+const lerp  = (a, b, t) => a + (b - a) * t;
+const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
+
+// Deterministic hash (0–1) from a single float seed
+function hash(n) {
+  const s = Math.sin(n * 127.1 + 311.7) * 43758.5453123;
+  return s - Math.floor(s);
+}
+
+// 1-D smooth value noise (smootherstep kernel)
+function vnoise(x, seed) {
+  const i = Math.floor(x);
+  const f = x - i;
+  const u = f * f * f * (f * (f * 6.0 - 15.0) + 10.0);
+  return lerp(hash(i + seed * 137.317), hash(i + 1.0 + seed * 137.317), u);
+}
+
+// Fractional Brownian Motion — stacked octaves of value noise
+function fbm(x, seed, octaves = 7) {
+  let v = 0.0, amp = 0.52, freq = 1.0;
+  for (let o = 0; o < octaves; o++) {
+    v    += amp * vnoise(x * freq, seed + o * 31.73);
+    amp  *= 0.50;
+    freq *= 1.98;
+  }
+  return v; // roughly 0–1
+}
+
+// Domain-warped FBM for more organic, folded terrain
+function warpedFbm(x, seed, scale) {
+  const warpStrength = 55.0;
+  const wx = fbm(x * scale * 0.38, seed + 500, 3) * warpStrength;
+  return fbm((x + wx) * scale, seed, 7);
+}
+
+// Dome-bias shaping: softens sharp peaks → smooth Welsh hills
+function dome(h) {
+  const c = h * 2.0 - 1.0;
+  return 0.5 + 0.5 * Math.sign(c) * Math.pow(Math.abs(c), 0.62);
+}
+
+
+// ═══════════════════════════════════════════════════════
+//  CANVAS STATE
+// ═══════════════════════════════════════════════════════
+
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+let W = 0, H = 0, DPR = 1;
+
+
+// ═══════════════════════════════════════════════════════
+//  PARALLAX
+// ═══════════════════════════════════════════════════════
+
+const off = { x: 0, y: 0 };   // smoothed parallax offset (−1 to 1)
+const tgt = { x: 0, y: 0 };   // target (from mouse/touch)
+
+window.addEventListener('mousemove', e => {
+  tgt.x = (e.clientX / innerWidth  - 0.5) * 2.0;
+  tgt.y = (e.clientY / innerHeight - 0.5) * 2.0;
+});
+window.addEventListener('touchmove', e => {
+  tgt.x = (e.touches[0].clientX / innerWidth  - 0.5) * 2.0;
+  tgt.y = (e.touches[0].clientY / innerHeight - 0.5) * 2.0;
+}, { passive: true });
+
+
+// ═══════════════════════════════════════════════════════
+//  PALETTE
+// ═══════════════════════════════════════════════════════
+
+// All terrain colors as [R, G, B] arrays for easy lerp
+const SKY_TOP  = [88,  112, 122];   // overcast Welsh sky
+const SKY_MID  = [138, 168, 178];   // lighter horizon band
+const SKY_LOW  = [168, 195, 200];   // sky just above the ridges
+const FOG_RGB  = [168, 200, 210];   // atmospheric mist colour
+
+// Terrain layer RGB values — dark distance to bright foreground
+const LAYER_DEFS = [
+  // id       seed  baseY  amp    rgb               px      noiseScale
+  { id:'d0',  s:7,  bY:0.46, am:0.090, rgb:[22, 42, 44],   px:0.009 },
+  { id:'d1',  s:13, bY:0.50, am:0.110, rgb:[26, 52, 54],   px:0.016 },
+  { id:'d2',  s:19, bY:0.55, am:0.135, rgb:[30, 68, 68],   px:0.026 },
+  { id:'m0',  s:29, bY:0.60, am:0.160, rgb:[36, 88, 76],   px:0.040 },
+  { id:'m1',  s:41, bY:0.66, am:0.185, rgb:[44, 106, 78],  px:0.058 },
+  { id:'m2',  s:53, bY:0.71, am:0.205, rgb:[54, 118, 72],  px:0.080 },
+  { id:'n0',  s:67, bY:0.77, am:0.225, rgb:[62, 128, 60],  px:0.108 },
+  { id:'fg',  s:79, bY:0.85, am:0.235, rgb:[10, 22, 14],   px:0.165 },
+];
+
+// Noise frequency per layer (distant = coarser = smaller scale)
+const noiseScaleFor = (bY) => 0.00095 + bY * 0.00095;
+
+// Water glow palette
+const WATER = {
+  outer:  'rgba(20, 200, 195, 0.07)',
+  mid:    'rgba(60, 230, 220, 0.22)',
+  inner:  'rgba(120, 248, 240, 0.70)',
+  bright: 'rgba(200, 255, 252, 0.95)',
+};
+
+
+// ═══════════════════════════════════════════════════════
+//  SCENE GEOMETRY (rebuilt on resize)
+// ═══════════════════════════════════════════════════════
+
+const OVERRUN = 0.22;   // fraction of W generated outside viewport each side
+const STEP    = 3;      // sample every N pixels → smooth but fast
+
+let terrains  = {};     // id → { ys: Float32Array, startX, step }
+let spires    = [];     // rock formations
+let mistPuffs = [];     // atmospheric fog blobs
+let riverPts  = [];     // water path control points
+let grainData = [];     // pre-baked film grain frames (ImageData)
+const GRAIN_FRAMES = 6;
+const GRAIN_RES    = 512;
+
+function buildAll() {
+  buildTerrains();
+  buildSpires();
+  buildMist();
+  buildRiver();
+  buildGrain();
+}
+
+// ── Terrain ────────────────────────────────────────────
+
+function buildTerrains() {
+  const extraW  = W * OVERRUN;
+  const startX  = -extraW;
+  const totalW  = W + extraW * 2;
+  const count   = Math.ceil(totalW / STEP) + 4;
+
+  LAYER_DEFS.forEach(L => {
+    const ns = noiseScaleFor(L.bY);
+    const ys = new Float32Array(count);
+    for (let i = 0; i < count; i++) {
+      const x  = startX + i * STEP;
+      ys[i] = dome(warpedFbm(x, L.s, ns));
+    }
+    terrains[L.id] = { ys, startX, step: STEP };
+  });
+}
+
+// ── Rock spires ────────────────────────────────────────
+
+function buildSpires() {
+  spires = [];
+  // Two bands: mid-ground valley floor and near foreground
+  const bands = [
+    { bY: 0.76, spread: 0.030, count: 48, scaleW: 0.005, scaleH: 0.034, s: 200 },
+    { bY: 0.85, spread: 0.022, count: 32, scaleW: 0.007, scaleH: 0.048, s: 400 },
+  ];
+  bands.forEach(b => {
+    for (let i = 0; i < b.count; i++) {
+      const t = i / b.count;
+      spires.push({
+        x:  hash(i * 13.1 + b.s) * W,
+        y:  (b.bY + (hash(i * 3.7 + b.s) - 0.5) * b.spread) * H,
+        w:  (0.3 + hash(i * 5.5 + b.s) * 0.7) * b.scaleW * W,
+        h:  (0.35 + hash(i * 11.3 + b.s) * 0.65) * b.scaleH * H,
+        v:  0.55 + hash(i * 2.1 + b.s) * 0.45,  // value/lightness
+      });
+    }
+  });
+}
+
+// ── Mist puffs ────────────────────────────────────────
+
+function buildMist() {
+  mistPuffs = [];
+  for (let i = 0; i < 26; i++) {
+    mistPuffs.push({
+      cx:    hash(i * 9.3 + 1) * W,
+      cy:    (0.40 + hash(i * 5.7 + 2) * 0.40) * H,
+      rx:    (0.055 + hash(i * 3.3 + 3) * 0.195) * W,
+      ry:    (0.010 + hash(i * 7.1 + 4) * 0.024) * H,
+      alpha: 0.042 + hash(i * 11.7 + 5) * 0.092,
+      spd:   (0.14 + hash(i * 2.9 + 6) * 0.30) * (hash(i * 17.3) > 0.5 ? 1 : -1),
+      phase: hash(i * 6.3 + 7) * Math.PI * 2,
+      depth: 0.25 + hash(i * 4.1 + 8) * 0.72,
+    });
+  }
+}
+
+// ── River ─────────────────────────────────────────────
+// Winding valley water that follows the mid-ground valley
+
+function buildRiver() {
+  riverPts = [];
+  const SEG = 130;
+  for (let i = 0; i <= SEG; i++) {
+    const t = i / SEG;
+    // Main winding path — enters from left valley, snakes toward viewer
+    const sine1 = Math.sin(t * Math.PI * 3.2)         * W * 0.075;
+    const sine2 = Math.sin(t * Math.PI * 1.4 + 1.1)   * W * 0.042;
+    const warp  = (fbm(t * 3.5, 999, 4) - 0.5)        * W * 0.055;
+    riverPts.push({
+      x: W * (0.08 + t * 0.84) + sine1 + sine2 + warp,
+      y: H * (0.67 + t * 0.07) + (fbm(t * 6, 888, 3) - 0.5) * H * 0.018,
+    });
+  }
+}
+
+// ── Film grain (pre-baked frames) ─────────────────────
+
+function buildGrain() {
+  grainData = [];
+  const gc  = document.createElement('canvas').getContext('2d');
+  gc.canvas.width = gc.canvas.height = GRAIN_RES;
+  for (let f = 0; f < GRAIN_FRAMES; f++) {
+    const id = gc.createImageData(GRAIN_RES, GRAIN_RES);
+    for (let k = 0; k < id.data.length; k += 4) {
+      const v = (Math.random() * 255) | 0;
+      id.data[k] = id.data[k+1] = id.data[k+2] = v;
+      id.data[k+3] = 18;
+    }
+    grainData.push(id);
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════
+//  DRAWING
+// ═══════════════════════════════════════════════════════
+
+// ── Sky ───────────────────────────────────────────────
+
+function drawSky() {
+  const g = ctx.createLinearGradient(0, 0, 0, H * 0.72);
+  g.addColorStop(0.00, `rgb(${SKY_TOP})`);
+  g.addColorStop(0.45, `rgb(${SKY_MID})`);
+  g.addColorStop(1.00, `rgb(${SKY_LOW})`);
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+
+  // Diffuse light source — pale warmth in upper-right quadrant
+  const ls = ctx.createRadialGradient(W * 0.72, H * 0.08, 0, W * 0.72, H * 0.08, W * 0.55);
+  ls.addColorStop(0.0, 'rgba(230, 218, 195, 0.16)');
+  ls.addColorStop(0.5, 'rgba(210, 200, 180, 0.06)');
+  ls.addColorStop(1.0, 'rgba(0,0,0,0)');
+  ctx.fillStyle = ls;
+  ctx.fillRect(0, 0, W, H * 0.65);
+}
+
+// ── Terrain layer ─────────────────────────────────────
+// Draws a single terrain band + its fog overlay
+
+function drawTerrain(L, shiftX) {
+  const td = terrains[L.id];
+  if (!td) return;
+  const { ys, startX, step } = td;
+  const sx = shiftX * L.px * W;
+
+  // ─── Build path ────────────────────────────────────
+  ctx.beginPath();
+  let x0 = startX + sx;
+  let y0 = L.bY * H - ys[0] * L.am * H;
+  ctx.moveTo(x0, y0);
+
+  for (let i = 1; i < ys.length; i++) {
+    const x1 = startX + i * step + sx;
+    const y1 = L.bY * H - ys[i] * L.am * H;
+    // Quadratic through midpoints → smooth curve
+    ctx.quadraticCurveTo(x0, y0, (x0 + x1) * 0.5, (y0 + y1) * 0.5);
+    x0 = x1; y0 = y1;
+  }
+  ctx.lineTo(x0, y0);
+  ctx.lineTo(x0, H + 10);
+  ctx.lineTo(startX + sx, H + 10);
+  ctx.closePath();
+
+  // ─── Terrain fill (subtle gradient: crest lighter) ─
+  const [r, g, b] = L.rgb;
+  const topY = L.bY * H - L.am * H;
+  const tg = ctx.createLinearGradient(0, topY, 0, H);
+  tg.addColorStop(0.0, `rgb(${r+14},${g+14},${b+12})`);
+  tg.addColorStop(0.3, `rgb(${r},${g},${b})`);
+  tg.addColorStop(1.0, `rgb(${Math.max(0,r-8)},${Math.max(0,g-8)},${Math.max(0,b-8)})`);
+  ctx.fillStyle = tg;
+  ctx.fill();
+}
+
+// ── Atmospheric fog pass ──────────────────────────────
+// Single gradient overlay that naturally fades distant layers
+
+function drawAtmosphericFog() {
+  const [fr, fg, fb] = FOG_RGB;
+  const g = ctx.createLinearGradient(0, 0, 0, H * 0.80);
+  g.addColorStop(0.00, `rgba(${fr},${fg},${fb},0.88)`);
+  g.addColorStop(0.20, `rgba(${fr},${fg},${fb},0.60)`);
+  g.addColorStop(0.42, `rgba(${fr},${fg},${fb},0.30)`);
+  g.addColorStop(0.60, `rgba(${fr},${fg},${fb},0.10)`);
+  g.addColorStop(0.80, `rgba(${fr},${fg},${fb},0.02)`);
+  g.addColorStop(1.00, `rgba(${fr},${fg},${fb},0.00)`);
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H * 0.80);
+}
+
+// ── River / water ─────────────────────────────────────
+
+function drawRiver(time, shiftX) {
+  const sx  = shiftX * 0.082 * W;
+  const pts = riverPts;
+  if (pts.length < 3) return;
+
+  // Multiple stroke passes create the glow effect
+  const passes = [
+    { lw: 28,  alpha: 0.05, color: WATER.outer  },
+    { lw: 18,  alpha: 0.10, color: WATER.outer  },
+    { lw: 10,  alpha: 0.20, color: WATER.mid    },
+    { lw: 5,   alpha: 0.50, color: WATER.mid    },
+    { lw: 2.5, alpha: 0.82, color: WATER.inner  },
+    { lw: 1.2, alpha: 0.98, color: WATER.bright },
+  ];
+
+  passes.forEach(p => {
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x + sx, pts[0].y);
+    for (let i = 1; i < pts.length - 1; i++) {
+      const t    = i / pts.length;
+      // Gentle shimmy — slower oscillation, subtle displacement
+      const shim = Math.sin(time * 1.1 + t * 8.4) * 2.2
+                 + Math.sin(time * 0.5 + t * 3.7) * 1.1;
+      const c = pts[i], n = pts[i + 1];
+      ctx.quadraticCurveTo(
+        c.x + sx, c.y + shim,
+        (c.x + n.x) * 0.5 + sx, (c.y + n.y) * 0.5 + shim
+      );
+    }
+    ctx.strokeStyle   = p.color;
+    ctx.globalAlpha   = p.alpha;
+    ctx.lineWidth     = p.lw;
+    ctx.lineCap       = 'round';
+    ctx.lineJoin      = 'round';
+    if (p.lw > 8) {
+      ctx.shadowColor = 'rgba(80, 240, 230, 0.5)';
+      ctx.shadowBlur  = p.lw * 1.8;
+    }
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  // Water surface sparkles
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 18; i++) {
+    const t   = ((time * 0.11 + hash(i * 7.71 + 1)) % 1.0);
+    const idx = Math.min((t * (pts.length - 1)) | 0, pts.length - 2);
+    const pt  = pts[idx];
+    const pulse = Math.sin(time * 3.8 + i * 2.71) * 0.5 + 0.5;
+    if (pulse < 0.58) continue;
+    const a = ((pulse - 0.58) / 0.42) * 0.65;
+    ctx.fillStyle = `rgba(190, 255, 250, ${a})`;
+    ctx.beginPath();
+    ctx.arc(pt.x + sx, pt.y, 1.6, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+// ── Rock spires ───────────────────────────────────────
+
+function drawSpires(shiftX) {
+  const sx = shiftX * 0.125 * W;
+  ctx.save();
+  spires.forEach(r => {
+    const x  = r.x + sx;
+    const vv = (r.v * 14) | 0;
+    // Tapered multi-point spire profile
+    ctx.beginPath();
+    ctx.moveTo(x,                r.y);
+    ctx.lineTo(x - r.w * 0.50,  r.y);
+    ctx.lineTo(x - r.w * 0.28,  r.y - r.h * 0.38);
+    ctx.lineTo(x - r.w * 0.10,  r.y - r.h * 0.72);
+    ctx.lineTo(x - r.w * 0.02,  r.y - r.h * 0.90);
+    ctx.lineTo(x,                r.y - r.h);
+    ctx.lineTo(x + r.w * 0.02,  r.y - r.h * 0.90);
+    ctx.lineTo(x + r.w * 0.10,  r.y - r.h * 0.72);
+    ctx.lineTo(x + r.w * 0.28,  r.y - r.h * 0.38);
+    ctx.lineTo(x + r.w * 0.50,  r.y);
+    ctx.closePath();
+    ctx.fillStyle   = `rgb(${vv},${vv + 6},${vv + 4})`;
+    ctx.globalAlpha = 0.70;
+    ctx.fill();
+  });
+  ctx.restore();
+}
+
+// ── Mist puffs ────────────────────────────────────────
+
+function drawMist(time, shiftX) {
+  const [mr, mg, mb] = FOG_RGB;
+  mistPuffs.forEach(p => {
+    const drift   = Math.sin(time * p.spd * 0.11 + p.phase) * W * 0.048;
+    const breathe = 0.65 + 0.35 * Math.sin(time * 0.22 + p.phase);
+    const sx      = shiftX * p.depth * 0.032 * W;
+    const cx      = p.cx + drift + sx;
+    const a       = p.alpha * breathe;
+
+    ctx.save();
+    ctx.translate(cx, p.cy);
+    ctx.scale(1.0, p.ry / p.rx);
+
+    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, p.rx);
+    g.addColorStop(0.0, `rgba(${mr},${mg},${mb},${a})`);
+    g.addColorStop(0.5, `rgba(${mr},${mg},${mb},${a * 0.35})`);
+    g.addColorStop(1.0, `rgba(${mr},${mg},${mb},0)`);
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(0, 0, p.rx, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  });
+}
+
+// ── Vignette ──────────────────────────────────────────
+
+function drawVignette() {
+  const g = ctx.createRadialGradient(W * 0.5, H * 0.42, H * 0.05, W * 0.5, H * 0.42, H * 0.92);
+  g.addColorStop(0.0, 'rgba(0,0,0,0)');
+  g.addColorStop(0.7, 'rgba(0,0,0,0.06)');
+  g.addColorStop(1.0, 'rgba(0,0,0,0.42)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+}
+
+// ── Color grade ───────────────────────────────────────
+
+function drawGrade() {
+  // Cool atmospheric lift in sky; deep forest green in base
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0.00, 'rgba(72, 104, 120, 0.08)');
+  g.addColorStop(0.40, 'rgba(0,0,0,0)');
+  g.addColorStop(0.85, 'rgba(0,0,0,0)');
+  g.addColorStop(1.00, 'rgba(6, 12, 8, 0.55)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+}
+
+// ── Film grain ────────────────────────────────────────
+
+let grainCanvas = null, grainCtx = null;
+
+function drawGrain(frameIdx) {
+  if (!grainData.length) return;
+  if (!grainCanvas) {
+    grainCanvas     = document.createElement('canvas');
+    grainCanvas.width = grainCanvas.height = GRAIN_RES;
+    grainCtx        = grainCanvas.getContext('2d');
+  }
+  grainCtx.putImageData(grainData[frameIdx % GRAIN_FRAMES], 0, 0);
+
+  ctx.save();
+  ctx.globalCompositeOperation = 'overlay';
+  ctx.globalAlpha = 0.038;
+  // Offset tiling to hide seams (cycle by frame)
+  const ox = (frameIdx * 19) % GRAIN_RES;
+  const oy = (frameIdx * 13) % GRAIN_RES;
+  for (let gx = -GRAIN_RES; gx < W + GRAIN_RES; gx += GRAIN_RES) {
+    for (let gy = -GRAIN_RES; gy < H + GRAIN_RES; gy += GRAIN_RES) {
+      ctx.drawImage(grainCanvas, gx + ox, gy + oy);
+    }
+  }
+  ctx.restore();
+}
+
+
+// ═══════════════════════════════════════════════════════
+//  ANIMATION LOOP
+// ═══════════════════════════════════════════════════════
+
+let t0    = null;
+let frame = 0;
+
+function tick(ts) {
+  if (!t0) t0 = ts;
+  const t = (ts - t0) * 0.001;
+  frame++;
+
+  // Smooth parallax toward target
+  off.x = lerp(off.x, tgt.x, 0.038);
+  off.y = lerp(off.y, tgt.y, 0.038);
+
+  ctx.clearRect(0, 0, W, H);
+
+  // ── Draw order ──────────────────────────────────────
+  // 1. Sky + light source
+  drawSky();
+
+  // 2. Far terrain layers (d0 → m2) — will be fogged over
+  for (let i = 0; i < LAYER_DEFS.length - 2; i++) {
+    drawTerrain(LAYER_DEFS[i], off.x);
+  }
+
+  // 3. Atmospheric fog — covers distant layers naturally
+  drawAtmosphericFog();
+
+  // 4. Near terrain (n0) — sits above fog
+  drawTerrain(LAYER_DEFS[LAYER_DEFS.length - 2], off.x);
+
+  // 5. Water — glows through the valley
+  drawRiver(t, off.x);
+
+  // 6. Rock spires
+  drawSpires(off.x);
+
+  // 7. Mist puffs — thin atmospheric wisps
+  drawMist(t, off.x);
+
+  // 8. Foreground terrain (fg) — darkest, closest
+  drawTerrain(LAYER_DEFS[LAYER_DEFS.length - 1], off.x);
+
+  // 9. Tone: vignette + colour grade
+  drawVignette();
+  drawGrade();
+
+  // 10. Film grain — updated at ~24fps
+  if (frame % 3 === 0) drawGrain(frame / 3 | 0);
+  else drawGrain(frame / 3 | 0);
+
+  requestAnimationFrame(tick);
+}
+
+
+// ═══════════════════════════════════════════════════════
+//  INIT + RESIZE
+// ═══════════════════════════════════════════════════════
+
+function resize() {
+  DPR            = Math.min(window.devicePixelRatio || 1, 2);
+  W              = canvas.clientWidth;
+  H              = canvas.clientHeight;
+  canvas.width   = (W * DPR) | 0;
+  canvas.height  = (H * DPR) | 0;
+  ctx.scale(DPR, DPR);
+  buildAll();
+}
+
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(resize, 120);
+});
+
+resize();
+requestAnimationFrame(tick);
+
+})();
+</script>
+</body>
+</html>

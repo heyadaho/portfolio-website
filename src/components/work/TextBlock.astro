@@ -1,0 +1,65 @@
+---
+interface Props {
+  label?: string;
+  heading?: string;
+}
+
+const { label, heading } = Astro.props;
+---
+
+<section class="text-block section">
+  <div class="container container--text">
+
+    {label && <span class="label text-block__label">{label}</span>}
+    {heading && <h2 class="text-block__heading">{heading}</h2>}
+
+    <div class="text-block__body">
+      <slot />
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .text-block__label {
+    display: block;
+    margin-bottom: 1.2rem;
+  }
+
+  .text-block__heading {
+    font-size: var(--text-2xl);
+    font-weight: 400;
+    letter-spacing: -0.022em;
+    line-height: 1.12;
+    margin-bottom: 2rem;
+    max-width: 22ch;
+  }
+
+  .text-block__body {
+    font-size: var(--text-md);
+    font-weight: 300;
+    color: var(--c-ink-mid);
+    line-height: 1.75;
+  }
+
+  .text-block__body p {
+    max-width: 62ch;
+  }
+
+  .text-block__body p + p {
+    margin-top: 1.1em;
+  }
+
+  .text-block__body ul,
+  .text-block__body ol {
+    margin-top: 1em;
+    padding-left: 1.4em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+
+  .text-block__body li {
+    max-width: 60ch;
+  }
+</style>

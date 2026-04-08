@@ -1,0 +1,119 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const navLinks = [
+  { label: 'Work', href: '#work' },
+  { label: 'About', href: '#about' },
+];
+---
+
+<header class="nav" id="nav">
+  <div class="nav__inner container">
+
+    <a href="/" class="nav__name" aria-label="Ed Lake — home">
+      Ed Lake
+    </a>
+
+    <nav class="nav__links" aria-label="Primary navigation">
+      {navLinks.map(link => (
+        <a href={link.href} class="nav__link">{link.label}</a>
+      ))}
+      <a
+        href="mailto:hello@edlake.co"
+        class="nav__link nav__link--contact"
+        aria-label="Send Ed an email"
+      >
+        hello@edlake.co
+      </a>
+      <ThemeToggle />
+    </nav>
+
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding-block: 1.4rem;
+    transition:
+      background-color var(--dur-mid) var(--ease-in-out),
+      border-color var(--dur-mid) var(--ease-in-out),
+      padding var(--dur-mid) var(--ease-in-out);
+  }
+
+  .nav.is-scrolled {
+    background-color: var(--c-base);
+    border-bottom: 1px solid var(--c-border);
+    padding-block: 1rem;
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .nav__name {
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--c-ink);
+    opacity: 0.92;
+    transition: opacity var(--dur-fast);
+  }
+
+  .nav__name:hover {
+    opacity: 1;
+  }
+
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .nav__link {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: var(--c-ink-mid);
+    transition: color var(--dur-fast);
+    white-space: nowrap;
+  }
+
+  .nav__link:hover {
+    color: var(--c-ink);
+  }
+
+  .nav__link--contact {
+    color: var(--c-ink-subtle);
+  }
+
+  /* Mobile — hide text links, keep name + toggle */
+  @media (max-width: 640px) {
+    .nav__link {
+      display: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const nav = document.getElementById('nav');
+    if (!nav) return;
+
+    const onScroll = () => {
+      nav.classList.toggle('is-scrolled', window.scrollY > 60);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>

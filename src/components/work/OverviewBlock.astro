@@ -1,0 +1,76 @@
+---
+interface Props {
+  problem: string;
+  approach: string;
+  outcome: string;
+}
+
+const { problem, approach, outcome } = Astro.props;
+
+const columns = [
+  { label: 'Problem',  body: problem  },
+  { label: 'Approach', body: approach },
+  { label: 'Outcome',  body: outcome  },
+];
+---
+
+<section class="overview">
+  <div class="container">
+    <div class="overview__grid">
+      {columns.map(col => (
+        <div class="overview__col">
+          <span class="label overview__col-label">{col.label}</span>
+          <p class="overview__col-body">{col.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .overview {
+    padding-block: var(--space-xl);
+    border-top: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .overview__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem 3rem;
+  }
+
+  .overview__col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .overview__col-label {
+    /* inherits .label */
+  }
+
+  .overview__col-body {
+    font-size: var(--text-base);
+    font-weight: 300;
+    color: var(--c-ink-mid);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 768px) {
+    .overview__grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .overview__col {
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--c-border);
+    }
+
+    .overview__col:last-child {
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+  }
+</style>

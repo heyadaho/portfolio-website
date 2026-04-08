@@ -1,0 +1,144 @@
+---
+interface Props {
+  title: string;
+  summary: string;
+  role: string;
+  company: string;
+  year: number;
+  duration?: string;
+}
+
+const { title, summary, role, company, year, duration } = Astro.props;
+---
+
+<header class="cs-header">
+  <div class="container">
+
+    <div class="cs-header__top">
+      <a href="/#work" class="cs-header__back label">
+        <span aria-hidden="true">←</span> Work
+      </a>
+    </div>
+
+    <div class="cs-header__body">
+      <h1 class="cs-header__title">{title}</h1>
+      <p class="cs-header__summary">{summary}</p>
+
+      <dl class="cs-header__meta">
+        <div class="cs-header__meta-item">
+          <dt class="label">Role</dt>
+          <dd>{role}</dd>
+        </div>
+        <div class="cs-header__meta-item">
+          <dt class="label">Company</dt>
+          <dd>{company}</dd>
+        </div>
+        <div class="cs-header__meta-item">
+          <dt class="label">Year</dt>
+          <dd>{year}</dd>
+        </div>
+        {duration && (
+          <div class="cs-header__meta-item">
+            <dt class="label">Duration</dt>
+            <dd>{duration}</dd>
+          </div>
+        )}
+      </dl>
+    </div>
+
+    <!-- Hero image placeholder -->
+    <div class="cs-header__hero-img">
+      <span class="label">Hero image</span>
+    </div>
+
+  </div>
+</header>
+
+<style>
+  .cs-header {
+    padding-top: 7rem;
+    padding-bottom: 0;
+  }
+
+  .cs-header__top {
+    margin-bottom: 3.5rem;
+  }
+
+  .cs-header__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--c-ink-subtle);
+    transition: color var(--dur-fast);
+    text-decoration: none;
+  }
+
+  .cs-header__back:hover {
+    color: var(--c-ink-mid);
+  }
+
+  .cs-header__body {
+    max-width: 820px;
+    margin-bottom: 3.5rem;
+  }
+
+  .cs-header__title {
+    font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+  }
+
+  .cs-header__summary {
+    font-size: var(--text-lg);
+    font-weight: 300;
+    color: var(--c-ink-mid);
+    line-height: 1.6;
+    max-width: 55ch;
+  }
+
+  .cs-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 3rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--c-border);
+  }
+
+  .cs-header__meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .cs-header__meta-item dt {
+    /* label class applied */
+  }
+
+  .cs-header__meta-item dd {
+    font-size: var(--text-sm);
+    color: var(--c-ink-mid);
+    font-weight: 400;
+  }
+
+  /* Hero image placeholder */
+  .cs-header__hero-img {
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: var(--space-lg);
+  }
+
+  @media (max-width: 600px) {
+    .cs-header__meta {
+      gap: 1.5rem 2rem;
+    }
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+interface Props {
+  caption?: string;
+  contained?: boolean; /* false = full-width bleed */
+  src?: string;
+  alt?: string;
+}
+
+const { caption, contained = false, src, alt = '' } = Astro.props;
+---
+
+<figure class:list={['media-block', { 'media-block--contained': contained }]}>
+  <div class="media-block__frame">
+    {src ? (
+      <img src={src} alt={alt} class="media-block__img" loading="lazy" />
+    ) : (
+      <div class="media-block__placeholder" aria-hidden="true">
+        <span class="label">Image placeholder</span>
+      </div>
+    )}
+  </div>
+
+  {caption && (
+    <figcaption class="media-block__caption">{caption}</figcaption>
+  )}
+</figure>
+
+<style>
+  .media-block {
+    width: 100%;
+    margin-block: var(--space-lg);
+  }
+
+  /* Full bleed: break out of container */
+  .media-block:not(.media-block--contained) {
+    max-width: min(var(--w-content), 100%);
+    margin-inline: auto;
+  }
+
+  /* Contained: respects text column */
+  .media-block--contained {
+    max-width: var(--w-text);
+    margin-inline: auto;
+    padding-inline: var(--space-md);
+  }
+
+  .media-block__frame {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+  }
+
+  .media-block__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .media-block__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--c-surface-raised), var(--c-surface));
+  }
+
+  .media-block__caption {
+    margin-top: 0.9rem;
+    font-size: var(--text-sm);
+    color: var(--c-ink-subtle);
+    text-align: center;
+    max-width: 65ch;
+    margin-inline: auto;
+    line-height: 1.55;
+  }
+</style>

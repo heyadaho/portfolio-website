@@ -1,0 +1,62 @@
+---
+interface Props {
+  metric?: string;
+  label?: string;
+}
+
+const { metric, label } = Astro.props;
+---
+
+<div class="callout">
+  <div class="container container--text">
+    <div class="callout__inner">
+      {metric && <p class="callout__metric">{metric}</p>}
+      {label  && <p class="callout__label label">{label}</p>}
+      <div class="callout__body">
+        <slot />
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .callout {
+    margin-block: var(--space-lg);
+  }
+
+  .callout__inner {
+    border-left: 2px solid var(--c-accent);
+    padding: 1.8rem 2rem;
+    background: var(--c-surface);
+    border-radius: 0 2px 2px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .callout__metric {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--c-ink);
+  }
+
+  .callout__label {
+    color: var(--c-accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .callout__body {
+    font-size: var(--text-base);
+    font-weight: 300;
+    color: var(--c-ink-mid);
+    line-height: 1.7;
+    max-width: 55ch;
+  }
+
+  .callout__body p + p {
+    margin-top: 0.75em;
+  }
+</style>

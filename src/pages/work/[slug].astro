@@ -1,0 +1,115 @@
+---
+import { getCollection, render } from 'astro:content';
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import CaseStudyHeader from '../../components/work/CaseStudyHeader.astro';
+import OverviewBlock from '../../components/work/OverviewBlock.astro';
+import CaseStudyFooter from '../../components/work/CaseStudyFooter.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('work');
+  const sorted  = entries.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+  return sorted.map((entry, i) => {
+    const next = sorted[i + 1];
+    return {
+      params: { slug: entry.id },
+      props: {
+        entry,
+        next: next
+          ? { title: next.data.title, company: next.data.company, slug: next.id }
+          : undefined,
+      },
+    };
+  });
+}
+
+const { entry, next } = Astro.props;
+const { Content } = await render(entry);
+
+const {
+  title, company, year, role, duration, summary,
+  problem, approach, outcome,
+} = entry.data;
+
+const hasOverview = problem && approach && outcome;
+---
+
+<CaseStudyLayout title={title} description={summary}>
+
+  <CaseStudyHeader
+    title={title}
+    summary={summary}
+    role={role}
+    company={company}
+    year={year}
+    duration={duration}
+  />
+
+  {hasOverview && (
+    <OverviewBlock
+      problem={problem!}
+      approach={approach!}
+      outcome={outcome!}
+    />
+  )}
+
+  <article class="cs-body">
+    <Content />
+  </article>
+
+  <CaseStudyFooter next={next} />
+
+</CaseStudyLayout>
+
+<style>
+  /*
+    The MDX content renders inside .cs-body.
+    TextBlock, MediaBlock etc. are imported directly in the MDX,
+    so they render with their own full-width containers.
+    Any raw markdown (paragraphs, lists) gets base prose styles here.
+  */
+  .cs-body {
+    padding-block: var(--space-lg) 0;
+  }
+
+  /* Prose fallback for any raw markdown not wrapped in a block component */
+  .cs-body :global(p),
+  .cs-body :global(li) {
+    font-size: var(--text-md);
+    font-weight: 300;
+    color: var(--c-ink-mid);
+    line-height: 1.75;
+    max-width: 62ch;
+  }
+
+  .cs-body :global(h2),
+  .cs-body :global(h3) {
+    margin-top: 2.5em;
+    margin-bottom: 0.75em;
+  }
+
+  .cs-body :global(h2) {
+    font-size: var(--text-2xl);
+  }
+
+  .cs-body :global(h3) {
+    font-size: var(--text-xl);
+  }
+
+  .cs-body :global(strong) {
+    font-weight: 500;
+    color: var(--c-ink);
+  }
+
+  .cs-body :global(a) {
+    color: var(--c-accent);
+    text-underline-offset: 3px;
+    text-decoration: underline;
+    text-decoration-color: var(--c-accent-dim);
+    transition: text-decoration-color var(--dur-fast);
+  }
+
+  .cs-body :global(a:hover) {
+    text-decoration-color: var(--c-accent);
+  }
+</style>

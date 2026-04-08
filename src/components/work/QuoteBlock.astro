@@ -1,0 +1,78 @@
+---
+interface Props {
+  attribution?: string;
+  role?: string;
+}
+
+const { attribution, role } = Astro.props;
+---
+
+<blockquote class="quote">
+  <div class="container container--text">
+    <div class="quote__inner">
+      <p class="quote__mark" aria-hidden="true">"</p>
+      <p class="quote__body">
+        <slot />
+      </p>
+      {(attribution || role) && (
+        <footer class="quote__attribution">
+          {attribution && <cite class="quote__cite">{attribution}</cite>}
+          {role && <span class="quote__role label">{role}</span>}
+        </footer>
+      )}
+    </div>
+  </div>
+</blockquote>
+
+<style>
+  .quote {
+    margin-block: var(--space-lg);
+  }
+
+  .quote__inner {
+    position: relative;
+    padding: 2.5rem 0 2rem;
+    border-top: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .quote__mark {
+    font-family: var(--font-display);
+    font-size: 5rem;
+    line-height: 0.6;
+    color: var(--c-accent);
+    opacity: 0.5;
+    margin-bottom: 0.75rem;
+    user-select: none;
+  }
+
+  .quote__body {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--c-ink);
+    max-width: 42ch;
+  }
+
+  .quote__attribution {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .quote__cite {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-style: normal;
+    font-weight: 500;
+    color: var(--c-ink-mid);
+  }
+
+  .quote__role {
+    /* inherits .label */
+  }
+</style>

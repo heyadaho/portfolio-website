@@ -1,0 +1,82 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+
+      <div class="footer__links">
+        <a href="mailto:hello@edlake.co" class="footer__link">
+          hello@edlake.co
+        </a>
+        <span class="footer__rule" aria-hidden="true"></span>
+        <a
+          href="https://www.linkedin.com/in/edwardcellanlake/"
+          class="footer__link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          LinkedIn
+        </a>
+      </div>
+
+      <p class="footer__credit">
+        Designed and built by Ed Lake &nbsp;·&nbsp; {year}
+      </p>
+
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: 3rem 2.5rem;
+    border-top: 1px solid var(--c-border);
+    margin-top: var(--space-2xl);
+  }
+
+  .footer__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .footer__links {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .footer__rule {
+    display: block;
+    width: 1px;
+    height: 14px;
+    background: var(--c-border-strong);
+  }
+
+  .footer__link {
+    font-size: var(--text-sm);
+    color: var(--c-ink-mid);
+    transition: color var(--dur-fast);
+  }
+
+  .footer__link:hover {
+    color: var(--c-ink);
+  }
+
+  .footer__credit {
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    color: var(--c-ink-subtle);
+  }
+
+  @media (max-width: 560px) {
+    .footer__inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

@@ -1,0 +1,135 @@
+---
+const photoSrc = '/images/ed-lake.png';
+---
+
+<section class="about section" id="about">
+  <div class="container">
+    <div class="about__inner">
+
+      <span class="label about__label">About</span>
+
+      <div class="about__body">
+
+        <div class="about__top">
+          <div class="about__photo-wrap">
+            <img
+              src={photoSrc}
+              alt="Ed Lake"
+              class="about__photo"
+              width="96"
+              height="96"
+              loading="lazy"
+            />
+          </div>
+
+          <div class="about__text-group">
+            <p class="about__text">
+              I'm a Principal Product Designer with over a decade leading design
+              across travel, ecommerce, and AI-powered products. I work at the
+              intersection of commercial impact and craft — creating experiences
+              that move metrics without losing the human detail.
+            </p>
+            <p class="about__text">
+              My focus is discovery: how people find, decide, and commit. I've
+              built teams, shaped strategy, and shipped at scale — most recently
+              bringing AI-driven personalisation to tens of millions of users.
+            </p>
+            <p class="about__text about__text--personal">
+              Outside of work I think a lot about Japanese design culture,
+              spend time in the mountains, and believe the best interfaces
+              are the ones you don't notice.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__inner {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 2rem 5rem;
+    align-items: start;
+    max-width: 900px;
+  }
+
+  .about__label {
+    padding-top: 0.35rem;
+  }
+
+  .about__body {
+    border-top: 1px solid var(--c-border);
+    padding-top: 2rem;
+  }
+
+  .about__top {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  /* ── Circular photo ── */
+  .about__photo-wrap {
+    flex-shrink: 0;
+  }
+
+  .about__photo {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: 1px solid var(--c-border-strong);
+    filter: grayscale(100%);
+    display: block;
+    transition: filter var(--dur-slow) var(--ease-in-out);
+  }
+
+  .about__photo:hover {
+    filter: grayscale(60%);
+  }
+
+  .about__text-group {
+    flex: 1;
+  }
+
+  .about__text {
+    font-size: var(--text-md);
+    font-weight: 300;
+    color: var(--c-ink-mid);
+    line-height: 1.75;
+    max-width: 60ch;
+  }
+
+  .about__text + .about__text {
+    margin-top: 1.1em;
+  }
+
+  .about__text--personal {
+    color: var(--c-ink-subtle);
+    font-size: var(--text-base);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 680px) {
+    .about__inner {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .about__body {
+      padding-top: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .about__top {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+  }
+</style>

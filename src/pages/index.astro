@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import CaseStudyGrid from '../components/CaseStudyGrid.astro';
+import { getCollection } from 'astro:content';
+
+const allWork = await getCollection('work');
+
+const studies = allWork
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  .map(entry => ({
+    slug:     entry.id,
+    title:    entry.data.title,
+    company:  entry.data.company,
+    summary:  entry.data.summary,
+    role:     entry.data.role,
+    year:     entry.data.year,
+    tags:     entry.data.tags ?? [],
+    featured: entry.data.featured ?? false,
+  }));
+---
+
+<BaseLayout>
+  <Hero />
+  <CaseStudyGrid studies={studies} />
+  <About />
+</BaseLayout>
