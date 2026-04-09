@@ -81,10 +81,6 @@ const { title, company, summary, role, year, slug, tags = [], featured = false }
     background: var(--c-surface-raised);
   }
 
-  .card--featured .card__visual {
-    aspect-ratio: 21 / 9;
-  }
-
   .card__placeholder {
     position: absolute;
     inset: 0;
@@ -128,10 +124,6 @@ const { title, company, summary, role, year, slug, tags = [], featured = false }
     gap: 0.75rem;
   }
 
-  .card--featured .card__content {
-    padding: 2rem 2.2rem 2.2rem;
-  }
-
   .card__header {
     display: flex;
     align-items: center;
@@ -163,10 +155,6 @@ const { title, company, summary, role, year, slug, tags = [], featured = false }
     color: var(--c-ink);
   }
 
-  .card--featured .card__title {
-    font-size: var(--text-2xl);
-  }
-
   .card__summary {
     font-size: var(--text-base);
     font-weight: 300;
@@ -178,9 +166,7 @@ const { title, company, summary, role, year, slug, tags = [], featured = false }
   .card__footer {
     margin-top: 0.5rem;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 0.75rem;
   }
 

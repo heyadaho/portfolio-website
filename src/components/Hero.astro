@@ -146,8 +146,7 @@
     animation: linePulse 2.8s ease-in-out 2.9s infinite;
   }
 
-  /* Light theme: hero text adjusts for the dark-on-dark landscape sitting
-     over a lighter page — keep hero text bright since canvas is always dark */
+  /* Light theme */
   :root[data-theme="light"] .hero__dissolve {
     background: linear-gradient(
       to bottom,
@@ -155,6 +154,31 @@
       rgba(245, 243, 239, 0.50) 65%,
       #F5F3EF 100%
     );
+  }
+
+  :root[data-theme="light"] .hero__name {
+    color: rgba(18, 26, 20, 0.92);
+  }
+
+  :root[data-theme="light"] .hero__title {
+    color: rgba(18, 26, 20, 0.55);
+  }
+
+  :root[data-theme="light"] .hero__rule {
+    background: rgba(18, 26, 20, 0.25);
+  }
+
+  :root[data-theme="light"] .hero__open {
+    color: rgba(18, 26, 20, 0.80);
+    border-color: rgba(18, 26, 20, 0.25);
+  }
+
+  :root[data-theme="light"] .hero__scroll-label {
+    color: rgba(18, 26, 20, 0.40);
+  }
+
+  :root[data-theme="light"] .hero__scroll-line {
+    background: linear-gradient(to bottom, rgba(18, 26, 20, 0.35), transparent);
   }
 
   @media (max-width: 480px) {
@@ -332,11 +356,16 @@ function buildRiver() {
   var SEG = 130;
   for (var i = 0; i <= SEG; i++) {
     var t     = i / SEG;
-    var sine1 = Math.sin(t * Math.PI * 3.2) * W * 0.075;
-    var sine2 = Math.sin(t * Math.PI * 1.4 + 1.1) * W * 0.042;
-    var warp  = (fbm(t * 3.5, 999, 4) - 0.5) * W * 0.055;
+    // Gentle S-curve: dips slightly around t=0.38, rises gently through t=0.6-0.75
+    var curve = Math.sin(t * Math.PI * 1.1 - 0.5) * W * 0.028;
+    // Small organic kink in the middle-left zone only
+    var kinkT = Math.max(0, 1 - Math.abs(t - 0.40) / 0.12);
+    var kink  = Math.sin(t * Math.PI * 5.8 + 1.2) * W * 0.018 * kinkT * kinkT;
+    // Very subtle noise for a hand-drawn feel
+    var warp  = (fbm(t * 2.8, 999, 3) - 0.5) * W * 0.012;
+    var sine1 = 0, sine2 = 0, bend1 = curve + kink, bend2 = 0;
     riverPts.push({
-      x: W * (0.08 + t * 0.84) + sine1 + sine2 + warp,
+      x: W * (-0.14 + t * 1.28) + bend1 + warp,
       y: H * (0.67 + t * 0.07) + (fbm(t * 6, 888, 3) - 0.5) * H * 0.018,
     });
   }
@@ -464,19 +493,37 @@ function drawRiver(time, shiftX) {
     ctx.restore();
   });
 
+  // Sparse moving lights along the river — groups of 1–3, long gaps between
+  // 6 slots, each with a different base offset so they're staggered in time
   ctx.save();
   ctx.globalCompositeOperation = 'lighter';
-  for (var i = 0; i < 18; i++) {
-    var t   = ((time * 0.11 + hash(i * 7.71 + 1)) % 1.0);
-    var idx = Math.min((t * (pts.length - 1)) | 0, pts.length - 2);
-    var pt  = pts[idx];
-    var pulse = Math.sin(time * 3.8 + i * 2.71) * 0.5 + 0.5;
-    if (pulse < 0.58) continue;
-    var a = ((pulse - 0.58) / 0.42) * 0.65;
-    ctx.fillStyle = 'rgba(190,255,250,' + a + ')';
-    ctx.beginPath();
-    ctx.arc(pt.x + sx, pt.y, 1.6, 0, Math.PI * 2);
-    ctx.fill();
+  var SLOTS = [
+    { seed: 0,    gap: 0.48, trail: 1    },   // solo
+    { seed: 3.7,  gap: 0.55, trail: 2    },   // pair — second dot 0.018 behind
+    { seed: 9.1,  gap: 0.62, trail: 1    },   // solo
+    { seed: 15.3, gap: 0.70, trail: 3    },   // trio
+    { seed: 21.8, gap: 0.58, trail: 1    },   // solo
+    { seed: 28.4, gap: 0.65, trail: 2    },   // pair
+  ];
+  for (var s = 0; s < SLOTS.length; s++) {
+    var slot = SLOTS[s];
+    // t cycles 0→1 slowly; the gap parameter controls how much of the cycle
+    // the dot is actually visible (rest of cycle = darkness between groups)
+    var t = ((time * 0.055 + hash(slot.seed)) % 1.0);
+    if (t > slot.gap) continue;          // in the dark gap, don't draw
+
+    var progress = t / slot.gap;         // 0→1 across the visible window
+    for (var d = 0; d < slot.trail; d++) {
+      var tp = Math.max(0, progress - d * 0.018);
+      var idx = Math.min((tp * (pts.length - 1)) | 0, pts.length - 2);
+      var pt  = pts[idx];
+      // fade leading dot bright, trail dots dimmer
+      var a = (d === 0 ? 0.70 : d === 1 ? 0.35 : 0.18);
+      ctx.fillStyle = 'rgba(190,255,250,' + a + ')';
+      ctx.beginPath();
+      ctx.arc(pt.x + sx, pt.y, 1.6 - d * 0.3, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
   ctx.restore();
 }

@@ -4,9 +4,10 @@ interface Props {
   contained?: boolean; /* false = full-width bleed */
   src?: string;
   alt?: string;
+  description?: string; /* shown in placeholder; ignored once src is added */
 }
 
-const { caption, contained = false, src, alt = '' } = Astro.props;
+const { caption, contained = false, src, alt = '', description } = Astro.props;
 ---
 
 <figure class:list={['media-block', { 'media-block--contained': contained }]}>
@@ -15,7 +16,11 @@ const { caption, contained = false, src, alt = '' } = Astro.props;
       <img src={src} alt={alt} class="media-block__img" loading="lazy" />
     ) : (
       <div class="media-block__placeholder" aria-hidden="true">
-        <span class="label">Image placeholder</span>
+        {description ? (
+          <p class="media-block__placeholder-desc">{description}</p>
+        ) : (
+          <span class="label">Image placeholder</span>
+        )}
       </div>
     )}
   </div>
@@ -66,7 +71,17 @@ const { caption, contained = false, src, alt = '' } = Astro.props;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 2rem;
     background: linear-gradient(135deg, var(--c-surface-raised), var(--c-surface));
+  }
+
+  .media-block__placeholder-desc {
+    font-size: var(--text-sm);
+    color: var(--c-ink-subtle);
+    text-align: center;
+    max-width: 52ch;
+    line-height: 1.6;
+    font-style: italic;
   }
 
   .media-block__caption {

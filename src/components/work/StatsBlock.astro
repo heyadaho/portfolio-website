@@ -1,0 +1,79 @@
+---
+interface Stat {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  stats: Stat[];
+  label?: string;
+}
+
+const { stats, label } = Astro.props;
+---
+
+<div class="stats-block">
+  <div class="container">
+    {label && <p class="stats-block__label label">{label}</p>}
+    <div class="stats-block__grid">
+      {stats.map(stat => (
+        <div class="stats-block__item">
+          <p class="stats-block__value">{stat.value}</p>
+          <p class="stats-block__desc label">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .stats-block {
+    padding-block: var(--space-lg);
+    border-top: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--c-border);
+    margin-block: var(--space-lg);
+  }
+
+  .stats-block__label {
+    margin-bottom: 1.5rem;
+  }
+
+  .stats-block__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem 2rem;
+  }
+
+  .stats-block__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .stats-block__value {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--c-accent);
+  }
+
+  .stats-block__desc {
+    color: var(--c-ink-subtle);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 768px) {
+    .stats-block__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem 2rem;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .stats-block__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

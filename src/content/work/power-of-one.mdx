@@ -1,0 +1,279 @@
+---
+title: "Power of One"
+company: "The Travel Corporation"
+year: 2021
+role: "Lead Product Designer"
+duration: "Feb 2020 – Dec 2021"
+summary: "Consolidated 40+ independent travel brand websites into one repeatable B2C ecommerce engine — cutting migration time from 18 months to 6 weeks and improving baseline conversion by 12%."
+tags: ["Design System", "B2C", "Ecommerce", "Leadership"]
+featured: true
+order: 2
+problem: "TTC's 40+ brand websites were expensive brochures, not conversion tools. Conversion rates varied by 300%+ across brands. Feature delivery took 18 months. Every brand duplicated the same work."
+approach: "Built a clean-sheet B2C ecommerce capability with a token-based design system separating structure from brand identity — designed once, deployed across the entire portfolio."
+outcome: "Brand migration time reduced from 18 months to 6 weeks. 12% CVR improvement across pilot brands. £2M annual cost savings. Accessibility compliance raised from 30% to 95% WCAG 2.1 AA."
+---
+
+{/*
+  ─────────────────────────────────────────────────────────────
+  HOW TO REPLACE IMAGE PLACEHOLDERS
+  ─────────────────────────────────────────────────────────────
+  Every MediaBlock below has a `description` prop explaining what
+  the image should show. To swap in a real image:
+
+    1. Add your file to public/images/
+    2. Add src="/images/your-file.jpg" to the component
+    3. Add alt="..." describing the image
+    4. The description disappears automatically — it's only shown
+       when no src is present.
+
+  Example:
+    <MediaBlock
+      description="Placeholder text here"
+      caption="Caption text"
+    />
+  becomes:
+    <MediaBlock
+      src="/images/po1-brand-landscape.jpg"
+      alt="Before and after brand landscape"
+      caption="Caption text"
+    />
+  ─────────────────────────────────────────────────────────────
+*/}
+
+import StatsBlock from '../../components/work/StatsBlock.astro';
+import TextBlock from '../../components/work/TextBlock.astro';
+import MediaBlock from '../../components/work/MediaBlock.astro';
+import QuoteBlock from '../../components/work/QuoteBlock.astro';
+
+<StatsBlock stats={[
+  { value: "6 wks",  label: "Brand migration time (was 18 months)" },
+  { value: "+12%",   label: "Baseline CVR improvement across pilot brands" },
+  { value: "£2M",    label: "Annual savings from reduced duplication" },
+  { value: "95%",    label: "WCAG 2.1 AA compliance (from 30%)" },
+]} />
+
+<TextBlock label="The Result">
+  TTC ran 40+ brand websites as disconnected silos. Conversion rates varied by 300%+ across the portfolio. Getting a feature shipped took 18 months. Every brand duplicated the same work.
+
+  The outcome: **a single repeatable B2C ecommerce engine** that reduced migration time to 6 weeks, improved baseline conversion by 12% across pilot brands, and cut design and engineering duplication costs by £2M annually. The same platform now carries 2M+ travellers a year.
+</TextBlock>
+
+<TextBlock label="Context" heading="A $2bn travel group running on brochure websites.">
+  The Travel Corporation is a $2bn group operating 42 travel brands across 60+ countries — including Trafalgar and Contiki — carrying over 2 million travellers annually.
+
+  In late 2019, 80–90% of bookings happened through agents or by phone. The websites were expensive brochures, not conversion tools. Each of the 40+ brands had built its own site independently, accumulating 10+ years of duplicated decisions, inconsistent patterns, and fragmented user experiences.
+
+  When COVID halted travel entirely in early 2020, it created a window. Customers were spending more time online, building confidence with digital platforms. If TTC could shift to a genuine B2C model before the recovery, it would be in a stronger position than competitors who waited.
+
+  The Power of One programme had been approved just before COVID hit. The data team and additional design resource were cut as a cost measure. I joined in February 2020 as the founding designer, and we pressed ahead.
+</TextBlock>
+
+<MediaBlock
+  description="SCREENSHOT MONTAGE: Before/after brand landscape. Left side: 3–4 screenshots of existing TTC brand sites side by side — showing visual inconsistency, fragmented navigation, and varying quality levels. Right side: the unified platform. The contrast makes the '300% conversion variance' and 'every brand duplicated the same work' statements immediately visible."
+  caption="40+ brand websites built independently over a decade — the scale of inconsistency only becomes visible when you look at the portfolio as a whole"
+/>
+
+<TextBlock label="Core Challenges" heading="Three problems that had to be solved before design could start.">
+
+  **Brand politics blocked the clean-sheet principle**
+
+  The biggest risk wasn't technical — it was organisational. Brand CEOs had defended accumulated decisions for over a decade. "We've always done it this way" was the default response to change.
+
+  I ran analytics audits across all 40+ brands and presented each brand's conversion data alongside competitor benchmarks. That reframe shifted conversations from opinion to evidence. It was the hardest and most important sell of the project.
+
+  **The business rejected the original design direction**
+
+  Our first proposal was a progressive web app approach with a stepper-style booking flow. The business pushed back hard — it was too different from what brands knew.
+
+  We refactored to a more familiar structure while preserving the underlying performance and conversion improvements. The lesson: high-fidelity mockups unlocked approval. Brand stakeholders made visual decisions. Abstract architecture didn't land.
+
+  **One system for 40+ identities**
+
+  The design system needed to serve brands as visually distinct as a luxury escorted touring company and a youth adventure brand. Too rigid and brand teams would reject it. Too flexible and it would fragment within months.
+
+  I separated structure from style using a token architecture. Core components, spacing, and interaction patterns were shared. Colour, typography, and visual identity lived in brand-specific theme layers.
+
+</TextBlock>
+
+<MediaBlock
+  description="SCREENSHOT OR FIGMA EXPORT: The rejected PWA direction alongside the refactored familiar web version. Show the original stepper/progressive booking flow concept on the left, and the conventional web structure on the right. This is the 'messy artefact' that proves the pivot was deliberate, not accidental."
+  caption="The original PWA direction (left) vs. the refactored approach — the business rejected the first. The second shipped."
+/>
+
+<TextBlock label="My Role" heading="Founding designer on a cross-functional task force.">
+  Lead Product Designer. Founding designer on the central PO1 task force, spanning Product, Engineering, Data, CRM, Marketing, and Operations.
+
+  **What I owned:**
+
+  - UX architecture across the full booking journey
+  - Design system built from scratch — Figma, Storybook, Zeroheight documentation
+  - The five design principles that governed every decision for the life of the programme
+  - Stakeholder alignment across 40+ brand CEOs and the executive steering group
+  - The analytics audit that secured executive approval for the clean-sheet approach
+  - Weekly design-data-engineering sync, established six weeks in when parallel workstreams began to diverge
+
+  **What I contributed to:**
+
+  - Discovery research sprint (15+ user interviews, competitor benchmarking)
+  - Scope governance — the framework that blocked feature creep throughout delivery
+  - Brand migration process design at each stage
+
+  **Why a Principal-level designer was needed here**
+
+  40+ brand stakeholders defended 10+ years of legacy decisions. The role required someone who could challenge opinion with evidence, design at a systems level, and work as a strategic partner to product and engineering leadership. A senior IC designing screens wouldn't have moved the organisational blockers.
+
+</TextBlock>
+
+<TextBlock label="Research" heading="Two weeks of discovery that shaped everything.">
+  We ran an intensive research sprint at the start of the project: 15+ user interviews, customer data analysis across brands, competitor benchmarking, and a SWOT analysis of the current market offering.
+
+  Key findings:
+
+  - 80–90% of guests still booked through agents or by phone, not online
+  - Average guest age was 63, with a wide range of digital confidence
+  - Group size, social dynamics, and travel confidence were primary purchase drivers
+  - Navigation and search were the biggest friction points on existing sites
+  - Price clarity and booking confidence were the most common drop-off causes
+
+  Analysing brands in isolation had hidden three critical drop-off points that only became visible when we looked at the portfolio as a whole.
+
+</TextBlock>
+
+<MediaBlock
+  description="PHOTO OR SCREENSHOT: Affinity mapping session output — clustered sticky notes from the 15+ user interviews, grouped by journey stage. Doesn't need to be readable. The visual density is the point. FigJam or Miro board. Caption: 'Two-week research sprint across 15+ user interviews, synthesised into journey-stage themes.'"
+  caption="Two-week research sprint across 15+ user interviews, synthesised into journey-stage themes"
+/>
+
+<MediaBlock
+  description="DIAGRAM: Customer journey map with drop-off points. Show the end-to-end booking journey (Awareness → Discovery → Consideration → Booking → Post-booking) with the three critical drop-off points marked. Annotate each with the key insight driving the drop-off: price clarity, navigation, booking confidence."
+  caption="End-to-end journey map — three critical drop-off points only visible at portfolio level, not brand level"
+/>
+
+<TextBlock label="Approach" heading="Five principles before any design started.">
+
+  These weren't values on a wall. They were decision filters applied at every fork in the road:
+
+  1. **Start from a clean sheet** — no legacy decisions inherited by default
+  2. **Design for B2C only** — no hybrid compromises that serve neither audience well
+  3. **Prioritise performance and conversion** — speed and outcome above aesthetic preference
+  4. **Validate assumptions before building** — test before committing engineering time
+  5. **Build once, reuse everywhere** — the system pays for itself in every migration
+
+  Every scope request got tested against these. "Does this serve B2C conversion?" became the question that ended most additions quickly.
+
+</TextBlock>
+
+<TextBlock heading="Three forks in the road.">
+
+  **Progressive web app vs. familiar web patterns**
+
+  Our first direction was a PWA with a stepper booking flow. The business rejected it — too different from what brands knew. We refactored to familiar patterns while keeping the performance improvements underneath. The trade-off: a more conservative visual approach in exchange for faster approval and delivery.
+
+  **Design system first vs. design system later**
+
+  On a tight deadline, building the system upfront felt like a risk. We did it anyway. Clean handoff to engineering required it, and retrofitting components later would have cost more time than it saved.
+
+  **Mobile-first vs. desktop-first**
+
+  Research showed users started their journey on mobile but often completed bookings on desktop. We designed mobile-first to ensure that entry point was solid, then scaled to desktop. This shaped information hierarchy and scroll depth across every template.
+
+</TextBlock>
+
+<TextBlock heading="The token architecture.">
+
+  The core design system challenge was serving 40+ visually distinct brand identities without building 40+ different systems.
+
+  I separated structure from style across three layers:
+
+  - **Core tokens** — spacing, type scale, grid, interactive states
+  - **Semantic tokens** — colour roles, component-level decisions
+  - **Brand theme layer** — Trafalgar, Contiki, and every other brand applying their identity through the top layer alone
+
+  One change at the core propagates across every brand. One brand can update its visual identity without touching the underlying system.
+
+  The component library was built in Figma with Storybook integration and documented in Zeroheight. Handoff standards and QA processes were built alongside the components — not added later.
+
+</TextBlock>
+
+<MediaBlock
+  description="DIAGRAM: Token architecture overview — a layered diagram with three levels: Core tokens (spacing, type scale, grid) → Semantic tokens (colour roles, interactive states) → Brand theme layer (Trafalgar, Contiki, etc.). Show how one change at the core propagates across brands. Simple and clean — no decoration."
+  caption="Token architecture: one structural system, unlimited brand expressions"
+/>
+
+<MediaBlock
+  description="FIGMA SCREENSHOT: Component library overview — showing core components alongside two brand theme applications (e.g. Trafalgar and Contiki using the same component with different tokens applied). Optionally include a Storybook screenshot to reinforce the design-to-dev handoff story."
+  caption="The component library — 40 components applied consistently, not 200+ applied variably"
+/>
+
+<MediaBlock
+  description="SCREENSHOT SEQUENCE: Low-fi to high-fi progression for a single key screen (tour page recommended). Three stages: early wireframe or low-fi sketch → mid-fi structure → final hi-fi. Keep to one screen so the progression is clear."
+  caption="Wireframe to production — the same screen across three fidelity stages"
+/>
+
+<MediaBlock
+  description="SCREENSHOT OR DEVICE MOCKUP: Final product — 2–3 live screens from the platform. Tour page, search results, and homepage. Show both mobile and desktop if possible, reinforcing the mobile-first decision."
+  caption="The live platform — designed once, deployed across 40+ brands"
+/>
+
+<StatsBlock label="Outcomes" stats={[
+  { value: "6 wks",  label: "Migration time (was 18 months)" },
+  { value: "+12%",   label: "CVR uplift across pilot brands" },
+  { value: "£2M",    label: "Annual savings from deduplication" },
+  { value: "−15%",   label: "Bounce rate reduction" },
+]} />
+
+<TextBlock label="Impact">
+
+  **Business**
+
+  | Metric | Before | After |
+  |---|---|---|
+  | Brand migration time | 18 months | 6 weeks |
+  | Baseline conversion | Baseline | +12% across pilots |
+  | Design/engineering duplication | High | £2M annual saving |
+  | Page load performance | — | +40% improvement |
+  | Design-to-dev handoff time | — | −70% |
+
+  **User**
+
+  | Metric | Result |
+  |---|---|
+  | Accessibility compliance | 30% → 95% WCAG 2.1 AA |
+  | Bounce rate | −15% |
+  | Average time on tour pages | 3min 47sec (excl. bounces) |
+  | RAQ conversion on tour pages | 0.22%* |
+
+  *£5k+ guided tours don't convert like retail. RAQ (request a quote) was the intended north star metric at MVP stage. The 3min 47sec average engagement time on tour pages indicates strong intent from the right audience.
+
+  **Org and process**
+
+  The first enterprise-wide design system supporting 2M+ guests annually. One design team capable of supporting 40+ brands. A repeatable discovery and validation process embedded across every brand migration. Formal scope governance that blocked feature creep throughout delivery.
+
+</TextBlock>
+
+<MediaBlock
+  description="SIMPLE TIMELINE OR BAR CHART: Before/after migration timeline. Old model — 18 months per brand. New model — 6 weeks. Optionally show 2–3 brands migrated on the new timeline to illustrate the compound saving. The 60% reduction in time-to-market is the headline metric — visualise it."
+  caption="18 months to 6 weeks — the compound saving becomes significant by the third migration"
+/>
+
+<TextBlock label="Reflection" heading="What I'd do differently.">
+
+  **Instrument analytics earlier.** I instrumented analytics after launch, not before. Early data from pilot brands was incomplete as a result. Tracking requirements should be embedded in the design system from day one — not added in QA.
+
+  **Build stakeholder coalitions before design begins.** I underestimated brand politics in the first six weeks. Too much time in Figma, not enough time mapping stakeholders and pre-selling the clean-sheet principle. A structured stakeholder mapping exercise at the start would have saved weeks.
+
+  **Push harder for a proper research budget.** We lost the data team early due to COVID cost cuts. Guerrilla testing worked but couldn't reach the primary demographic properly. Typical guests were 60+ year-olds booking £5k+ trips — hard to recruit cheaply. We should have pushed harder to protect the research budget when the cuts came.
+
+</TextBlock>
+
+<TextBlock heading="What this changed.">
+  At Principal level, your most important output isn't the design. It's the conditions that allow good design to happen repeatedly without you.
+
+  The governance model, the principles as decision filters, the scope document as a contract — these had more long-term impact than any individual component. That shaped how I approached every subsequent role.
+</TextBlock>
+
+<TextBlock heading="Where the system should go next.">
+  The token architecture was built for visual consistency. The next step is instrumented components: design tokens tied to analytics so teams can measure component performance in production, not retrospectively.
+
+  With enough platform data, there is also a real opportunity to move from pattern reuse to personalised journey assembly. The infrastructure exists. The data layer needs investment.
+</TextBlock>
