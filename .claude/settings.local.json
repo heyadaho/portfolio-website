@@ -4,7 +4,7 @@
       "Bash(npm create:*)",
       "Bash(npx astro:*)",
       "Bash(npm install:*)",
-      "Bash(gh auth:*)"
+      "Bash(lsof -ti:4321 -ti:3000 -ti:4322)"
     ]
   }
 }
