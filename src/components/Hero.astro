@@ -10,7 +10,7 @@
   <div class="hero__content">
     <h1 class="hero__name">Ed Lake</h1>
     <div class="hero__meta">
-      <span class="hero__title">Principal Product Designer</span>
+      <span class="hero__title">Design leader · Hands-on maker</span>
       <span class="hero__rule" aria-hidden="true"></span>
       <span class="hero__open">Open to work</span>
     </div>
@@ -90,7 +90,7 @@
     font-family: var(--font-body);
     font-size: var(--text-sm);
     font-weight: 400;
-    letter-spacing: 0.20em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: rgba(240, 237, 232, 0.42);
   }
@@ -338,10 +338,11 @@ function buildSpires() {
     for (var i = 0; i < b.count; i++) {
       spires.push({
         x: hash(i * 13.1 + b.s) * W,
-        y: (b.bY - lift + (hash(i * 3.7 + b.s) - 0.5) * b.spread) * H,
+        y: (b.bY - lift * 1.5 + (hash(i * 3.7 + b.s) - 0.5) * b.spread) * H,
         w: (0.3 + hash(i * 5.5 + b.s) * 0.7) * b.scaleW * W,
-        h: (0.35 + hash(i * 11.3 + b.s) * 0.65) * b.scaleH * H,
+        h: (0.35 + hash(i * 11.3 + b.s) * 0.65) * b.scaleH * W,
         v: 0.55 + hash(i * 2.1 + b.s) * 0.45,
+        distant: b.bY < 0.74,
       });
     }
   });
