@@ -271,6 +271,14 @@ var LAYER_DEFS = [
 
 var noiseScaleFor = function(bY) { return 0.00095 + bY * 0.00095; };
 
+// On portrait/mobile, lift the road + trees above the encroaching foreground
+function mobileLift() {
+  var aspect = W / H;
+  // No lift on landscape (aspect >= 1). On portrait, lift increases as it gets taller.
+  // At aspect 0.5 (typical phone portrait) lift = ~0.10 * H
+  return aspect < 1.0 ? Math.min((1.0 - aspect) * 0.18, 0.14) : 0;
+}
+
 var WATER = {
   outer:  'rgba(20, 200, 195, 0.07)',
   mid:    'rgba(60, 230, 220, 0.22)',
@@ -305,19 +313,23 @@ function buildTerrains() {
   var totalW = W + extraW * 2;
   var count  = Math.ceil(totalW / STEP) + 4;
 
+  var lift = mobileLift();
   LAYER_DEFS.forEach(function(L) {
+    // Layers below bY 0.60 get progressively lifted to follow the road upward
+    var layerLift = L.bY > 0.60 ? lift * ((L.bY - 0.60) / 0.40) : 0;
     var ns = noiseScaleFor(L.bY);
     var ys = new Float32Array(count);
     for (var i = 0; i < count; i++) {
       var x = startX + i * STEP;
       ys[i] = dome(warpedFbm(x, L.s, ns));
     }
-    terrains[L.id] = { ys: ys, startX: startX, step: STEP };
+    terrains[L.id] = { ys: ys, startX: startX, step: STEP, bYLifted: L.bY - layerLift };
   });
 }
 
 function buildSpires() {
   spires = [];
+  var lift = mobileLift();
   var bands = [
     { bY:0.76, spread:0.030, count:48, scaleW:0.005, scaleH:0.034, s:200 },
     { bY:0.85, spread:0.022, count:32, scaleW:0.007, scaleH:0.048, s:400 },
@@ -326,7 +338,7 @@ function buildSpires() {
     for (var i = 0; i < b.count; i++) {
       spires.push({
         x: hash(i * 13.1 + b.s) * W,
-        y: (b.bY + (hash(i * 3.7 + b.s) - 0.5) * b.spread) * H,
+        y: (b.bY - lift + (hash(i * 3.7 + b.s) - 0.5) * b.spread) * H,
         w: (0.3 + hash(i * 5.5 + b.s) * 0.7) * b.scaleW * W,
         h: (0.35 + hash(i * 11.3 + b.s) * 0.65) * b.scaleH * H,
         v: 0.55 + hash(i * 2.1 + b.s) * 0.45,
@@ -364,9 +376,10 @@ function buildRiver() {
     // Very subtle noise for a hand-drawn feel
     var warp  = (fbm(t * 2.8, 999, 3) - 0.5) * W * 0.012;
     var sine1 = 0, sine2 = 0, bend1 = curve + kink, bend2 = 0;
+    var lift = mobileLift();
     riverPts.push({
       x: W * (-0.14 + t * 1.28) + bend1 + warp,
-      y: H * (0.67 + t * 0.07) + (fbm(t * 6, 888, 3) - 0.5) * H * 0.018,
+      y: H * (0.67 - lift + t * 0.07) + (fbm(t * 6, 888, 3) - 0.5) * H * 0.018,
     });
   }
 }
@@ -412,16 +425,17 @@ function drawTerrain(L, shiftX) {
   var td = terrains[L.id];
   if (!td) return;
   var ys = td.ys, startX = td.startX, step = td.step;
+  var bY = td.bYLifted !== undefined ? td.bYLifted : L.bY;
   var sx = shiftX * L.px * W;
 
   ctx.beginPath();
   var x0 = startX + sx;
-  var y0 = L.bY * H - ys[0] * L.am * H;
+  var y0 = bY * H - ys[0] * L.am * H;
   ctx.moveTo(x0, y0);
 
   for (var i = 1; i < ys.length; i++) {
     var x1 = startX + i * step + sx;
-    var y1 = L.bY * H - ys[i] * L.am * H;
+    var y1 = bY * H - ys[i] * L.am * H;
     ctx.quadraticCurveTo(x0, y0, (x0 + x1) * 0.5, (y0 + y1) * 0.5);
     x0 = x1; y0 = y1;
   }
@@ -431,7 +445,7 @@ function drawTerrain(L, shiftX) {
   ctx.closePath();
 
   var r = L.rgb[0], g = L.rgb[1], b = L.rgb[2];
-  var topY = L.bY * H - L.am * H;
+  var topY = bY * H - L.am * H;
   var tg = ctx.createLinearGradient(0, topY, 0, H);
   tg.addColorStop(0.0, 'rgb('+(r+14)+','+(g+14)+','+(b+12)+')');
   tg.addColorStop(0.3, 'rgb('+r+','+g+','+b+')');
