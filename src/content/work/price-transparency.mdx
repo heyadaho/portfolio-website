@@ -3,14 +3,14 @@ title: "Price Transparency"
 company: "loveholidays"
 year: 2026
 role: "Principal Designer"
-duration: "2025–2026"
-summary: "Turned a regulatory deadline into a trust-building product moment — achieving +4.14% CVR uplift and full CMA compliance ahead of enforcement."
+duration: "September 2025 – April 2026"
+summary: "UK regulators required travel companies to show the full cost of a holiday upfront, including fees paid at the hotel on arrival. Competitors treated it as a legal task. We treated it as a trust problem. That shift in framing was the difference between a compliance fix and an overall product improvement."
 tags: ["Regulatory", "CRO", "Research", "Systems"]
 featured: true
 order: 1
-problem: "UK competition law required total price transparency across the booking journey. Direct approaches consistently destroyed conversion — one test hit −10.82% CVR. We had to find a way to be compliant without damaging the business."
-approach: "Reframed compliance as a trust problem, not a legal one. Three iterative rounds of experimentation, usability testing, and IA redesign — culminating in a unified basket component that made early, persistent disclosure feel natural."
-outcome: "+4.14% CVR uplift, +4.75% MPT, full CMA compliance ahead of enforcement. A repeatable framework for future pricing transparency work."
+problem: "The business ran four failed pricing experiments across two product squads, resulting in CVR drops ranging from -5.8% to -10.82%. A hard regulatory deadline was approaching, and there was no unified design ownership of the end-to-end journey."
+approach: "Achieve regulatory compliance without degrading conversion — and use the constraint to improve pricing comprehension across the full booking experience."
+outcome: "+4.14% CVR uplift across the GB market, +4.75% margin per transaction across all markets, and full regulatory compliance delivered ahead of the April 2026 enforcement date."
 ---
 
 {/*
@@ -54,353 +54,170 @@ import QuoteBlock from '../../components/work/QuoteBlock.astro';
   { value: "80%",    label: "Users who preferred the new design" },
 ]} />
 
-<TextBlock label="The Result">
-  The CMA gave UK holiday companies a hard deadline to eliminate drip pricing. Most competitors treated it as a legal problem. We treated it as a product problem.
+<TextBlock label="Snapshot">
+  UK regulators required travel companies to show the full cost of a holiday upfront, including fees paid at the hotel on arrival. Competitors treated it as a legal task. We treated it as a trust problem. That shift in framing was the difference between a compliance fix and an overall product improvement.
 
-  The outcome: **+4.14% CVR uplift**, positive margin per transaction, and full regulatory compliance ahead of enforcement. The same approach that failed at −8.9% CVR in its first iteration became the most commercially successful transparency test the team had run.
+  **Result:** +4.14% CVR uplift across the GB market, +4.75% margin per transaction across all markets, and full regulatory compliance delivered ahead of the April 2026 enforcement date.
+
+  | Metric | Result |
+  |---|---|
+  | CVR uplift (GB, unified basket) | +4.14% |
+  | Margin per transaction (all markets) | +4.75% |
+  | User comprehension vs control | +20 points |
+  | Users who preferred the new design | 80% |
+  | Engineering lead time for pricing changes | 3 weeks → under 1 week |
+
+  **The problem:** The business ran four failed pricing experiments across two product squads, resulting in CVR drops ranging from -5.8% to -10.82%. A hard regulatory deadline was approaching, and there was no unified design ownership of the end-to-end journey.
+
+  **The goal:** Achieve regulatory compliance without degrading conversion — and use the constraint to improve pricing comprehension across the full booking experience.
+
+  **My scope:** Cross-functional programme spanning two product squads. 2 PMs, 2 Engineering leads, 7 engineers, 2 embedded designers (both directly managed by me), 1 researcher, 1 content designer, and legal review.
+
+  **Why a Principal was needed:** Previous attempts had been scoped within individual squads with no single design owner across the end-to-end journey. There was no shared design principle, no joined-up user journey, and no one forcing the structural conversation between Search Platform and Checkout. The VP of Product and Director of Design brought me in specifically to change that operating structure and own the outcome end-to-end.
 </TextBlock>
 
-<TextBlock label="Context" heading="A regulatory deadline with real teeth.">
-  The UK Competition and Markets Authority introduced rules requiring holiday companies to show total prices — inclusive of taxes and resort fees — from the start of the booking journey. From April 6th 2026, the CMA gained direct enforcement powers, bypassing courts to levy fines of up to 10% of global turnover. Warning letters had already gone to 19 travel companies.
+<TextBlock label="Context and Stakes">
+  loveholidays is a UK package holiday OTA selling flight-plus-hotel packages. Unlike a standard OTA, customers pay the base package price at checkout. Tourist taxes and resort fees — such as city taxes or mandatory hotel resort charges — are paid separately, directly to the hotel on arrival.
 
-  EU legislation placed similar demands on the Netherlands. Dutch rules required dynamic calculation of toeristenbelasting (variable municipal tourist tax) per person per night, with explicit messaging that the charge was required by law.
+  This split-payment model made compliance harder than it seemed. Showing a higher headline price without explaining the split created the appearance of a price increase, which is exactly what the failed experiments confirmed.
 
-  Booking.com and Expedia were already compliant. Key package holiday competitors were not.
+  The CMA was gaining direct enforcement powers from April 2026, with fines levied without court involvement. Warning letters had gone to 19 travel companies. Booking.com and Expedia were already compliant for hotel-only flows. Key package holiday competitors — TUI, Jet2, BA Holidays — were not.
 
-  The project initially sat inside a broader "Taxes and Fees" compliance stream. It was paused early due to data quality concerns around hotel fee accuracy from third-party suppliers. The executive team then made a call to reframe it entirely.
+  That created a specific commercial risk. Showing fully loaded prices while competitors still showed base prices would make loveholidays appear artificially expensive. Compliance couldn't come at the cost of conversion. The VP of Product made that explicit when resetting the brief.
 </TextBlock>
 
-<QuoteBlock>
-  A compliant solution that creates a worse customer experience is not acceptable.
-</QuoteBlock>
+<TextBlock label="Core Challenges" heading="1. Four failed experiments and an approaching deadline">
+  Before I joined, two product squads had each attempted solutions to inclusive pricing. Every experiment produced the same result: users saw a higher price with no context, and conversion dropped.
 
-<TextBlock>
-  That principle changed the scope, the sequencing, and what success looked like.
-</TextBlock>
+  | Experiment | CVR impact |
+  |---|---|
+  | Taxes and fees inclusive pricing | -10.82% |
+  | Local tax included in total (test 1) | -5.8% |
+  | Local tax included in total (test 2) | -6.5% |
 
-<TextBlock label="The Problem" heading="Three problems hiding inside one brief.">
-
-  **A non-standard payment model**
-
-  loveholidays operates differently to a pure OTA. Customers pay the base package price to us. Tourist taxes and resort fees are paid separately, directly to the hotel on arrival.
-
-  We couldn't show a single "Total Price" and be done with it. We had to communicate a split payment model clearly, without confusing users who expect "total" to mean what leaves their account today.
+  The pattern was clear. The problem wasn't the price. It was the absence of explanation. No one had owned the full journey across all pricing touchpoints to allow for smooth comprehension at the point of purchase.
 </TextBlock>
 
 <MediaBlock
-  description="DIAGRAM: Two-column flow. Left: 'Pay today → loveholidays → Holiday price.' Right: 'Pay at hotel → Hotel → Taxes + fees.' Simple, no decoration. Shows the structural split between what the customer pays now vs. at arrival."
-  caption="loveholidays' split payment model — the core IA challenge"
+  description="Screenshot of the original SRP card design showing the headline price with no fee explanation. Annotate to highlight what information was missing and where users were dropping off."
+  caption="Original SRP card — no fee explanation, no context for the price shown"
   contained={true}
 />
 
-<TextBlock>
-  **A data confidence gap**
+<TextBlock heading="2. A structural problem underneath the design problem">
+  Search and Checkout ran separate, hardcoded basket components — each maintained independently by different squads. The basket appears at multiple points in the booking funnel: on search results, on the hotel details page, and within checkout. When each squad maintains its own design, any change to one surface doesn't carry through to the others — creating price inconsistencies across different stages.
 
-  Tourist tax data at destination level was reliable. Hotel fee data from third-party suppliers was not. That gap had direct IA implications: we couldn't confidently include hotel fees in a headline total if the figure might be wrong.
-
-  **A technical constraint hiding a design problem**
-
-  The checkout and search baskets were two separate, hardcoded components. Any compliance update had to be built, tested, and maintained twice. This wasn't just an engineering problem — it meant any inconsistency in pricing presentation across the journey was structurally locked in.
+  This wasn't just technical debt. It was the reason every previous transparency attempt had drifted between surfaces. Any design work built on two independently maintained components would break the moment either team shipped a change. This had to be resolved before anything else could land consistently.
 </TextBlock>
 
 <MediaBlock
-  description="DIAGRAM: System diagram. Before state: 'Search Basket (Component A)' and 'Checkout Basket (Component B)' as two separate boxes, both requiring identical updates. After state: 'Unified Basket Component' feeding both surfaces. Before/after layout."
+  description="Side-by-side screenshot of the two separate basket components — Search Platform on the left, Checkout on the right. Annotate to show where the pricing presentation differed between the two surfaces."
   caption="The dual-component basket — a structural constraint that needed resolving before any transparency work could be consistent"
   contained={true}
 />
 
-<TextBlock>
-  **The commercial guardrail**
-
-  The business had one hard constraint: achieve at least flat CVR and MPT while meeting compliance. Early experiments confirmed the risk. Tests that included taxes and fees in the headline price showed CVR drops of −5.8% to −10.82%. We had to find a different approach.
+<TextBlock heading="3. A data confidence gap with direct IA implications">
+  Tourist tax data at the destination level was reliable. Hotel fee data from third-party suppliers was not — figures could be incomplete, delayed, or variable. This constrained the information architecture. I couldn't confidently include hotel fees in a headline total if the figure might be wrong further down the journey. The design had to account for what could be displayed at each stage, and be honest about uncertainty where it existed.
 </TextBlock>
 
-<TextBlock label="My Role">
+<TextBlock label="Role and Leadership">
+  **My title and remit:** Principal Designer. Design lead across the full programme. I set direction for both squads, owned all IA decisions across SRP, basket, and checkout on web and app, and directly managed the embedded designers.
 
-  I led design across all three workstreams as principal designer, working across two product squads totalling around 12 people: engineers, PMs, legal, and a researcher.
+  **The pivot:** Three weeks into the basket redesign, results came back at -8.92% CVR, significant at 99.9% within 72 hours. The drop wasn't uniform — it was concentrated. Destinations with high tax coverage (75%+) saw a -8.85% drop in CVR. Destinations with zero taxes dropped by just -0.86%. The steepest fall was at Search > Price and Availability, where users encountered a higher price with no explanation for the difference.
 
-  **What I owned:**
+  This wasn't a blanket rejection of inclusive pricing. It was users struggling to make decisions when they didn't understand the fee jump. That distinction mattered.
 
-  - The design principles that governed the whole programme
-  - IA decisions across SRP, basket, and checkout
-  - The decision to kill the first basket redesign after −8.9% CVR and reframe the approach
-  - Usability test design, facilitation, and synthesis
-  - The recommendation to unify the basket component as a prerequisite for consistent transparency work
-  - Stakeholder presentations at exec level
+  There was pressure to push ahead. The regulatory deadline was close and the team had invested significant effort. I made the call to stop the experiment and address pricing alignment across the journey first. The usability data told a different story from the CVR: 90% of users understood what was due now, rather than at the hotel — a 20-point improvement in comprehension over the control. The direction was right. The implementation and sequencing were wrong.
 
-  **What the team contributed:**
+  Deciding to stop and separate those two things was the decision that unlocked the next phase. I presented this directly to the VP of Product, with usability data alongside the CVR result, and made the case that continuing would compound the structural problem rather than solve it.
 
-  - Product managed the regulatory requirements and CMA timeline
-  - Engineering built and ran the A/B experiments
-  - Legal reviewed all copy and IA decisions
-  - A researcher supported the usability testing sessions
+  **Stakeholder influence:** I presented the case for basket consolidation to VP Product and VP Revenue as a programme prerequisite. The argument: any transparency model built on two independently maintained components would drift the moment either team shipped a change. The Netherlands market had partly solved this using a reusable component for the price breakdown section. Consolidating the entire basket into a single shared component would take one week, not a full rebuild. They agreed.
 
+  **Standards I set:** I defined the design principles governing the full programme, created the IA for the new pricing items and the variants needed to maintain consistency across regional formats, and owned the decision-making framework across both squads. The embedded Search Platform designer handled execution and iteration within that direction.
 </TextBlock>
 
-<TextBlock label="Research" heading="What users told us before we touched anything.">
-
-  Before and during the programme, usability testing surfaced consistent patterns that shaped every major decision.
-
+<TextBlock label="Approach" heading="Decision log 1: Stop the basket redesign at -8.9%">
+  - **Option A:** Continue iterating under deadline pressure
+  - **Option B:** Stop, diagnose, resequence
+  - **I chose B.** The CVR drop was concentrated in high-tax destinations, not universal. That told us the problem was comprehension, not the pricing model itself. Continuing would have locked us into a sequencing model where users encountered a new price total before any earlier touchpoint had prepared them for it.
 </TextBlock>
 
-<MediaBlock
-  description="IMAGE: Evidence of usability testing in progress. A screenshot from a Lookback or UserTesting session, or a photo of an affinity map / sticky note cluster. A blurred participant video still works. Shows research was real and conducted rigorously."
-  caption="Usability testing in progress — sessions run across GB and NL markets"
-/>
+<TextBlock heading="Decision log 2: Unify the basket before building the design">
+  - **Option A:** Build transparency on top of the existing separate components
+  - **Option B:** Unify first, then build
+  - **I chose B.** Option A would have produced inconsistent results across the journey and required double the maintenance for every future pricing change. Any new fee type or layout variant would need to be built and tested twice.
+</TextBlock>
 
-<TextBlock heading="Hidden information destroys trust.">
-
-  The original production design put tax information behind hover-only tooltips. On mobile, hover states don't exist. In testing, users on all devices missed them.
-
-  > *"I wouldn't think to hover here, so I don't know what this means."*
-
-  > *"Feels like you're charging more without telling me why."*
-
+<TextBlock heading="Decision log 3: Persistent disclosure over gated acknowledgement">
+  - **Option A:** "Know your costs" popover requiring user acknowledgement before browsing
+  - **Option B:** Persistent, contextual disclosure on every search result card
+  - **I chose B.** Testing a large dismissible popover — designed to explain inclusive pricing upfront so it could be removed from individual SRP cards — failed. Users closed it immediately and then lost trust when browsing. "I clicked it away — now I'm not sure if these prices include everything." Transparency had to be visible at all times, not gated behind a single interaction.
 </TextBlock>
 
 <MediaBlock
-  description="IMAGE: Screenshot of the original SRP card with the hover tooltip visible. Annotated to highlight the hidden disclosure mechanism. Even a low-fidelity screenshot works — this is the 'messy artifact' that diagnoses the problem."
-  caption="Original SRP card: tax disclosure hidden behind a hover tooltip — invisible on mobile"
+  description="Side-by-side of the dismissed popover design (Option A) and the persistent SRP card disclosure (Option B). Annotate to show why the popover failed and what the persistent approach solved."
+  caption="Gated acknowledgement vs persistent disclosure — why Option B won"
   contained={true}
 />
 
-<TextBlock>
-  The problem wasn't just discoverability. Users who did find the tooltips felt the charges were being deliberately obscured. That's a trust problem, not a UI problem.
+<TextBlock heading="What the research told us">
+  Three patterns shaped every major decision. Tooltip-only disclosure failed on mobile — hover states don't exist on touch devices — and on desktop, it felt like deliberate hiding. One-time acknowledgement gates improved comprehension in the moment but didn't hold once dismissed. And shorter copy consistently reduced comprehension. "Local taxes collected by the hotel" outperformed "Taxes & Fees" in every variant test. Users wanted the full sentence, not a label.
 </TextBlock>
 
-<TextBlock heading="One-time education doesn't stick.">
+<TextBlock heading="The solution — three interconnected changes">
+  Search result cards now show the additional fee amount persistently — for example: "An additional £XX in local fees is due at this hotel, making the total £X,XXX." Tooltips clarify why fees apply and who collects them, not whether they exist.
 
-  We tested a "Know your costs" popover that forced users to acknowledge the transparent pricing before browsing. Comprehension improved. But users who dismissed it immediately lost confidence in what the prices included.
+  The basket uses a chronological breakdown proven in the Netherlands market: Pay today (to loveholidays) + Pay at hotel (local taxes and fees) = Total trip cost. One scannable view. No arithmetic required. Regional variants maintain consistent layouts despite different tax structures or regulatory requirements.
 
-  > *"I clicked it away. Now I'm not sure if these prices include everything."*
-
-  > *"Why does this one say it includes fees, but that one doesn't?"*
-
-  Users need persistent reassurance, not a single acknowledgement.
-
-</TextBlock>
-
-<TextBlock heading="Clarity beats brevity every time.">
-
-  When we shortened "Local taxes collected by the hotel" to "Taxes & Fees," clarity dropped. Users wanted the full sentence. The extra words weren't noise — they were the reassurance.
-
-</TextBlock>
-
-<TextBlock heading="Order and hierarchy determine comprehension.">
-
-  > *"The total looks less important. The big per-person number drew my eye first."*
-
-  > *"Weird to choose transfers after I've seen the total."*
-
-  The logical flow users expected: understand the cost, then decide on extras. The existing basket reversed that.
-
-</TextBlock>
-
-<TextBlock heading="What good looked like.">
-
-  > *"Good. I know this is the full price."*
-
-  > *"Feels like a receipt. All the info's there."*
-
-</TextBlock>
-
-<TextBlock label="What We Explored" heading="Three attempts. Two failures. One repeatable pattern.">
-
-  **Attempt 1: Inclusive pricing in the headline**
-
-  The most direct interpretation of CMA compliance: include taxes and fees in the headline price on SRP cards and throughout the journey. Three separate experiments tested this. All failed.
-
+  The unified basket component lets Trading teams toggle tax displays and per-person pricing by market without engineering involvement — turning a hardcoded surface into a configurable commercial platform.
 </TextBlock>
 
 <MediaBlock
-  description="DIAGRAM: Bar chart showing the three failed CVR results: −10.82%, −5.8%, −6.5%. Horizontal bars, red fill, clearly labelled. Drives home that inclusive pricing consistently damaged conversion across multiple test variants."
-  caption="Inclusive headline pricing — all three experiments negative"
-  contained={true}
+  description="Annotated screenshot of the final SRP card and basket breakdown side by side. This is the hero visual. Callouts should label: (1) persistent fee disclosure on the SRP card, (2) the chronological pay-today vs pay-at-hotel breakdown in the basket, (3) the total trip cost figure. Show both desktop and mobile if possible."
+  caption="Final solution — persistent SRP disclosure and chronological basket breakdown"
 />
 
-<TextBlock>
+<TextBlock label="Outcomes and Impact" heading="Product and business">
+  - +4.14% CVR uplift, GB market (combined outcome across unified basket and SRP transparency)
+  - +4.75% margin per transaction, all markets
+  - Desktop: +7.7% CVR uplift. Mobile: +6.8% CVR uplift
+  - Middle funnel (offer summary to passenger details): +3.64%
+  - Full CMA compliance ahead of April 2026 enforcement
+</TextBlock>
 
-  | Experiment | CVR Impact |
-  |---|---|
-  | Taxes and fees inclusive pricing | −10.82% |
-  | Local tax included in total price (test 1) | −5.8% |
-  | Local tax included in total price (test 2) | −6.5% |
-
-  Users weren't seeing a clearer price. They were seeing a higher price with no context for why. The number went up. Conversion went down.
-
-  ---
-
-  **Attempt 2: Full basket redesign**
-
-  Rather than changing the headline price, we redesigned the basket to break out the payment split clearly: *Holiday Price + Local Taxes and Fees = Total Price.*
-
-  Experiment G4qzC9mA produced **−8.9% CVR**, significant at 99.99%. We killed it.
-
+<TextBlock heading="User">
+  - +20 point comprehension improvement (what's due now vs at hotel)
+  - 80% of users preferred the new design over the control (quantitative usability testing)
 </TextBlock>
 
 <MediaBlock
-  description="DIAGRAM: Two-stage funnel showing the drop-off points for the basket redesign experiment. Stage 1: P&A to basket (−3.5%). Stage 2: Payment to confirmation (−6.2%). Label both friction points clearly. Simple funnel shape, two colours."
-  caption="Basket redesign funnel — two distinct friction points, neither resolved"
-  contained={true}
+  description="Before and after comparison of the basket. Before: the original fragmented basket with no fee breakdown. After: the unified basket with the chronological price breakdown. Keep annotations minimal — let the design difference speak for itself."
+  caption="Basket before and after — the same information, structured to build comprehension"
 />
 
-<TextBlock>
-
-  | Funnel Stage | CVR Change |
-  |---|---|
-  | P&A to basket handoff | −3.5% |
-  | Payment to confirmation | −6.2% |
-
-  Two friction moments. The new design warned users at P&A with incomplete context, then hit them again at payment with the full breakdown. Neither moment felt resolved.
-
-  But the usability test data told a different story. 90% of users understood what was due now versus at the hotel — a 20-point improvement on control. 80% rated the new design as more trustworthy.
-
-  **The design direction was right. The implementation and sequencing were wrong.**
-
-  ---
-
-  **Attempt 3: Information before commitment**
-
-  Showing tax and fee information on the Price and Availability page — before users commit to a specific hotel — tested well. Experiment 71-yOlKL ran for 39 days across 69,064 conversions. Net CVR: **+1.4%**.
-
+<TextBlock heading="Org and process">
+  - Engineering lead time for pricing-related UI changes: 3 weeks → under 1 week
+  - Experiment velocity: 3x more variants per month in Q2 2026 vs Q4 2025
+  - Formal shared ownership between Search Platform and Checkout was agreed for the first time
+  - The unified basket component is now the foundation for pricing work across all markets — any new fee type or point of sale can be introduced without a redesign
 </TextBlock>
 
-<MediaBlock
-  description="DIAGRAM: Funnel diagram for the P&A experiment. Highlight the small loss at the top (P&A to basket: −1.1%) against the larger gains downstream (hotel details to booking: +5.25%). Two colours to show the self-selection dynamic — fewer enter, more commit."
-  caption="P&A transparency experiment — fewer users enter the funnel, but every downstream stage improves"
-  contained={true}
-/>
+<TextBlock label="Principal's Retrospective" heading="What didn't go well">
+  The hotel fee data confidence gap emerged late, creating mid-programme IA constraints. A data audit at the start would have shaped the architecture earlier. I'd treat that as a discovery prerequisite on any future pricing programme.
 
-<TextBlock>
+  The Netherlands rollout was grouped with GB for technical reasons — code complexity made separate testing impractical. The uplift in NL was +1.2% against a higher baseline, which suggests the approach translated. But the Dutch market had specific regulatory nuances that deserved more rigorous validation. Next time, I'd push harder for market-specific research even when technical constraints limit what's testable.
 
-  | Funnel Stage | CVR Change |
-  |---|---|
-  | P&A to basket handoff | −1.1% |
-  | Hotel details to booking handoff | +5.25% |
-  | Passenger details to payment | +1.55% |
-  | Payment to confirmation | +0.50% |
-
-  Slightly fewer users progressed past P&A. But every downstream stage improved significantly. Early transparency filtered out low-intent users. Those who continued were more committed.
-
-  That's not drop-off. That's self-selection.
-
+  "Pay at hotel" caused comprehension issues across multiple rounds of testing. The terminology should have been validated in research, not refined through live iteration.
 </TextBlock>
 
-<TextBlock label="The Solution" heading="Three interconnected changes, sequenced to build on each other.">
-
-  **1. SRP and P&A: persistent, contextual disclosure**
-
-  Every SRP card shows "includes taxes and fees" persistently. No popovers for primary disclosure.
-
-  Tooltips still exist, but their job changed. They clarify why fees exist and who collects them — not whether they exist. Copy frames charges as mandatory local costs, applicable regardless of which travel company you book with.
-
-  Multiple copy variants were tested. The winning direction was clear and factual rather than reassuring or minimising. "Includes £XX fees due at hotel" outperformed "Plus local fees" and significantly outperformed hiding the figure entirely.
-
+<TextBlock heading="What this changed">
+  The unified basket and additive pricing model are now the standard across all markets. The design system work done here set the pattern for how pricing changes get introduced — one component, one owner, one source of truth.
 </TextBlock>
 
-<MediaPairBlock
-  description="BEFORE/AFTER: Left — original SRP card with tooltip-only tax disclosure. Right — redesigned SRP card with persistent 'includes taxes and fees' label. Side-by-side shows the shift from hidden to persistent disclosure."
-  caption="SRP card: from hover-only tooltip to persistent disclosure"
-/>
+<TextBlock heading="Where this goes next">
+  Three things are unresolved:
 
-<TextBlock>
-
-  **2. Basket: a chronological price breakdown**
-
-  The basket structure became: **Pay today (to loveholidays) £X + Pay at hotel (local taxes and fees) £Y = Total trip £Z**
-
-  This gave users a single scannable view of the full cost picture without requiring arithmetic. The basket moved above ancillaries on mobile, matching the order users expected.
-
-  A December 2025 design crit captured the tension we were managing. When a version included "tax recovery charges" as a separate line item, a participant challenged it directly:
-
-  > *"This looks so s**. You know the Ticketmaster thing when you go and buy something and it gives you like 15 different service fees? It's starting to look like that."*
-
-  That was the right challenge. Transparency doesn't mean listing every line item. It means giving users a clear view of what they owe and to whom. The goal was a receipt, not an invoice.
-
-</TextBlock>
-
-<MediaBlock
-  description="IMAGE: The redesigned basket showing the Pay today / Pay at hotel / Total trip structure. Annotate to highlight the hierarchy: total price as primary anchor, per-person price de-emphasised, basket positioned above ancillaries on mobile."
-  caption="Redesigned basket — chronological payment breakdown with total trip cost as anchor"
-/>
-
-<TextBlock>
-
-  **3. Basket consolidation: a single unified component**
-
-  Unifying the checkout and search baskets into one component meant:
-
-  - Pricing presentation became consistent across the journey
-  - Any future change required one build, not two
-  - Visual hierarchy, typography, and emphasis could be standardised once and applied everywhere
-
-  This was the enabler for the final experiment to succeed where the first attempt had failed.
-
-</TextBlock>
-
-<MediaBlock
-  description="DIAGRAM: Return to the two-component system diagram from the Problem section, now showing the resolved state. 'Search Basket' and 'Checkout Basket' merge into one 'Unified Basket Component' that serves both surfaces. Before/after. Shows systems thinking."
-  caption="Unified basket component — one source of truth for pricing presentation across the journey"
-  contained={true}
-/>
-
-<TextBlock label="How I Created Conditions for the Team">
-
-  **Reframing the brief.** When the exec team shifted from "Taxes and Fees compliance" to "Price Transparency," I worked with product to define what that meant in practice. The principle "a compliant solution that creates a worse experience is not acceptable" became the filter for every subsequent decision. It aligned legal, product, and engineering around a shared outcome rather than separate requirements.
-
-  **Calling the kill.** After G4qzC9mA came back at −8.9% CVR, the pressure to iterate rather than stop was real. I made the call to kill it, regroup, and use the usability data to separate the direction (right) from the implementation (wrong). That distinction shaped the next phase.
-
-  **Fixing the structural problem.** The dual-component basket wasn't a design problem. But it was blocking every design decision we wanted to make. Naming it early and pushing for it to be resolved as part of this programme removed a constraint that would have limited every subsequent transparency test.
-
-</TextBlock>
-
-<TextBlock label="Results" heading="What shipped and what moved.">
-
-  | Metric | Result |
-  |---|---|
-  | CVR uplift (unified basket, GB) | +4.14% |
-  | MPT uplift (all markets) | +4.75% |
-  | Middle funnel (offer summary to passenger details) | +3.64% |
-  | User comprehension (due now vs at hotel) | +20 points vs control |
-  | Trust rating | 80% preferred new design |
-  | Regulatory compliance | Achieved ahead of CMA enforcement |
-
-</TextBlock>
-
-<MediaBlock
-  description="DIAGRAM: Bar chart showing CVR performance by device. Desktop +7.7%, Mobile +6.8%, Tablet −13.4%. Grouped bars, two colours to distinguish positive/negative. The tablet result is consistently negative across experiments and worth calling out explicitly."
-  caption="CVR by device — tablet is a consistent outlier and an open problem"
-  contained={true}
-/>
-
-<TextBlock>
-
-  | Device | CVR Uplift |
-  |---|---|
-  | Desktop | +7.7% |
-  | Mobile | +6.8% |
-  | Tablet | −13.4% (not statistically significant) |
-
-  The tablet result appeared negatively in both the P&A and unified basket experiments. It's a consistent enough signal to treat as an open problem, not an outlier.
-
-</TextBlock>
-
-<TextBlock label="Reflection">
-
-  **Start with a data audit.** The hotel fee data gap from third parties created design constraints that emerged late. A confidence review at the start would have shaped the IA earlier and prevented scope changes mid-test.
-
-  **Run SRP experiments in parallel.** Sequencing SRP after basket was logical given the risk profile. But it compressed the timeline on the highest-volume surface. Next time I'd find a way to run both tracks simultaneously.
-
-  **Pressure-test terminology before it reaches the UI.** "Pay at hotel" caused confusion across multiple rounds of testing. The language should have been validated with users at the research stage, not refined through live iteration.
-
-  **Run a dedicated NL experiment.** We applied GB learnings to NL without separate testing. Given that NL already had partial transparency in place and the regulatory requirements had specific local nuances, that market deserved its own validated approach.
-
-  **Investigate the tablet pattern earlier.** Two experiments. Same negative signal. That's not noise. It should have become a standalone piece of work sooner.
-
-  ---
-
-  **What this changed.** By the end of the programme, the team had a repeatable model: additive pricing works, inclusive pricing doesn't, early disclosure outperforms late disclosure, persistent reassurance outperforms one-time education. Those aren't just findings from this project — they're a framework for future pricing work.
-
-  **Where this goes next.** The immediate priorities are a dedicated tablet layout investigation and a full NL validation study. Longer term, the unified basket component creates the foundation for a more modular pricing system — one that can adapt to new fee types or new markets without requiring a full redesign each time.
-
+  - **Strikethrough price alignment** — currently references the holiday base price, not the fully-loaded total. That needs to close.
+  - **Dynamic discount badges** — campaign and discount badges are static. The next version should dynamically calculate and display the actual discount against the total price.
+  - **Zero-tax destinations** — the transparency narrative should extend to "No local fees due" messaging, turning compliance into a differentiator rather than just a requirement.
 </TextBlock>

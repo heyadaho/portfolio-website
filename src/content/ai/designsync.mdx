@@ -1,0 +1,134 @@
+---
+title: "DesignSync"
+company: "loveholidays"
+year: 2026
+role: "Principal Designer"
+duration: "January–March 2026"
+summary: "loveholidays' design system had no machine-readable source of truth. AI tools defaulted to generic patterns. 12+ internal prototypes looked like they came from different companies. Built the infrastructure to make brand-aligned AI output the default, not the exception."
+tags: ["Design System", "AI", "Infrastructure", "Claude Code"]
+order: 1
+workInProgress: true
+heroImages:
+  - src: "/images/ai/ds-01-core-tokens.png"
+    caption: "Core — Design Tokens Reference: Complete token system documentation — Core, Brand, Palette, Semantic & Component tokens"
+  - src: "/images/ai/ds-02-brand-state-tokens.png"
+    caption: "Brand & State — Design Tokens Reference: Complete token system documentation — Core, Brand, Palette, Semantic & Component tokens"
+  - src: "/images/ai/ds-03-token-pipeline.png"
+    caption: "Token Pipeline: Monitor and regenerate multi-platform design token artefacts"
+  - src: "/images/ai/ds-04-token-automation.png"
+    caption: "Token Automation Foundation: From 3 brand colors to 451 production-ready design tokens in under 2 minutes — saving 120+ hours per brand update"
+  - src: "/images/ai/ds-05-assets.png"
+    caption: "Assets: Shared UI icons and brand-specific logos"
+  - src: "/images/ai/ds-06-brand-illustrations.png"
+    caption: "Brand Illustrations: Generate and manage brand-compliant loveholidays illustrations"
+  - src: "/images/ai/ds-07-proto-studio.png"
+    caption: "Proto Studio: Describe a UI and I'll build it using only DS components and tokens"
+  - src: "/images/ai/ds-08-ai-agents.png"
+    caption: "AI Agents: Chat with specialist agents for design token management, Figma sync, code generation, ClickUp task management, and more"
+problem: "The design system hadn't received meaningful technical investment in four years. As AI-assisted development accelerated, this became a structural liability — AI tools defaulted to generic patterns, and a 10-minute idea required two days of manual engineering correction."
+approach: "Build machine-readable design system infrastructure — token pipeline, component registry, MCP server layer — that makes brand-aligned AI output the default. Prove it with working code, not a proposal."
+outcome: "One build command generates 9,200+ lines of brand-specific CSS. Icon pipeline saves ~450 hours/year. Prototype benchmarked at 7.6/10 against aspirational industry practices. Q3 engineering investment secured."
+---
+
+import StatsBlock from '../../components/work/StatsBlock.astro';
+import TextBlock from '../../components/work/TextBlock.astro';
+import MediaBlock from '../../components/work/MediaBlock.astro';
+import DesignSyncArchitecture from '../../components/work/DesignSyncArchitecture.astro';
+
+<StatsBlock stats={[
+  { value: "9,200+", label: "Lines of brand CSS from one build command" },
+  { value: "~450hrs", label: "Manual icon work automated per year" },
+  { value: "7.6/10", label: "Benchmark score vs. aspirational industry practices" },
+  { value: "Q3", label: "Engineering investment secured for production" },
+]} />
+
+<TextBlock label="Snapshot">
+  loveholidays' design system hadn't received meaningful technical investment in four years. Documentation was scattered across Figma, Storybook, and Google Docs. No single source of truth. No ownership. As AI-assisted development accelerated across the company, this became a structural liability. AI tools don't interpret undocumented knowledge. They default to generic patterns and ignore brand conventions. The result: 12+ internal AI prototypes that looked like they came from different companies. A 10-minute idea required two days of manual engineering correction.
+
+  **The goal:** Build machine-readable design system infrastructure that makes brand-aligned AI output the default, not the exception. Prove it with working code, not a proposal.
+
+  **My scope:** Two designers. No dedicated engineering headcount. No formal coding background on either side. Built in approximately three months using Claude Code.
+
+  **How I scoped it:** The director of design made OKR space to improve the design system's AI foundation. No defined scope. No solution specified. I partnered with the lead designer to define and build the solution ourselves, with light-touch support from a web infrastructure engineer to ensure we stayed within existing tech stacks. We used Claude Code to contribute directly to a running codebase as designers without formal engineering training.
+</TextBlock>
+
+<TextBlock label="Context and Stakes">
+  loveholidays was scaling fast. AI prototyping had accelerated across product and engineering teams, but the design system couldn't keep up. Every AI tool hitting the codebase defaulted to its own interpretation of the brand because no machine-readable source of truth existed.
+
+  We structured the project around seven testable hypotheses, from brand-aligned AI output through to market scalability and governance. The most important was H7: the cost of inaction compounds. Every month of delay raises the remediation frontier as AI continues to accelerate on a weak foundation.
+
+  The goal was to prove the infrastructure worked with code, not a proposal. Translating that business risk into an investable programme — and building credibility with engineering by shipping real infrastructure rather than a deck — is what the brief needed.
+</TextBlock>
+
+<TextBlock label="Approach and Key Decisions" heading="Structured the brief before touching any tooling">
+  Before writing a line of code, I mapped what "better" meant:
+
+  - Brand-aligned AI output
+  - Scalable multi-brand tokens
+  - Machine-readable component intent
+  - Human oversight baked into AI workflows
+  - A clear path to engineering adoption
+
+  This gave us a testable framework rather than an open-ended build.
+</TextBlock>
+
+<TextBlock heading="Built infrastructure, not documentation">
+  The core insight was that the problem wasn't missing docs. It was missing structure. Documentation in Figma or a Google Doc is invisible to AI tools. The design system needed to be queryable.
+</TextBlock>
+
+<TextBlock heading="Token pipeline">
+  Four-tier architecture built on W3C DTCG standards: Primitives → auto-generated Palette → curated Semantic → Component tokens. Components only reference the semantic layer. One build command generates 9,200+ lines of brand-specific CSS across three brands and two market variants, using OKLCH colour format for perceptual consistency across every theme switch.
+
+  Adding a new market like Austria is a 50-line JSON file. Onboarding a B2B partner requires no component code changes at all. Stack: Figma Token Studio, Style Dictionary v5, Tailwind CSS v4.
+
+  A core part of this work was defining a new token naming structure from scratch. Each tier has semantic meaning baked into the name itself. A token at the primitive tier like `core.primary` tells you it is a raw brand value. At the semantic tier, `brand.primary.base` tells you how that value is used across the brand. At the component tier, `ds.button.primary.base.hover.background` tells you exactly which element, which variant, which state, and which property it controls. Any AI tool, engineer, or designer reading the token name understands its intent without needing to trace it back through the system. This was a deliberate design decision: the name is the documentation.
+</TextBlock>
+
+<MediaBlock
+  src="/images/ai/token-naming-whiteboard.png"
+  alt="Early whiteboard session mapping the four-tier naming structure"
+  caption="Early whiteboard session mapping the four-tier naming structure — showing how token names carry semantic intent at each layer from primitive to component"
+  contained={true}
+/>
+
+<DesignSyncArchitecture />
+
+<TextBlock heading="Trade-off: governance baked in vs bolt-on">
+  I chose to embed governance into the tools rather than write policy documents. Proto Studio, our AI prototyping sandbox, runs 11 discovery steps before generating a single line of code. It queries the registry, validates output, self-heals errors, and uses only components the design system actually supports. Teams can explore freely with DS primitives. Anything outside the system surfaces a transparent approval request before entering the codebase.
+
+  This was a slower build. Direct code generation would have been faster. But a tool that produces inconsistent output with no oversight doesn't solve the original problem.
+</TextBlock>
+
+<TextBlock heading="Used AI to build AI infrastructure">
+  Both the AI illustration tool and the competitive analysis agent were specified, designed, and built by designers using Claude Code, with no engineering hire. Proof that designers can contribute directly to production codebases when the tooling is right.
+
+  The illustration tool encodes six specific skin tones, enforces a four-colour brand palette, and includes a scored approval workflow ($0.009 for concept drafts, $0.13 for hero banners). Generation costs are tracked per asset by default, not as an afterthought.
+</TextBlock>
+
+<TextBlock label="Outcomes" heading="Infrastructure delivered">
+  - Token pipeline: one build command generates CSS, a Tailwind theme, and a JavaScript runtime object across three brands
+  - Component library: six fully token-driven components following a strict nine-rule contract that AI tools cannot break accidentally
+  - Machine-readable registry: intent, usage rules, and failure modes encoded for every component
+  - Proto Studio: brand-aligned AI prototyping from text, image, or Figma URL input
+  - AI illustration generation with human approval gates and per-generation cost tracking
+  - Competitive analysis agent: full funnel capture (desktop and mobile) with CSS token extraction and structured UX gap analysis
+  - Claude Code skills: reusable commands that load the full design system into any AI tool's working memory
+</TextBlock>
+
+<TextBlock heading="Commercial signal">
+  Industry benchmarks frame the investment case. Miro's equivalent infrastructure let a team of six serve 40+ product teams and cut design support queries by 70–80%. Enara Health dropped design system monitoring costs from $169/month to $0.20 using a comparable AI-ready foundation. DesignSync is built on the same principles. Those efficiency gains are the baseline expectation, not the stretch goal.
+</TextBlock>
+
+<TextBlock heading="Internal validation">
+  After a live prototype walkthrough, stakeholder feedback confirmed the tool was usable in its current state. The follow-up question from the room: "When can I use it?" Engineering investment backed for Q3 to move from prototype to production programme.
+</TextBlock>
+
+<TextBlock label="Retrospective">
+  Leading with a working prototype rather than a proposal was the right call. It shifted the conversation from "is this worth investing in?" to "when can we productise this?" That's a better place to be.
+
+  What I'd do differently: instrument usage earlier. I have strong proxy metrics (token coverage, automation hours, benchmark score) but no direct evidence yet on time-to-prototype reduction or design-to-dev error rates. Those baselines need to be captured from day one of the Q3 build, before adoption scales.
+
+  The next 12 months: get the token pipeline and registry into daily use across all product teams, and measure the reduction in AI prototype correction time against the pre-system baseline. The commercial case becomes significantly stronger once those numbers exist.
+
+  The broader lesson: design systems become strategic assets when they're infrastructure, not documentation. The question isn't whether AI will write more of the product. It's whether the design system is ready to govern it.
+</TextBlock>

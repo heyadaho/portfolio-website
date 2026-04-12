@@ -1,0 +1,97 @@
+---
+// Self-contained: image links to PDF opened in new tab
+---
+
+<figure class="dsa">
+  <a
+    href="/files/DesignSync-Architecture.pdf"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="dsa__link"
+    aria-label="Open DesignSync architecture diagram PDF in new tab"
+  >
+    <img
+      src="/images/ai/designsync-architecture.png"
+      alt="DesignSync six-phase pipeline from raw colour values to AI-ready React components"
+      class="dsa__img"
+      loading="lazy"
+    />
+    <span class="dsa__overlay" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Open PDF
+    </span>
+  </a>
+  <figcaption class="dsa__caption">
+    DesignSync six-phase pipeline — raw colour values through to AI-ready React components
+  </figcaption>
+</figure>
+
+<style>
+  .dsa {
+    width: 100%;
+    max-width: min(var(--w-content), 100%);
+    margin-block: var(--space-lg);
+    margin-inline: auto;
+    border: 1px solid var(--c-border);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--c-surface);
+  }
+
+  .dsa__link {
+    display: block;
+    position: relative;
+    text-decoration: none;
+    overflow: hidden;
+  }
+
+  .dsa__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform var(--dur-slow) var(--ease-expo);
+  }
+
+  .dsa__overlay {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-ink-mid);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    padding: 0.3em 0.65em 0.3em 0.55em;
+    border-radius: 2px;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition:
+      opacity var(--dur-fast),
+      transform var(--dur-fast);
+    pointer-events: none;
+  }
+
+  .dsa__link:hover .dsa__overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .dsa__link:hover .dsa__img {
+    transform: scale(1.01);
+  }
+
+  .dsa__caption {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--c-border);
+    font-size: var(--text-xs);
+    color: var(--c-ink-subtle);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+</style>

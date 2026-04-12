@@ -1,0 +1,322 @@
+---
+interface Image {
+  src: string;
+  caption?: string;
+}
+
+interface Props {
+  title: string;
+  company?: string;
+  role?: string;
+  year?: number;
+  description: string;
+  tags?: string[];
+  href?: string;
+  comingSoon?: boolean;
+  image?: string;
+  images?: Image[];
+  workInProgress?: boolean;
+}
+
+const { title, company, role, year, description, tags = [], href, comingSoon = false, image, images, workInProgress = false } = Astro.props;
+
+const hasImage = !!(images?.length || image);
+const rotatingImages = images && images.length > 1 ? images : null;
+const singleSrc = rotatingImages ? null : (images?.[0]?.src ?? image);
+
+const Tag = href && !comingSoon ? 'a' : 'div';
+const tagProps = href && !comingSoon ? { href } : {};
+
+const rotateId = rotatingImages ? `rotate-${Math.random().toString(36).slice(2, 8)}` : null;
+---
+
+<Tag
+  class:list={['ai-card', { 'ai-card--coming-soon': comingSoon, 'ai-card--has-image': hasImage, 'ai-card--wip': workInProgress }]}
+  {...tagProps}
+>
+  {workInProgress && (
+    <span class="ai-card__wip" aria-label="Work in progress">Work in progress</span>
+  )}
+  {hasImage && (
+    <div class="ai-card__image" id={rotateId ?? undefined}>
+      {rotatingImages ? (
+        rotatingImages.map((img, i) => (
+          <img
+            src={img.src}
+            alt=""
+            role="presentation"
+            loading={i === 0 ? 'eager' : 'lazy'}
+            class:list={['ai-card__img', { 'ai-card__img--active': i === 0 }]}
+          />
+        ))
+      ) : (
+        <img src={singleSrc!} alt="" role="presentation" loading="lazy" class="ai-card__img ai-card__img--active" />
+      )}
+    </div>
+  )}
+
+  <div class="ai-card__inner">
+    <div class="ai-card__top">
+      <div class="ai-card__header">
+        {company && <p class="ai-card__company label">{company}</p>}
+        {!comingSoon && (
+          <span class="ai-card__arrow" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 12L12 2M12 2H4M12 2V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        )}
+        {comingSoon && (
+          <span class="ai-card__badge">Coming soon</span>
+        )}
+      </div>
+      <h3 class="ai-card__title">{title}</h3>
+      <p class="ai-card__description">{description}</p>
+    </div>
+
+    <div class="ai-card__footer">
+      {(role || year) && (
+        <div class="ai-card__meta">
+          {role && <span>{role}</span>}
+          {role && year && <span class="ai-card__meta-sep" aria-hidden="true">·</span>}
+          {year && <span>{year}</span>}
+        </div>
+      )}
+      {tags.length > 0 && (
+        <ul class="ai-card__tags" aria-label="Tags">
+          {tags.map(tag => (
+            <li class="ai-card__tag">{tag}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </div>
+</Tag>
+
+<style>
+  .ai-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--c-border);
+    border-radius: 2px;
+    background: var(--c-surface);
+    text-decoration: none;
+    overflow: hidden;
+    transition:
+      border-color var(--dur-mid) var(--ease-in-out),
+      transform var(--dur-mid) var(--ease-expo);
+  }
+
+
+  a.ai-card:hover {
+    border-color: var(--c-border-strong);
+    transform: translateY(-2px);
+  }
+
+  .ai-card__wip {
+    position: absolute;
+    top: 0;
+    left: 1.25rem;
+    transform: translateY(-50%);
+    z-index: 2;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: #E8A020;
+    color: #fff;
+    padding: 0.25em 0.75em;
+    border-radius: 2px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .ai-card--wip {
+    overflow: visible;
+    margin-top: 0.75rem;
+  }
+
+  .ai-card--wip .ai-card__image {
+    border-radius: 0;
+  }
+
+  .ai-card--coming-soon {
+    opacity: 0.5;
+  }
+
+  /* Image panel */
+  .ai-card__image {
+    flex-shrink: 0;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--c-bg);
+    position: relative;
+  }
+
+  .ai-card__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .ai-card__img--active {
+    opacity: 1;
+  }
+
+  /* Landscape layout when image is present */
+  @media (min-width: 560px) {
+    .ai-card--has-image {
+      flex-direction: row;
+    }
+
+    .ai-card--has-image .ai-card__image {
+      width: 280px;
+      aspect-ratio: 16 / 9;
+      flex-shrink: 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .ai-card--has-image .ai-card__image {
+      width: 320px;
+    }
+  }
+
+  a.ai-card:hover .ai-card__img--active {
+    transform: scale(1.03);
+  }
+
+  /* Content panel */
+  .ai-card__inner {
+    padding: 1.6rem 1.8rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+  }
+
+  .ai-card__top {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+  }
+
+  .ai-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .ai-card__company {
+    color: var(--c-accent);
+  }
+
+  .ai-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--c-ink);
+  }
+
+  .ai-card__arrow {
+    flex-shrink: 0;
+    color: var(--c-ink-subtle);
+    transition: transform var(--dur-fast), color var(--dur-fast);
+    display: block;
+  }
+
+  a.ai-card:hover .ai-card__arrow {
+    transform: translate(2px, -2px);
+    color: var(--c-ink-mid);
+  }
+
+  .ai-card__badge {
+    flex-shrink: 0;
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-ink-subtle);
+    border: 1px solid var(--c-border);
+    padding: 0.2em 0.6em;
+    border-radius: 1px;
+    white-space: nowrap;
+  }
+
+  .ai-card__description {
+    font-size: var(--text-base);
+    font-weight: 300;
+    color: var(--c-ink-mid);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .ai-card__footer {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .ai-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--text-sm);
+    color: var(--c-ink-subtle);
+    font-weight: 400;
+  }
+
+  .ai-card__meta-sep {
+    color: var(--c-border-strong);
+  }
+
+  .ai-card__tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .ai-card__tag {
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-ink-subtle);
+    border: 1px solid var(--c-border);
+    padding: 0.2em 0.55em;
+    border-radius: 1px;
+    transition: border-color var(--dur-fast), color var(--dur-fast);
+  }
+
+  a.ai-card:hover .ai-card__tag {
+    border-color: var(--c-border-strong);
+    color: var(--c-ink-mid);
+  }
+</style>
+
+{rotateId && (
+  <script define:vars={{ rotateId }}>
+    const wrap = document.getElementById(rotateId);
+    if (wrap) {
+      const imgs = wrap.querySelectorAll('.ai-card__img');
+      if (imgs.length > 1) {
+        let current = 0;
+        setInterval(() => {
+          imgs[current].classList.remove('ai-card__img--active');
+          current = (current + 1) % imgs.length;
+          imgs[current].classList.add('ai-card__img--active');
+        }, 2500);
+      }
+    }
+  </script>
+)}

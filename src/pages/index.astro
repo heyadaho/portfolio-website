@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import About from '../components/About.astro';
 import CaseStudyGrid from '../components/CaseStudyGrid.astro';
-import MarqueeScroll from '../components/MarqueeScroll.astro';
+import AIPrototypingGrid from '../components/AIPrototypingGrid.astro';
 import { getCollection } from 'astro:content';
 
 const allWork = await getCollection('work');
@@ -24,7 +24,7 @@ const studies = allWork
 
 <BaseLayout>
   <Hero />
+  <AIPrototypingGrid />
   <CaseStudyGrid studies={studies} />
   <About />
-  <MarqueeScroll />
 </BaseLayout>

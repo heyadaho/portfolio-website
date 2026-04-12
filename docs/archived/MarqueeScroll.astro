@@ -1,0 +1,151 @@
+---
+# ARCHIVED — removed from homepage April 2026
+# Kept for reference: two-layer ghost/shadow text animation technique
+#
+# HOW IT WORKS
+# ─────────────────────────────────────────────────────────────────────────────
+# Two <span> elements are stacked per text row:
+#
+#   Ghost layer  (position: absolute, color: transparent, filter: blur(1.5px))
+#     Carries two CSS animations:
+#
+#     1. marquee-shadow-shift (28s, infinite)
+#        Generates 100 text-shadow layers (5 bands × 20 offsets) via the
+#        makeShadow() function, then injects 5 keyframe states as inline
+#        <style set:html> so Astro can interpolate the computed shadow strings.
+#        The bands rotate through 5 faint RGBA colour values, creating a slow
+#        shimmering halo effect.
+#
+#     2. marquee-wave (12s, infinite, staggered per row via --wave-delay CSS var)
+#        Cycles opacity (1 → 0.55 → 0.85 → 0.45 → 1) and subtle translate
+#        offsets to simulate a gentle wind-over-landscape wobble.
+#
+#   Primary layer  (position: relative, opacity: 0.82)
+#     Sharp, readable text sitting on top of the ghost layer.
+#
+# Font: Cormorant Garamond 300 (Google Fonts)
+# Accessibility: prefers-reduced-motion hides the ghost layer entirely
+# ─────────────────────────────────────────────────────────────────────────────
+---
+
+const lines = [
+  {
+    text: "This site is built around my love of the Welsh and Japanese countryside. The quiet, the space, the feeling of time stretching out as you move through the landscape.",
+    duration: 80,
+    lang: 'en',
+  },
+];
+
+const c1 = 'rgba(196,168,130,0.0325)';
+const c2 = 'rgba(196,168,130,0.02)';
+const c3 = 'rgba(196,168,130,0.01)';
+const c4 = 'rgba(196,168,130,0.005)';
+const c5 = 'rgba(196,168,130,0.00125)';
+
+function makeShadow(a: string, b: string, c: string, d: string, e: string) {
+  const bands = [a, b, c, d, e];
+  const parts: string[] = [];
+  for (let band = 0; band < 5; band++) {
+    const col = bands[band];
+    for (let i = 1; i <= 20; i++) {
+      const n = band * 20 + i;
+      parts.push(`${Math.round(n * 0.15)}px ${n}px 0 ${col}`);
+    }
+  }
+  return parts.join(',');
+}
+
+const s0 = makeShadow(c1,c2,c3,c4,c5);
+const s1 = makeShadow(c2,c3,c4,c5,c1);
+const s2 = makeShadow(c3,c4,c5,c1,c2);
+const s3 = makeShadow(c4,c5,c1,c2,c3);
+const s4 = makeShadow(c5,c1,c2,c3,c4);
+---
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&display=swap" rel="stylesheet" />
+
+<style set:html={`
+  @keyframes marquee-shadow-shift {
+    0%,100% { text-shadow: ${s0}; }
+    20%     { text-shadow: ${s1}; }
+    40%     { text-shadow: ${s2}; }
+    60%     { text-shadow: ${s3}; }
+    80%     { text-shadow: ${s4}; }
+  }
+`}></style>
+
+<div class="marquee-wrap">
+  <div class="container">
+    <div class="marquee-block">
+      {lines.map((line, li) => (
+        <div class="marquee-row" lang={line.lang}>
+          <span
+            class="marquee-content marquee-content--ghost"
+            style={`--wave-delay: ${li * 3.2}s`}
+            aria-hidden="true"
+          >{line.text}</span>
+          <span class="marquee-content marquee-content--primary">{line.text}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .marquee-wrap {
+    border-top: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--c-border);
+    overflow: clip;
+  }
+
+  .marquee-block {
+    padding-block: 1.75rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .marquee-row {
+    position: relative;
+    padding-block: 0.15em;
+  }
+
+  .marquee-content--ghost {
+    position: absolute;
+    inset: 0;
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: var(--text-base);
+    font-weight: 300;
+    letter-spacing: 0.01em;
+    color: transparent;
+    filter: blur(1.5px);
+    animation:
+      marquee-shadow-shift 28s ease-in-out infinite,
+      marquee-wave 12s ease-in-out var(--wave-delay, 0s) infinite;
+  }
+
+  .marquee-content--primary {
+    position: relative;
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: var(--text-base);
+    font-weight: 300;
+    letter-spacing: 0.01em;
+    color: var(--c-ink-mid);
+    opacity: 0.82;
+  }
+
+  @keyframes marquee-wave {
+    0%, 100% { opacity: 1;    transform: translateX(0)    translateY(0);    }
+    25%       { opacity: 0.55; transform: translateX(4px)  translateY(-2px); }
+    50%       { opacity: 0.85; transform: translateX(-2px) translateY(1px);  }
+    75%       { opacity: 0.45; transform: translateX(6px)  translateY(-1px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-content--ghost { display: none; }
+  }
+</style>
