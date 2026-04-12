@@ -8,9 +8,10 @@ interface Props {
   slug: string;
   tags?: string[];
   featured?: boolean;
+  image?: string;
 }
 
-const { title, company, summary, role, year, slug, tags = [], featured = false } = Astro.props;
+const { title, company, summary, role, year, slug, tags = [], featured = false, image } = Astro.props;
 ---
 
 <a
@@ -20,9 +21,14 @@ const { title, company, summary, role, year, slug, tags = [], featured = false }
 >
   <!-- Visual block -->
   <div class="card__visual">
-    <div class="card__placeholder" aria-hidden="true">
-      <span class="card__placeholder-label">{company}</span>
-    </div>
+    {image
+      ? <img src={image} alt={title} class="card__img" />
+      : (
+        <div class="card__placeholder" aria-hidden="true">
+          <span class="card__placeholder-label">{company}</span>
+        </div>
+      )
+    }
     <div class="card__hover-overlay" aria-hidden="true"></div>
   </div>
 
@@ -76,6 +82,16 @@ const { title, company, summary, role, year, slug, tags = [], featured = false }
     border-color: var(--c-border-strong);
     transform: translateY(-3px);
   }
+
+  .card__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
 
   /* Visual placeholder */
   .card__visual {

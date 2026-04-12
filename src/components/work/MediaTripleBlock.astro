@@ -1,0 +1,299 @@
+---
+interface Props {
+  caption?: string;
+  srcLeft?: string;
+  srcMid?: string;
+  srcRight?: string;
+  altLeft?: string;
+  altMid?: string;
+  altRight?: string;
+}
+
+const { caption, srcLeft, srcMid, srcRight, altLeft = '', altMid = '', altRight = '' } = Astro.props;
+const id = Math.random().toString(36).slice(2, 8);
+---
+
+<div id={`mt-${id}`}>
+<figure class="media-triple">
+  <div class="media-triple__grid">
+    {[
+      { src: srcLeft, alt: altLeft },
+      { src: srcMid,  alt: altMid  },
+      { src: srcRight, alt: altRight },
+    ].map(({ src, alt }) => (
+      <div class="media-triple__frame">
+        {src ? (
+          <button class="media-triple__btn" data-lightbox-trigger data-src={src} data-alt={alt} aria-label={`Expand: ${alt}`}>
+            <img src={src} alt={alt} loading="lazy" />
+            <span class="media-triple__zoom" aria-hidden="true">&#x2922;</span>
+          </button>
+        ) : (
+          <div class="media-triple__placeholder" aria-hidden="true">
+            <span class="label">Image</span>
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+
+  {caption && (
+    <figcaption class="media-triple__caption">{caption}</figcaption>
+  )}
+</figure>
+
+<!-- Lightbox modal -->
+<div class="mt-lightbox" id={`lb-${id}`} role="dialog" aria-modal="true" aria-label="Image preview" hidden>
+  <div class="mt-lightbox__backdrop"></div>
+  <button class="mt-lightbox__close" aria-label="Close preview">&#x2715;</button>
+  <button class="mt-lightbox__nav mt-lightbox__prev" aria-label="Previous image">&#x2039;</button>
+  <img class="mt-lightbox__img" src="" alt="" />
+  <button class="mt-lightbox__nav mt-lightbox__next" aria-label="Next image">&#x203A;</button>
+  <p class="mt-lightbox__counter"></p>
+</div>
+</div>
+
+<style>
+  .media-triple {
+    max-width: var(--w-content);
+    margin-inline: auto;
+    margin-block: var(--space-lg);
+    padding-inline: var(--space-md);
+  }
+
+  .media-triple__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .media-triple__frame {
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+  }
+
+  .media-triple__btn {
+    all: unset;
+    display: block;
+    width: 100%;
+    cursor: zoom-in;
+    position: relative;
+  }
+
+  .media-triple__btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.2s;
+  }
+
+  .media-triple__btn:hover img {
+    opacity: 0.85;
+  }
+
+  .media-triple__zoom {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.6rem;
+    font-size: 1.1rem;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.2s;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    pointer-events: none;
+  }
+
+  .media-triple__btn:hover .media-triple__zoom {
+    opacity: 1;
+  }
+
+  .media-triple__placeholder {
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--c-surface-raised), var(--c-surface));
+  }
+
+  .media-triple__caption {
+    margin-top: 0.9rem;
+    font-size: var(--text-sm);
+    color: var(--c-ink-subtle);
+    text-align: center;
+    line-height: 1.55;
+  }
+
+  /* Lightbox */
+  .mt-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mt-lightbox[hidden] {
+    display: none;
+  }
+
+  .mt-lightbox__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    cursor: pointer;
+  }
+
+  .mt-lightbox__img {
+    position: relative;
+    max-width: min(84vw, 1400px);
+    max-height: 88vh;
+    object-fit: contain;
+    border-radius: 2px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  }
+
+  .mt-lightbox__close {
+    all: unset;
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    font-size: 1.25rem;
+    color: #fff;
+    cursor: pointer;
+    z-index: 1;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    transition: background 0.15s;
+  }
+
+  .mt-lightbox__close:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .mt-lightbox__nav {
+    all: unset;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    line-height: 1;
+    color: #fff;
+    cursor: pointer;
+    z-index: 1;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    transition: background 0.15s, opacity 0.15s;
+    user-select: none;
+  }
+
+  .mt-lightbox__nav:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .mt-lightbox__nav[disabled] {
+    opacity: 0.2;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .mt-lightbox__prev {
+    left: 1.25rem;
+  }
+
+  .mt-lightbox__next {
+    right: 1.25rem;
+  }
+
+  .mt-lightbox__counter {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin: 0;
+  }
+
+  @media (max-width: 640px) {
+    .media-triple__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .mt-lightbox__nav {
+      width: 2.25rem;
+      height: 2.25rem;
+      font-size: 2rem;
+    }
+
+    .mt-lightbox__prev { left: 0.5rem; }
+    .mt-lightbox__next { right: 0.5rem; }
+  }
+</style>
+
+<script define:vars={{ id }}>
+  const wrapper = document.getElementById(`mt-${id}`);
+  const lightbox = document.getElementById(`lb-${id}`);
+  const lbImg = lightbox.querySelector('.mt-lightbox__img');
+  const lbClose = lightbox.querySelector('.mt-lightbox__close');
+  const lbBackdrop = lightbox.querySelector('.mt-lightbox__backdrop');
+  const lbPrev = lightbox.querySelector('.mt-lightbox__prev');
+  const lbNext = lightbox.querySelector('.mt-lightbox__next');
+  const lbCounter = lightbox.querySelector('.mt-lightbox__counter');
+
+  const triggers = Array.from(wrapper.querySelectorAll('[data-lightbox-trigger]'));
+  let current = 0;
+
+  function show(index) {
+    current = index;
+    const { src, alt } = triggers[current].dataset;
+    lbImg.src = src;
+    lbImg.alt = alt;
+    lbPrev.disabled = current === 0;
+    lbNext.disabled = current === triggers.length - 1;
+    lbCounter.textContent = `${current + 1} / ${triggers.length}`;
+  }
+
+  function open(index) {
+    lightbox.hidden = false;
+    document.body.style.overflow = 'hidden';
+    show(index);
+    lbClose.focus();
+  }
+
+  function close() {
+    lightbox.hidden = true;
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+
+  triggers.forEach((btn, i) => {
+    btn.addEventListener('click', () => open(i));
+  });
+
+  lbPrev.addEventListener('click', () => { if (current > 0) show(current - 1); });
+  lbNext.addEventListener('click', () => { if (current < triggers.length - 1) show(current + 1); });
+  lbClose.addEventListener('click', close);
+  lbBackdrop.addEventListener('click', close);
+
+  document.addEventListener('keydown', e => {
+    if (lightbox.hidden) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft' && current > 0) show(current - 1);
+    if (e.key === 'ArrowRight' && current < triggers.length - 1) show(current + 1);
+  });
+</script>

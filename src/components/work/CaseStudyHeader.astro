@@ -7,9 +7,10 @@ interface Props {
   year: number;
   duration?: string;
   hideHeroImage?: boolean;
+  heroImage?: string;
 }
 
-const { title, summary, role, company, year, duration, hideHeroImage = false } = Astro.props;
+const { title, summary, role, company, year, duration, hideHeroImage = false, heroImage } = Astro.props;
 ---
 
 <header class="cs-header">
@@ -49,7 +50,10 @@ const { title, summary, role, company, year, duration, hideHeroImage = false } =
 
     {!hideHeroImage && (
       <div class="cs-header__hero-img">
-        <span class="label">Hero image</span>
+        {heroImage
+          ? <img src={heroImage} alt="" class="cs-header__hero-img-real" />
+          : <span class="label">Hero image</span>
+        }
       </div>
     )}
 
@@ -130,10 +134,18 @@ const { title, summary, role, company, year, duration, hideHeroImage = false } =
     font-weight: 400;
   }
 
+  /* Hero image */
+  .cs-header__hero-img-real {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
   /* Hero image placeholder */
   .cs-header__hero-img {
     width: 100%;
-    aspect-ratio: 16 / 7;
+    aspect-ratio: 16 / 9;
     background: var(--c-surface);
     border: 1px solid var(--c-border);
     border-radius: 2px;

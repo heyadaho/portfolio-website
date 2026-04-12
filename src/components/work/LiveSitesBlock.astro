@@ -1,0 +1,120 @@
+---
+interface Site {
+  name: string;
+  url: string;
+}
+
+interface Props {
+  sites: Site[];
+  label?: string;
+}
+
+const { sites, label = "See the work live" } = Astro.props;
+
+function domain(url: string) {
+  return url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+}
+---
+
+<div class="live-sites">
+  <div class="container">
+    <p class="live-sites__label label">{label}</p>
+    <div class="live-sites__grid" style={`--count: ${sites.length}`}>
+      {sites.map(site => (
+        <a
+          href={site.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="live-sites__tile"
+        >
+          <span class="live-sites__arrow" aria-hidden="true">↗</span>
+          <span class="live-sites__name">{site.name}</span>
+          <span class="live-sites__domain">{domain(site.url)}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .live-sites {
+    padding-block: var(--space-lg);
+    border-top: 1px solid var(--c-border);
+    margin-top: var(--space-xl);
+  }
+
+  .live-sites__label {
+    margin-bottom: 1.25rem;
+    color: var(--c-ink-subtle);
+  }
+
+  .live-sites__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--count, 3), 1fr);
+    gap: 0.75rem;
+  }
+
+  .live-sites__tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1.25rem 1.25rem 1.1rem;
+    border: 1px solid var(--c-border);
+    border-radius: 2px;
+    text-decoration: none;
+    background: var(--c-surface);
+    transition: border-color var(--dur-fast), background var(--dur-fast);
+    overflow: hidden;
+  }
+
+  .live-sites__tile:hover {
+    border-color: var(--c-accent);
+    background: var(--c-surface-raised);
+  }
+
+  .live-sites__tile:hover .live-sites__arrow {
+    color: var(--c-accent);
+    transform: translate(2px, -2px);
+  }
+
+  .live-sites__arrow {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 0.9rem;
+    color: var(--c-ink-subtle);
+    transition: color var(--dur-fast), transform var(--dur-fast);
+    line-height: 1;
+  }
+
+  .live-sites__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--c-ink);
+    line-height: 1.2;
+    padding-right: 1.5rem;
+  }
+
+  .live-sites__domain {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-ink-subtle);
+    font-weight: 300;
+  }
+
+  @media (max-width: 768px) {
+    .live-sites__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 420px) {
+    .live-sites__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

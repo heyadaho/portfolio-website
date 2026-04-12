@@ -5,31 +5,37 @@ interface Props {
   srcRight?: string;
   altLeft?: string;
   altRight?: string;
+  labelLeft?: string;
+  labelRight?: string;
+  aspectRatio?: string; /* e.g. "16/9" or "4/3" */
 }
 
-const { caption, srcLeft, srcRight, altLeft = '', altRight = '' } = Astro.props;
+const {
+  caption,
+  srcLeft, srcRight,
+  altLeft = '', altRight = '',
+  labelLeft, labelRight,
+  aspectRatio = '4/3',
+} = Astro.props;
 ---
 
 <figure class="media-pair">
   <div class="media-pair__grid">
-    <div class="media-pair__frame">
-      {srcLeft ? (
-        <img src={srcLeft} alt={altLeft} loading="lazy" />
-      ) : (
-        <div class="media-pair__placeholder" aria-hidden="true">
-          <span class="label">Image</span>
-        </div>
-      )}
-    </div>
-    <div class="media-pair__frame">
-      {srcRight ? (
-        <img src={srcRight} alt={altRight} loading="lazy" />
-      ) : (
-        <div class="media-pair__placeholder" aria-hidden="true">
-          <span class="label">Image</span>
-        </div>
-      )}
-    </div>
+    {[
+      { src: srcLeft,  alt: altLeft,  label: labelLeft  },
+      { src: srcRight, alt: altRight, label: labelRight },
+    ].map(({ src, alt, label }) => (
+      <div class="media-pair__frame" style={`aspect-ratio: ${aspectRatio}`}>
+        {src ? (
+          <img src={src} alt={alt} loading="lazy" />
+        ) : (
+          <div class="media-pair__placeholder" aria-hidden="true">
+            <span class="label">Image</span>
+          </div>
+        )}
+        {label && <span class="media-pair__label">{label}</span>}
+      </div>
+    ))}
   </div>
 
   {caption && (
@@ -52,7 +58,7 @@ const { caption, srcLeft, srcRight, altLeft = '', altRight = '' } = Astro.props;
   }
 
   .media-pair__frame {
-    aspect-ratio: 4 / 3;
+    position: relative;
     overflow: hidden;
     border-radius: 2px;
     background: var(--c-surface);
@@ -60,6 +66,8 @@ const { caption, srcLeft, srcRight, altLeft = '', altRight = '' } = Astro.props;
   }
 
   .media-pair__frame img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -67,12 +75,27 @@ const { caption, srcLeft, srcRight, altLeft = '', altRight = '' } = Astro.props;
   }
 
   .media-pair__placeholder {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, var(--c-surface-raised), var(--c-surface));
+  }
+
+  .media-pair__label {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: #fff;
+    background: rgba(0,0,0,0.55);
+    padding: 0.3em 0.6em;
+    border-radius: 1px;
+    backdrop-filter: blur(4px);
   }
 
   .media-pair__caption {

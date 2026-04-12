@@ -16,6 +16,7 @@ const work = defineCollection({
     problem:  z.string().optional(),
     approach: z.string().optional(),
     outcome:  z.string().optional(),
+    image:    z.string().optional(),
   }),
 });
 

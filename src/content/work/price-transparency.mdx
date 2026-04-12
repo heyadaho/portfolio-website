@@ -11,6 +11,7 @@ order: 1
 problem: "The business ran four failed pricing experiments across two product squads, resulting in CVR drops ranging from -5.8% to -10.82%. A hard regulatory deadline was approaching, and there was no unified design ownership of the end-to-end journey."
 approach: "Achieve regulatory compliance without degrading conversion — and use the constraint to improve pricing comprehension across the full booking experience."
 outcome: "+4.14% CVR uplift across the GB market, +4.75% margin per transaction across all markets, and full regulatory compliance delivered ahead of the April 2026 enforcement date."
+image: "/images/price tranparency/pt-03-persistent-option-b.png"
 ---
 
 {/*
@@ -46,6 +47,7 @@ import MediaBlock from '../../components/work/MediaBlock.astro';
 import MediaPairBlock from '../../components/work/MediaPairBlock.astro';
 import CalloutBlock from '../../components/work/CalloutBlock.astro';
 import QuoteBlock from '../../components/work/QuoteBlock.astro';
+import LiveSitesBlock from '../../components/work/LiveSitesBlock.astro';
 
 <StatsBlock stats={[
   { value: "+4.14%", label: "CVR uplift (GB, unified basket)" },
@@ -99,7 +101,8 @@ import QuoteBlock from '../../components/work/QuoteBlock.astro';
 </TextBlock>
 
 <MediaBlock
-  description="Screenshot of the original SRP card design showing the headline price with no fee explanation. Annotate to highlight what information was missing and where users were dropping off."
+  src="/images/price tranparency/pt-01-original-srp.png"
+  alt="Original SRP card showing headline price with no fee explanation"
   caption="Original SRP card — no fee explanation, no context for the price shown"
   contained={true}
 />
@@ -111,7 +114,8 @@ import QuoteBlock from '../../components/work/QuoteBlock.astro';
 </TextBlock>
 
 <MediaBlock
-  description="Side-by-side screenshot of the two separate basket components — Search Platform on the left, Checkout on the right. Annotate to show where the pricing presentation differed between the two surfaces."
+  src="/images/price tranparency/pt-02-dual-basket.png"
+  alt="Side-by-side of the two separate basket components — Search Platform left, Checkout right"
   caption="The dual-component basket — a structural constraint that needed resolving before any transparency work could be consistent"
   contained={true}
 />
@@ -149,15 +153,20 @@ import QuoteBlock from '../../components/work/QuoteBlock.astro';
 </TextBlock>
 
 <TextBlock heading="Decision log 3: Persistent disclosure over gated acknowledgement">
-  - **Option A:** "Know your costs" popover requiring user acknowledgement before browsing
+  - **Option A:** "Clear on cost" popover requiring user acknowledgement before browsing
   - **Option B:** Persistent, contextual disclosure on every search result card
   - **I chose B.** Testing a large dismissible popover — designed to explain inclusive pricing upfront so it could be removed from individual SRP cards — failed. Users closed it immediately and then lost trust when browsing. "I clicked it away — now I'm not sure if these prices include everything." Transparency had to be visible at all times, not gated behind a single interaction.
 </TextBlock>
 
-<MediaBlock
-  description="Side-by-side of the dismissed popover design (Option A) and the persistent SRP card disclosure (Option B). Annotate to show why the popover failed and what the persistent approach solved."
+<MediaPairBlock
+  srcLeft="/images/price tranparency/pt-03-popover-option-a.png"
+  altLeft="Option A — Clear on cost popover requiring user acknowledgement"
+  labelLeft="Option A — Gated acknowledgement"
+  srcRight="/images/price tranparency/pt-03-persistent-option-b.png"
+  altRight="Option B — persistent fee disclosure on every SRP card"
+  labelRight="Option B — Persistent disclosure"
+  aspectRatio="16/9"
   caption="Gated acknowledgement vs persistent disclosure — why Option B won"
-  contained={true}
 />
 
 <TextBlock heading="What the research told us">
@@ -173,7 +182,8 @@ import QuoteBlock from '../../components/work/QuoteBlock.astro';
 </TextBlock>
 
 <MediaBlock
-  description="Annotated screenshot of the final SRP card and basket breakdown side by side. This is the hero visual. Callouts should label: (1) persistent fee disclosure on the SRP card, (2) the chronological pay-today vs pay-at-hotel breakdown in the basket, (3) the total trip cost figure. Show both desktop and mobile if possible."
+  src="/images/price tranparency/pt-04-final-solution.png"
+  alt="Final solution — persistent fee disclosure on SRP card and chronological basket breakdown"
   caption="Final solution — persistent SRP disclosure and chronological basket breakdown"
 />
 
@@ -191,7 +201,8 @@ import QuoteBlock from '../../components/work/QuoteBlock.astro';
 </TextBlock>
 
 <MediaBlock
-  description="Before and after comparison of the basket. Before: the original fragmented basket with no fee breakdown. After: the unified basket with the chronological price breakdown. Keep annotations minimal — let the design difference speak for itself."
+  src="/images/price tranparency/pt-05-basket-before-after.png"
+  alt="Basket before and after — original fragmented basket vs unified chronological price breakdown"
   caption="Basket before and after — the same information, structured to build comprehension"
 />
 
@@ -221,3 +232,7 @@ import QuoteBlock from '../../components/work/QuoteBlock.astro';
   - **Dynamic discount badges** — campaign and discount badges are static. The next version should dynamically calculate and display the actual discount against the total price.
   - **Zero-tax destinations** — the transparency narrative should extend to "No local fees due" messaging, turning compliance into a differentiator rather than just a requirement.
 </TextBlock>
+
+<LiveSitesBlock sites={[
+  { name: "loveholidays", url: "https://www.loveholidays.com" },
+]} />

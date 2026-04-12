@@ -11,6 +11,7 @@ order: 2
 problem: "40+ brand websites with no shared infrastructure and 18-month brand migration."
 approach: "Build a single B2C ecommerce platform and design system capable of serving the entire portfolio without rebuilding for each brand."
 outcome: "Brand migration time: 18 months to 6 weeks. Baseline conversion: +12% across five pilot brands. Annual saving from reduced duplication: £2M. WCAG 2.1 AA compliance: 30% to 95%."
+image: "/images/Po1/po1-live-platform.png"
 ---
 
 {/*
@@ -32,7 +33,9 @@ import StatsBlock from '../../components/work/StatsBlock.astro';
 import TextBlock from '../../components/work/TextBlock.astro';
 import MediaBlock from '../../components/work/MediaBlock.astro';
 import MediaPairBlock from '../../components/work/MediaPairBlock.astro';
+import MediaTripleBlock from '../../components/work/MediaTripleBlock.astro';
 import TokenArchitectureDiagram from '../../components/work/TokenArchitectureDiagram.astro';
+import LiveSitesBlock from '../../components/work/LiveSitesBlock.astro';
 
 <StatsBlock stats={[
   { value: "6 wks",  label: "Brand migration time (was 18 months)" },
@@ -65,7 +68,8 @@ import TokenArchitectureDiagram from '../../components/work/TokenArchitectureDia
 </TextBlock>
 
 <MediaBlock
-  description="Side-by-side screenshots of 4–5 existing TTC brand homepages — Trafalgar, Contiki, Insight Vacations, Luxury Gold, Costsaver. No annotation needed. The visual inconsistency across navigation, layout, and design quality makes the problem self-evident."
+  src="/images/Po1/po1-brand-landscape.png"
+  alt="Side-by-side screenshots of TTC brand homepages — Insight Vacations, Luxury Gold, Contiki, Trafalgar, Costsaver"
   caption="40+ brand websites built independently over a decade — the inconsistency only becomes visible at portfolio level"
 />
 
@@ -121,10 +125,6 @@ import TokenArchitectureDiagram from '../../components/work/TokenArchitectureDia
   **Standards I set:** Five design principles used as decision filters for the entire programme. Every scope request was tested against them. "Does this serve B2C conversion?" ended most additions quickly.
 </TextBlock>
 
-<MediaBlock
-  description="The rejected PWA direction alongside the approved refactored version. Left: original stepper/progressive booking flow concept. Right: the conventional web structure that shipped. This is the key artefact showing the pivot was a deliberate decision, not a retreat."
-  caption="The original PWA direction (left) vs. the refactored approach — the business rejected the first. The second shipped."
-/>
 
 <TextBlock label="Approach" heading="Five principles before any design started">
   These weren't values on a wall. They were decision filters applied at every fork in the road:
@@ -145,7 +145,8 @@ import TokenArchitectureDiagram from '../../components/work/TokenArchitectureDia
 </TextBlock>
 
 <MediaBlock
-  description="Research synthesis output — affinity map or clustered themes from the 15+ user interview sessions, grouped by journey stage. Doesn't need to be readable. The density of the board shows the depth of the sprint. FigJam or Miro screenshot."
+  src="/images/Po1/po1-research-synthesis.png"
+  alt="Miro design sprint board showing affinity-mapped sticky notes from 15+ user interviews"
   caption="Two-week research sprint across 15+ user interviews, synthesised into journey-stage themes"
 />
 
@@ -157,19 +158,24 @@ import TokenArchitectureDiagram from '../../components/work/TokenArchitectureDia
   **Mobile-first vs. desktop-first.** Research showed users started on mobile but completed bookings on desktop — typical for high-consideration purchases where people switch to a larger screen to review details and commit. I designed mobile-first to ensure the entry point was solid, then scaled up. This shaped scroll depth and information hierarchy across every template.
 </TextBlock>
 
-<MediaBlock
-  description="Lo-fi to hi-fi progression for the tour page — the single most important template. Three stages side by side: early wireframe — mid-fi structure — final hi-fi. Keep to one screen so the progression is clear and the design decisions are legible."
-  caption="Wireframe to production — the tour page across three fidelity stages"
+<MediaTripleBlock
+  srcLeft="/images/Po1/po1-lofi-search.png"
+  altLeft="Early lo-fi wireframe of the search results page"
+  srcMid="/images/Po1/po1-midfi-search.png"
+  altMid="Mid-fidelity search results structure"
+  srcRight="/images/Po1/po1-hifi-search.png"
+  altRight="Final hi-fi search results design"
+  caption="Wireframe to production — the search page across three fidelity stages"
 />
 
 <TextBlock label="Outcomes and Impact" heading="Business impact">
-  | Metric | Before | After |
-  |---|---|---|
-  | Brand migration time | 18 months | 6 weeks |
-  | Baseline conversion | — | +12% (five pilots) |
-  | Annual saving | — | £2M |
-  | Page load performance | — | +40% |
-  | Design-to-dev handoff | — | -70% |
+  | Metric | Result |
+  |---|---|
+  | Brand migration time | 6 weeks (was 18 months) |
+  | Baseline conversion | +12% across five pilots |
+  | Annual saving | £2M |
+  | Page load performance | +40% |
+  | Design-to-dev handoff | -70% |
 
   Pilot brands in sequence: Insight Vacations, Luxury Gold, Contiki, Costsaver, Trafalgar.
 
@@ -188,8 +194,9 @@ import TokenArchitectureDiagram from '../../components/work/TokenArchitectureDia
 </TextBlock>
 
 <MediaBlock
-  description="2–3 live screens from the platform showing the finished product. Tour page, search results, and homepage. Show mobile and desktop where possible — this reinforces the mobile-first decision and demonstrates the design system working at scale across breakpoints."
-  caption="The live platform — designed once, deployed across 40+ brands"
+  src="/images/Po1/po1-live-platform.png"
+  alt="Live platform screens — tour page, search results, and homepage across multiple brands"
+  caption="The live platform — designed once, deployed across 40+ brands. Trip page across the five pilot brands brought onto the PO1 platform: Insight Vacations, Luxury Gold, Contiki, Costsaver, and Trafalgar."
 />
 
 <TextBlock heading="Org and process impact">
@@ -214,3 +221,11 @@ import TokenArchitectureDiagram from '../../components/work/TokenArchitectureDia
 <TextBlock heading="Where the system should go next">
   The token architecture is built for visual consistency. The next step is instrumented components: design tokens tied to analytics so teams can measure component performance in production. With enough platform data, the infrastructure exists to move from pattern reuse to personalised journey assembly.
 </TextBlock>
+
+<LiveSitesBlock sites={[
+  { name: "Insight Vacations", url: "https://www.insightvacations.com" },
+  { name: "Luxury Gold",       url: "https://www.luxurygold.com" },
+  { name: "Contiki",           url: "https://www.contiki.com" },
+  { name: "Trafalgar",         url: "https://www.trafalgar.com" },
+  { name: "Costsaver",         url: "https://www.costsavertour.com" },
+]} />

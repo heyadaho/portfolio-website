@@ -28,7 +28,7 @@ const { Content } = await render(entry);
 
 const {
   title, company, year, role, duration, summary,
-  problem, approach, outcome,
+  problem, approach, outcome, image,
 } = entry.data;
 
 const hasOverview = problem && approach && outcome;
@@ -43,6 +43,7 @@ const hasOverview = problem && approach && outcome;
     company={company}
     year={year}
     duration={duration}
+    heroImage={image}
   />
 
   {hasOverview && (
