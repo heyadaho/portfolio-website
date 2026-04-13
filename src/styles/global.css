@@ -61,8 +61,8 @@
   --c-surface:        #ECEAE5;
   --c-surface-raised: #E4E1DA;
   --c-ink:            #1A1A1A;
-  --c-ink-mid:        rgba(26, 26, 26, 0.52);
-  --c-ink-subtle:     rgba(26, 26, 26, 0.28);
+  --c-ink-mid:        #5C5C5C;
+  --c-ink-subtle:     #6B6B6B;
   --c-accent:         #B8936A;
   --c-accent-dim:     rgba(184, 147, 106, 0.22);
   --c-border:         rgba(26, 26, 26, 0.09);
