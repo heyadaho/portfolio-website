@@ -21,9 +21,14 @@ const year = new Date().getFullYear();
         </a>
       </div>
 
-      <p class="footer__credit">
-        Designed and built by Ed Lake &nbsp;·&nbsp; {year}
-      </p>
+      <div class="footer__credit">
+        <p>Designed and built by Ed Lake &nbsp;·&nbsp; {year}</p>
+        <p class="footer__claude">
+          with a little help from
+          <img src="/images/claudecode-text.webp" alt="Claude Code" class="footer__claude-logo footer__claude-logo--dark" />
+          <img src="/images/claudecode-text-2.webp" alt="Claude Code" class="footer__claude-logo footer__claude-logo--light" />
+        </p>
+      </div>
 
     </div>
   </div>
@@ -71,7 +76,36 @@ const year = new Date().getFullYear();
     font-size: var(--text-xs);
     letter-spacing: 0.04em;
     color: var(--c-ink-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    text-align: left;
   }
+
+  .footer__claude {
+    display: flex;
+    align-items: center;
+    gap: 0.35em;
+    opacity: 0.6;
+  }
+
+  .footer__claude-logo {
+    height: 14px;
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    opacity: 0.5;
+  }
+
+  /* Dark mode: show white logo */
+  .footer__claude-logo--light { display: none; }
+  .footer__claude-logo--dark  { display: inline-block; }
+
+  /* Light mode: show black logo */
+  :root[data-theme="light"] .footer__claude-logo--dark  { display: none; }
+  :root[data-theme="light"] .footer__claude-logo--light { display: inline-block; }
 
   @media (max-width: 560px) {
     .footer__inner {
