@@ -11,7 +11,7 @@ const navLinks = [
   <div class="nav__inner container">
 
     <a href="/" class="nav__name" aria-label="Ed Lake — home">
-      Ed Lake
+      Ed Lake<span class="nav__dot" aria-hidden="true"></span>
     </a>
 
     <nav class="nav__links" aria-label="Primary navigation">
@@ -70,6 +70,18 @@ const navLinks = [
 
   .nav__name:hover {
     opacity: 1;
+  }
+
+  .nav__dot {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    margin-left: 0.2em;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
   }
 
   .nav__links {
