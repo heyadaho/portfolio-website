@@ -23,7 +23,7 @@ const count = studies.length;
 <section class="work section" id="work">
   <div class="container">
 
-    <div class="work__header">
+    <div class="work__header" data-reveal>
       <span class="label">Case Studies</span>
     </div>
 
@@ -32,7 +32,7 @@ const count = studies.length;
     )}
 
     {count === 1 && (
-      <div class="work__single">
+      <div class="work__single" data-reveal>
         <CaseStudyCard {...studies[0]} featured={true} />
       </div>
     )}
@@ -40,15 +40,19 @@ const count = studies.length;
     {count >= 2 && count <= 3 && (
       <div class="work__grid work__grid--large">
         {studies.map((study, i) => (
-          <CaseStudyCard {...study} featured={i === 0} />
+          <div class="work__cell" data-reveal style={`--reveal-i: ${i}`}>
+            <CaseStudyCard {...study} featured={i === 0} />
+          </div>
         ))}
       </div>
     )}
 
     {count >= 4 && (
       <div class="work__grid work__grid--standard">
-        {studies.map(study => (
-          <CaseStudyCard {...study} />
+        {studies.map((study, i) => (
+          <div class="work__cell" data-reveal style={`--reveal-i: ${i}`}>
+            <CaseStudyCard {...study} />
+          </div>
         ))}
       </div>
     )}
@@ -66,6 +70,16 @@ const count = studies.length;
   .work__empty {
     color: var(--c-ink-subtle);
     font-size: var(--text-md);
+  }
+
+  /* Reveal wrapper — cards fill the grid cell */
+  .work__cell {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .work__cell > :global(.card) {
+    flex: 1;
   }
 
   /* Single featured card */

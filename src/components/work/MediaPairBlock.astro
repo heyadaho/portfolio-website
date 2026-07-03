@@ -17,6 +17,8 @@ const {
   labelLeft, labelRight,
   aspectRatio = '4/3',
 } = Astro.props;
+
+const groupId = `pair-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
 <figure class="media-pair">
@@ -27,7 +29,9 @@ const {
     ].map(({ src, alt, label }) => (
       <div class="media-pair__frame" style={`aspect-ratio: ${aspectRatio}`}>
         {src ? (
-          <img src={src} alt={alt} loading="lazy" />
+          <button class="media-pair__expand" data-lightbox data-group={groupId} aria-label={alt ? `Expand image: ${alt}` : 'Expand image'}>
+            <img src={src} alt={alt} loading="lazy" decoding="async" />
+          </button>
         ) : (
           <div class="media-pair__placeholder" aria-hidden="true">
             <span class="label">Image</span>
@@ -65,6 +69,13 @@ const {
     border: 1px solid var(--c-border);
   }
 
+  .media-pair__expand {
+    all: unset;
+    position: absolute;
+    inset: 0;
+    cursor: zoom-in;
+  }
+
   .media-pair__frame img {
     position: absolute;
     inset: 0;
@@ -72,6 +83,11 @@ const {
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: opacity var(--dur-fast);
+  }
+
+  .media-pair__expand:hover img {
+    opacity: 0.85;
   }
 
   .media-pair__placeholder {

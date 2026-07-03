@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found — Ed Lake">
+  <section class="notfound">
+    <div class="container">
+      <p class="label">404</p>
+      <h1 class="notfound__title">This page doesn't exist.</h1>
+      <p class="notfound__copy">The link may be old, or the work may have moved.</p>
+      <a href="/" class="notfound__back label">
+        <span aria-hidden="true">←</span> Back to home
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    min-height: 70svh;
+    display: flex;
+    align-items: center;
+    padding-block: var(--space-2xl);
+  }
+
+  .notfound__title {
+    font-size: var(--text-hero);
+    margin-top: var(--space-sm);
+    animation: riseIn 1.2s var(--ease-expo) both;
+  }
+
+  .notfound__copy {
+    margin-top: var(--space-sm);
+    font-size: var(--text-md);
+    font-weight: 300;
+    color: var(--c-ink-mid);
+    animation: riseIn 1.2s var(--ease-expo) 0.15s both;
+  }
+
+  .notfound__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: var(--space-lg);
+    color: var(--c-ink-subtle);
+    transition: color var(--dur-fast);
+    animation: riseIn 1.2s var(--ease-expo) 0.3s both;
+  }
+
+  .notfound__back:hover {
+    color: var(--c-ink-mid);
+  }
+</style>

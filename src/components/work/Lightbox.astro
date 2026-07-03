@@ -1,0 +1,206 @@
+---
+/* Shared image lightbox — mounted once per case study page.
+   Any <button data-lightbox> containing an <img> opens it;
+   data-group="x" enables prev/next between images of the same group. */
+---
+
+<dialog class="lightbox" id="lightbox" aria-label="Image preview">
+  <button class="lightbox__close" aria-label="Close preview">&#x2715;</button>
+  <button class="lightbox__nav lightbox__prev" aria-label="Previous image">&#x2039;</button>
+  <img class="lightbox__img" src="" alt="" />
+  <button class="lightbox__nav lightbox__next" aria-label="Next image">&#x203A;</button>
+  <p class="lightbox__counter"></p>
+</dialog>
+
+<style is:global>
+  body:has(dialog.lightbox[open]) {
+    overflow: hidden;
+  }
+</style>
+
+<style>
+  .lightbox {
+    border: none;
+    padding: 0;
+    background: transparent;
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: visible;
+  }
+
+  .lightbox[open] {
+    animation: lbIn var(--dur-mid) var(--ease-expo);
+  }
+
+  .lightbox::backdrop {
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  .lightbox[open]::backdrop {
+    animation: lbFade var(--dur-mid) ease;
+  }
+
+  @keyframes lbIn {
+    from { opacity: 0; transform: scale(0.96); }
+  }
+
+  @keyframes lbFade {
+    from { opacity: 0; }
+  }
+
+  .lightbox__img {
+    max-width: min(84vw, 1400px);
+    max-height: 88vh;
+    object-fit: contain;
+    border-radius: 2px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .lightbox__close {
+    all: unset;
+    position: fixed;
+    top: 1.25rem;
+    right: 1.25rem;
+    font-size: 1.25rem;
+    color: #fff;
+    cursor: pointer;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transition: background 0.15s;
+  }
+
+  .lightbox__close:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .lightbox__nav {
+    all: unset;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    line-height: 1;
+    color: #fff;
+    cursor: pointer;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transition: background 0.15s, opacity 0.15s;
+    user-select: none;
+  }
+
+  .lightbox__nav:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .lightbox__nav[disabled] {
+    opacity: 0.2;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .lightbox__nav[hidden] {
+    display: none;
+  }
+
+  .lightbox__prev { left: 1.25rem; }
+  .lightbox__next { right: 1.25rem; }
+
+  .lightbox__counter {
+    position: fixed;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+  }
+
+  .lightbox__counter[hidden] {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    .lightbox__nav {
+      width: 2.25rem;
+      height: 2.25rem;
+      font-size: 2rem;
+    }
+
+    .lightbox__prev { left: 0.5rem; }
+    .lightbox__next { right: 0.5rem; }
+  }
+</style>
+
+<script is:inline>
+  // Delegated + lazy lookups, so it survives view-transition swaps with a single registration
+  if (!window.__lightboxBound) {
+    window.__lightboxBound = true;
+
+    var lbGroup = [];
+    var lbCurrent = 0;
+
+    function lbEl(sel) {
+      var dialog = document.getElementById('lightbox');
+      return dialog ? { dialog: dialog, node: sel ? dialog.querySelector(sel) : null } : null;
+    }
+
+    function lbShow(i) {
+      var dialog = document.getElementById('lightbox');
+      if (!dialog) return;
+      lbCurrent = i;
+      var pic = lbGroup[i].querySelector('img');
+      var img = dialog.querySelector('.lightbox__img');
+      img.src = pic.currentSrc || pic.src;
+      img.alt = pic.alt || '';
+      var multi = lbGroup.length > 1;
+      var prev = dialog.querySelector('.lightbox__prev');
+      var next = dialog.querySelector('.lightbox__next');
+      var counter = dialog.querySelector('.lightbox__counter');
+      prev.hidden = next.hidden = counter.hidden = !multi;
+      prev.disabled = i === 0;
+      next.disabled = i === lbGroup.length - 1;
+      counter.textContent = (i + 1) + ' / ' + lbGroup.length;
+    }
+
+    document.addEventListener('click', function (e) {
+      var dialog = document.getElementById('lightbox');
+      if (!dialog) return;
+
+      var trigger = e.target.closest('[data-lightbox]');
+      if (trigger && trigger.querySelector('img')) {
+        var g = trigger.dataset.group;
+        lbGroup = g
+          ? Array.from(document.querySelectorAll('[data-lightbox][data-group="' + g + '"]'))
+          : [trigger];
+        lbShow(lbGroup.indexOf(trigger));
+        dialog.showModal();
+        return;
+      }
+
+      if (!dialog.open) return;
+      if (e.target.closest('.lightbox__close')) { dialog.close(); return; }
+      if (e.target.closest('.lightbox__prev')) { if (lbCurrent > 0) lbShow(lbCurrent - 1); return; }
+      if (e.target.closest('.lightbox__next')) { if (lbCurrent < lbGroup.length - 1) lbShow(lbCurrent + 1); return; }
+      if (e.target === dialog) dialog.close(); // backdrop click
+    });
+
+    document.addEventListener('keydown', function (e) {
+      var dialog = document.getElementById('lightbox');
+      if (!dialog || !dialog.open) return;
+      if (e.key === 'ArrowLeft' && lbCurrent > 0) lbShow(lbCurrent - 1);
+      if (e.key === 'ArrowRight' && lbCurrent < lbGroup.length - 1) lbShow(lbCurrent + 1);
+    });
+  }
+</script>

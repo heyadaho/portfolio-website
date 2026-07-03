@@ -23,12 +23,13 @@ const articles = entries
 <section class="ai-section section" id="ai-prototyping">
   <div class="container">
 
-    <div class="ai-section__header">
+    <div class="ai-section__header" data-reveal>
       <span class="label">AI Prototyping</span>
     </div>
 
     <div class="ai-grid">
-      {articles.map(p => (
+      {articles.map((p, i) => (
+        <div data-reveal style={`--reveal-i: ${i}`}>
         <AIPrototypingCard
           title={p.title}
           company={p.company}
@@ -42,6 +43,7 @@ const articles = entries
           images={p.images}
           workInProgress={p.workInProgress}
         />
+        </div>
       ))}
     </div>
 

@@ -13,6 +13,7 @@
 :root {
   /* Colours */
   --c-base:           #0B140E;
+  --c-base-rgb:       11, 20, 14;
   --c-surface:        #131D16;
   --c-surface-raised: #1A2820;
   --c-ink:            #F0EDE8;
@@ -58,6 +59,7 @@
 /* ── Light theme overrides ── */
 :root[data-theme="light"] {
   --c-base:           #F5F3EF;
+  --c-base-rgb:       245, 243, 239;
   --c-surface:        #ECEAE5;
   --c-surface-raised: #E4E1DA;
   --c-ink:            #1A1A1A;
@@ -127,6 +129,18 @@ a {
   text-decoration: none;
 }
 
+/* ── Focus ── */
+
+:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 p + p {
   margin-top: 1.1em;
 }
@@ -178,4 +192,36 @@ html {
 @keyframes linePulse {
   0%, 100% { opacity: 0.35; transform: scaleY(0.85); }
   50%      { opacity: 1;    transform: scaleY(1.1); }
+}
+
+/* ── Scroll reveal ──
+   Only hides content once JS has set data-reveal-init,
+   so no-JS visitors and reduced-motion users see everything. */
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-reveal-init] [data-reveal] {
+    transition:
+      opacity var(--dur-slow) var(--ease-expo),
+      transform var(--dur-slow) var(--ease-expo);
+    transition-delay: calc(var(--reveal-i, 0) * 70ms);
+  }
+
+  html[data-reveal-init] [data-reveal]:not(.is-visible) {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+/* ── Reduced motion ── */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

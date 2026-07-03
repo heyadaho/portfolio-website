@@ -305,13 +305,15 @@ const rotateId = rotatingImages ? `rotate-${Math.random().toString(36).slice(2, 
 </style>
 
 {rotateId && (
-  <script define:vars={{ rotateId }}>
+  <script define:vars={{ rotateId }} data-astro-rerun>
     const wrap = document.getElementById(rotateId);
     if (wrap) {
       const imgs = wrap.querySelectorAll('.ai-card__img');
       if (imgs.length > 1) {
         let current = 0;
-        setInterval(() => {
+        const iv = setInterval(() => {
+          // Self-clean once this card is swapped away by view transitions
+          if (!wrap.isConnected) { clearInterval(iv); return; }
           imgs[current].classList.remove('ai-card__img--active');
           current = (current + 1) % imgs.length;
           imgs[current].classList.add('ai-card__img--active');

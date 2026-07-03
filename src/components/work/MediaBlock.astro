@@ -13,7 +13,9 @@ const { caption, contained = false, src, alt = '', description } = Astro.props;
 <figure class:list={['media-block', { 'media-block--contained': contained }]}>
   <div class="media-block__frame">
     {src ? (
-      <img src={src} alt={alt} class="media-block__img" loading="lazy" />
+      <button class="media-block__expand" data-lightbox aria-label={alt ? `Expand image: ${alt}` : 'Expand image'}>
+        <img src={src} alt={alt} class="media-block__img" loading="lazy" decoding="async" />
+      </button>
     ) : (
       <div class="media-block__placeholder" aria-hidden="true">
         {description ? (
@@ -58,11 +60,24 @@ const { caption, contained = false, src, alt = '', description } = Astro.props;
     border: 1px solid var(--c-border);
   }
 
+  .media-block__expand {
+    all: unset;
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: zoom-in;
+  }
+
   .media-block__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: opacity var(--dur-fast);
+  }
+
+  .media-block__expand:hover .media-block__img {
+    opacity: 0.85;
   }
 
   .media-block__placeholder {

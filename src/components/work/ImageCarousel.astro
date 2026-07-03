@@ -65,7 +65,7 @@ const id = `carousel-${Math.random().toString(36).slice(2, 8)}`;
   </div>
 </div>
 
-<script define:vars={{ id, images }}>
+<script define:vars={{ id, images }} data-astro-rerun>
   const root = document.getElementById(id);
   if (!root) return;
 

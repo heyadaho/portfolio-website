@@ -187,9 +187,12 @@
   }
 </style>
 
-<script is:inline>
+<script is:inline data-astro-rerun>
 (() => {
 'use strict';
+
+// Tear down the previous run's listeners/loop (view-transition re-runs)
+if (window.__heroCleanup) window.__heroCleanup();
 
 // ═══════════════════════════════════════════════════════
 //  MATH UTILITIES
@@ -243,14 +246,16 @@ let W = 0, H = 0, DPR = 1;
 const off = { x: 0, y: 0 };
 const tgt = { x: 0, y: 0 };
 
-window.addEventListener('mousemove', function(e) {
+function onMouseMove(e) {
   tgt.x = (e.clientX / innerWidth  - 0.5) * 2;
   tgt.y = (e.clientY / innerHeight - 0.5) * 2;
-});
-window.addEventListener('touchmove', function(e) {
+}
+function onTouchMove(e) {
   tgt.x = (e.touches[0].clientX / innerWidth  - 0.5) * 2;
   tgt.y = (e.touches[0].clientY / innerHeight - 0.5) * 2;
-}, { passive: true });
+}
+window.addEventListener('mousemove', onMouseMove);
+window.addEventListener('touchmove', onTouchMove, { passive: true });
 
 // ── Palette ──
 var SKY_TOP = [88,  112, 122];
@@ -627,16 +632,11 @@ function drawGrain(frameIdx) {
 
 // ── Animation loop ──
 
-var t0 = null, frame = 0;
+var t0 = null, frame = 0, elapsedMs = 0;
+var running = false, rafId = 0;
+var reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function tick(ts) {
-  if (!t0) t0 = ts;
-  var t = (ts - t0) * 0.001;
-  frame++;
-
-  off.x = lerp(off.x, tgt.x, 0.038);
-  off.y = lerp(off.y, tgt.y, 0.038);
-
+function render(t) {
   ctx.clearRect(0, 0, W, H);
 
   drawSky();
@@ -653,9 +653,50 @@ function tick(ts) {
   drawVignette();
   drawGrade();
   drawGrain(frame / 3 | 0);
-
-  requestAnimationFrame(tick);
 }
+
+function tick(ts) {
+  // Rebase after a pause so mist/river phase doesn't jump
+  if (t0 === null) t0 = ts - elapsedMs;
+  elapsedMs = ts - t0;
+  frame++;
+
+  off.x = lerp(off.x, tgt.x, 0.038);
+  off.y = lerp(off.y, tgt.y, 0.038);
+
+  render(elapsedMs * 0.001);
+
+  if (running) rafId = requestAnimationFrame(tick);
+}
+
+function start() {
+  if (running || reducedMotion) return;
+  running = true;
+  t0 = null;
+  rafId = requestAnimationFrame(tick);
+}
+
+function stop() {
+  running = false;
+  cancelAnimationFrame(rafId);
+}
+
+// Pause when the hero is scrolled out of view or the tab is hidden
+var inView = true;
+function syncRunning() {
+  (inView && !document.hidden) ? start() : stop();
+}
+
+var io = new IntersectionObserver(function(entries) {
+  inView = entries[0].isIntersecting;
+  syncRunning();
+});
+io.observe(canvas);
+
+function onVisibilityChange() {
+  syncRunning();
+}
+document.addEventListener('visibilitychange', onVisibilityChange);
 
 // ── Init / resize ──
 
@@ -667,16 +708,36 @@ function resize() {
   canvas.height = (H * DPR) | 0;
   ctx.scale(DPR, DPR);
   buildAll();
+  if (reducedMotion) render(0);
 }
 
 var resizeTimer;
-window.addEventListener('resize', function() {
+function onResize() {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(resize, 120);
-});
+}
+window.addEventListener('resize', onResize);
+
+window.__heroCleanup = function() {
+  stop();
+  io.disconnect();
+  window.removeEventListener('mousemove', onMouseMove);
+  window.removeEventListener('touchmove', onTouchMove);
+  window.removeEventListener('resize', onResize);
+  document.removeEventListener('visibilitychange', onVisibilityChange);
+  window.__heroCleanup = null;
+};
+// Stop the loop when navigating away via view transitions
+document.addEventListener('astro:before-swap', function() {
+  if (window.__heroCleanup) window.__heroCleanup();
+}, { once: true });
 
 resize();
-requestAnimationFrame(tick);
+if (reducedMotion) {
+  render(0); // single static frame
+} else {
+  start();
+}
 
 })();
 </script>

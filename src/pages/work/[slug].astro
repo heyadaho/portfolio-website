@@ -10,11 +10,15 @@ export async function getStaticPaths() {
   const sorted  = entries.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 
   return sorted.map((entry, i) => {
+    const prev = sorted[i - 1];
     const next = sorted[i + 1];
     return {
       params: { slug: entry.id },
       props: {
         entry,
+        prev: prev
+          ? { title: prev.data.title, company: prev.data.company, slug: prev.id }
+          : undefined,
         next: next
           ? { title: next.data.title, company: next.data.company, slug: next.id }
           : undefined,
@@ -23,7 +27,7 @@ export async function getStaticPaths() {
   });
 }
 
-const { entry, next } = Astro.props;
+const { entry, prev, next } = Astro.props;
 const { Content } = await render(entry);
 
 const {
@@ -44,6 +48,7 @@ const hasOverview = problem && approach && outcome;
     year={year}
     duration={duration}
     heroImage={image}
+    slug={entry.id}
   />
 
   {hasOverview && (
@@ -58,7 +63,7 @@ const hasOverview = problem && approach && outcome;
     <Content />
   </article>
 
-  <CaseStudyFooter next={next} />
+  <CaseStudyFooter prev={prev} next={next} />
 
 </CaseStudyLayout>
 

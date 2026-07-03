@@ -7,7 +7,7 @@ const navLinks = [
 ];
 ---
 
-<header class="nav" id="nav">
+<header class="nav" id="nav" transition:persist="nav">
   <div class="nav__inner container">
 
     <a href="/" class="nav__name" aria-label="Ed Lake — home">
@@ -46,9 +46,18 @@ const navLinks = [
   }
 
   .nav.is-scrolled {
-    background-color: var(--c-base);
+    background-color: rgba(var(--c-base-rgb), 0.72);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--c-border);
     padding-block: 1rem;
+  }
+
+  /* No backdrop-filter support → solid fallback */
+  @supports not (backdrop-filter: blur(1px)) {
+    .nav.is-scrolled {
+      background-color: var(--c-base);
+    }
   }
 
   .nav__inner {
