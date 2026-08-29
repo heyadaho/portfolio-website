@@ -72,7 +72,14 @@ import PromptStyles from '../../components/work/PromptStyles.astro';
   This isn't a filter problem. It's a curation problem. Users don't want to see everything available. They want to see the right things, quickly.
 
   AI's most compelling value proposition isn't breadth — it's precision. "Find my perfect match" is a fundamentally different product promise than "show me everything." The appetite for that promise is real. What's missing is an experience that delivers on it reliably.
+</TextBlock>
 
+<QuoteBlock
+  quote="If it just gives me the top 3–4 that actually match what I said, I'd trust that more than scrolling through 200 hotels."
+  attribution="UT2"
+/>
+
+<TextBlock>
   **Opportunity:** Invest in curation-first AI design. Fewer, better-matched results — with confidence signals about why they were surfaced — outperform exhaustive inventories. Two-way conversation design, where AI asks clarifying questions rather than returning a single list, directly addresses this.
 </TextBlock>
 
@@ -83,6 +90,11 @@ import PromptStyles from '../../components/work/PromptStyles.astro';
 
   A separate observation: 5 of 6 participants didn't spontaneously use loveholidays' keyword filter feature during unprompted site interaction. When prompted, half weren't confident the results were accurate. Feature placement and trust both need addressing.
 </TextBlock>
+
+<QuoteBlock
+  quote="Oh, I didn't even notice this until you mentioned it."
+  attribution="On the keyword filter, once prompted"
+/>
 
 <MediaPairBlock
   srcLeft="/images/findability/keyword-filter-desktop.webp"
@@ -120,6 +132,11 @@ import PromptStyles from '../../components/work/PromptStyles.astro';
   Maps resonated strongly, particularly on desktop. Distance information surfaced contextually — "0.3km from the city centre" — was immediately appreciated and described as "really handy." Spatial context does a job that lists can't.
 </TextBlock>
 
+<QuoteBlock
+  quote="I'm someone that's a visual person, so I do enjoy the process of looking at the pictures and the videos of the hotels that I'm choosing, and so this kind of takes that away. It just gives me the details and the words, and sometimes that can be really overwhelming for me, so I wouldn't enjoy this process."
+  attribution="UT6"
+/>
+
 <MediaBlock
   src="/images/findability/mindtrip-text-vs-map.webp"
   alt="Mindtrip interface with a long text list of Barcelona hotel recommendations on the left and a map with priced hotel pins on the right"
@@ -145,7 +162,16 @@ import PromptStyles from '../../components/work/PromptStyles.astro';
 <TextBlock label="Theme 4" heading="Control, Transparency & Confidence">
   Users trust systems they can read. When filters are applied and results update in real time, confidence goes up. When AI generates a list with no visible logic, confidence collapses.
 
-  Two moments surfaced this clearly. One participant questioned whether AI search results were commercially neutral — "Is ChatGPT weighting my thought process to one hotel over another? Has somebody paid a promotional price to get that at the top?" That's not cynicism. It's a reasonable question that the interface gave them no way to answer.
+  Two moments surfaced this clearly. The first: a participant working through Mindtrip's ranked hotel list stopped and questioned whether the ordering was commercially neutral.
+</TextBlock>
+
+<QuoteBlock
+  quote="Is ChatGPT, or is this, for instance, weighting my thought process to one hotel over another. Is there a reason it's put Hotel Arts Barcelona above W Barcelona. It has somebody potentially paid a promotional price to get that at the top of that list, because it's the first thing I see. So, subconsciously, I think that might be the better place to go."
+  attribution="UT3"
+/>
+
+<TextBlock>
+  That's not cynicism. It's a reasonable question that the interface gave them no way to answer — and the participant is describing the mechanism by which an unexplained ranking becomes a decision they didn't consciously make.
 
   A second participant noticed immediately that Mindtrip didn't display ATOL protection for package holidays. A single missing piece of familiar trust infrastructure made them hesitant to proceed. The absence of the expected, not just the presence of the unfamiliar, undermines confidence.
 
@@ -161,6 +187,24 @@ import PromptStyles from '../../components/work/PromptStyles.astro';
 </TextBlock>
 
 <PromptStyles />
+
+<TextBlock>
+  Two caveats sit underneath that diagram. The first is methodological, and one participant named it themselves — what we observed was prompting under observation, not prompting in private.
+</TextBlock>
+
+<QuoteBlock
+  quote="I probably wouldn't type as neatly written as what I've done now, I'm conscious and being watched by someone. I would usually just… it'd be quite scrappy."
+  attribution="UT2"
+/>
+
+<TextBlock>
+  The second is an expectation gap. Participants assumed the system would infer intent they hadn't spelled out — treating obvious context as understood rather than as something to specify.
+</TextBlock>
+
+<QuoteBlock
+  quote="When I say from London Airport, I'm hoping that I don't have to include… you should just know that I just mean leave from London airports and go from there…"
+  attribution="UT6"
+/>
 
 <TextBlock>
   The physical effort of typing and the cognitive effort of knowing what to type are both real barriers. One participant defaulted to established filter-based search explicitly because "ticking boxes is less effort." Another, with a cleft palate, found that voice recognition tools failed to understand them — forcing repeated input and creating a frustrating, exclusionary experience.
@@ -183,6 +227,13 @@ import PromptStyles from '../../components/work/PromptStyles.astro';
   The safest route is not one search method. It's multiple pathways — structured filters, guided prompts, freeform text, voice — with clear onboarding that helps users get the most from whichever method they choose. Hedge the bets, not against AI, but against the assumption that users are ready to abandon everything familiar.
 
   The appetite is genuinely there. Multiple participants said, unprompted, they'd use AI over filters if it worked reliably. "If it can cut down the amount of time I spend clicking through pages, then I'd definitely use it." The conditional clause is the brief.
+</TextBlock>
 
+<QuoteBlock
+  quote="I feel really confident I would use this over a filter system. So let's say TUI or EasyJet adopted an AI system of holiday booking, I would be on it like a shot."
+  attribution="UT3"
+/>
+
+<TextBlock>
   **What's still unresolved:** This was 7 participants. It's directional, not statistically significant. A broader study — particularly one that maps where the wider loveholidays user base sits on the AI familiarity curve — would let us design for the distribution, not the outliers. That investment is the logical next step.
 </TextBlock>
