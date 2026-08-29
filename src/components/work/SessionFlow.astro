@@ -1,0 +1,146 @@
+---
+// No props — self-contained diagram
+const stages = [
+  { n: '01', name: 'Introductions',   desc: 'Meet the team, set expectations, confirm consent.' },
+  { n: '02', name: 'Warm-up',         desc: 'Current planning habits, tools already in use.' },
+  { n: '03', name: 'Future framing',  desc: '“Imagine how you might book in five years’ time.”' },
+  { n: '04', name: 'Platform review', desc: 'Live walkthrough of loveholidays and Mindtrip.', highlight: true },
+  { n: '05', name: 'Preferences',     desc: 'Structured comparison questions across both tools.' },
+  { n: '06', name: 'Close',           desc: 'Open reflection and wrap-up.' },
+];
+---
+
+<figure class="sfl">
+  <div class="sfl__header">
+    <span class="sfl__eyebrow label">Session structure — ~60 minutes</span>
+  </div>
+
+  <ol class="sfl__track">
+    {stages.map((s) => (
+      <li class:list={['sfl__stage', { 'sfl__stage--key': s.highlight }]}>
+        <span class="sfl__num">{s.n}</span>
+        <p class="sfl__name">{s.name}</p>
+        <p class="sfl__desc">{s.desc}</p>
+      </li>
+    ))}
+  </ol>
+
+  <figcaption class="sfl__caption">
+    The same structure ran across all seven sessions. Stage 04 carried the comparative weight —
+    participants moved between a structured search interface and a conversational one in a single sitting.
+  </figcaption>
+</figure>
+
+<style>
+  .sfl {
+    margin-block: var(--space-lg);
+    border: 1px solid var(--c-border);
+    border-radius: 2px;
+    background: var(--c-surface);
+    max-width: var(--w-content);
+    margin-inline: auto;
+    overflow: hidden;
+  }
+
+  .sfl__header {
+    padding: 1.25rem 1.75rem 0;
+  }
+
+  .sfl__eyebrow {
+    color: var(--c-accent);
+  }
+
+  .sfl__track {
+    list-style: none;
+    margin: 0;
+    padding: 1.25rem 1.75rem;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.75rem;
+  }
+
+  .sfl__stage {
+    position: relative;
+    border: 1px solid var(--c-border);
+    border-radius: 2px;
+    padding: 0.85rem 0.9rem 1rem;
+    background: var(--c-base);
+  }
+
+  /* Connector between stages */
+  .sfl__stage::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -0.75rem;
+    width: 0.75rem;
+    height: 1px;
+    background: var(--c-border-strong);
+  }
+
+  .sfl__stage:last-child::after {
+    display: none;
+  }
+
+  .sfl__stage--key {
+    border-color: var(--c-accent);
+  }
+
+  .sfl__num {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--c-ink-subtle);
+    margin-bottom: 0.5rem;
+  }
+
+  .sfl__stage--key .sfl__num {
+    color: var(--c-accent);
+  }
+
+  .sfl__name {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    margin: 0 0 0.35rem;
+    line-height: 1.25;
+  }
+
+  .sfl__desc {
+    font-size: var(--text-xs);
+    line-height: 1.45;
+    color: var(--c-ink-mid);
+    margin: 0;
+  }
+
+  .sfl__caption {
+    padding: 0 1.75rem 1.5rem;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--c-ink-mid);
+  }
+
+  @media (max-width: 900px) {
+    .sfl__track {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.6rem;
+    }
+
+    /* Horizontal connectors don't survive the wrap */
+    .sfl__stage::after {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .sfl__track {
+      grid-template-columns: 1fr;
+      padding: 1rem 1.15rem;
+    }
+
+    .sfl__header,
+    .sfl__caption {
+      padding-inline: 1.15rem;
+    }
+  }
+</style>

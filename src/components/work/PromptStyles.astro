@@ -1,0 +1,215 @@
+---
+// No props — self-contained diagram.
+// Prompts and component tags transcribed from session recordings.
+const styles = [
+  {
+    name: 'Compressed',
+    tone: 'Instructional',
+    who: 'UT1, UT6',
+    prompt: 'Barcelona, 3 nights in September, leaving from Belfast. £200pp. 1km to city centre, close to the museums',
+    tags: ['Destination', 'Duration', 'Month', 'Departure airport', 'Budget pp', 'Distance to centre', 'Near POI'],
+    reading: 'Writes as if filling in a form. Minimal connectors, comma-separated. The structured-search mental model carried over intact.',
+  },
+  {
+    name: 'Conversational',
+    tone: 'Conversational',
+    who: 'UT2, UT3',
+    prompt: 'I want to have a 4 day holiday to Barcelona staying by the beach in a hotel of 4 or more stars',
+    tags: ['Destination', 'Duration', 'Near beach', 'Min star rating'],
+    reading: 'Reads like briefing a travel agent. Multiple clauses, layered requirements. Types the way they would talk.',
+  },
+  {
+    name: 'Iterative',
+    tone: 'Exploratory',
+    who: 'UT3, UT4',
+    prompt: 'why are there no all inclusives in Barcelona',
+    tags: ['Follow-up', 'Expects reasoning', 'Assumes memory'],
+    reading: 'Treats the AI as a domain expert rather than a search box. Expects dialogue and explanation, not a single response.',
+  },
+];
+---
+
+<figure class="pst">
+  <div class="pst__header">
+    <span class="pst__eyebrow label">Three prompt styles across six participants</span>
+  </div>
+
+  <div class="pst__grid">
+    {styles.map((s) => (
+      <article class="pst__card">
+        <header class="pst__card-head">
+          <h3 class="pst__name">{s.name}</h3>
+          <span class="pst__who">{s.who}</span>
+        </header>
+
+        <div class="pst__field">
+          <p class="pst__prompt">{s.prompt}</p>
+          <span class="pst__caret" aria-hidden="true"></span>
+        </div>
+
+        <ul class="pst__tags">
+          {s.tags.map((t) => <li class="pst__tag">{t}</li>)}
+        </ul>
+
+        <p class="pst__reading">{s.reading}</p>
+
+        <p class="pst__tone"><span class="pst__tone-key">Tone</span> {s.tone}</p>
+      </article>
+    ))}
+  </div>
+
+  <figcaption class="pst__caption">
+    Style did not track with technical confidence. It tracked with the mental model a participant
+    brought to the box — a form to complete, a person to brief, or an expert to interrogate.
+  </figcaption>
+</figure>
+
+<style>
+  .pst {
+    margin-block: var(--space-lg);
+    border: 1px solid var(--c-border);
+    border-radius: 2px;
+    background: var(--c-surface);
+    max-width: var(--w-content);
+    margin-inline: auto;
+    overflow: hidden;
+  }
+
+  .pst__header {
+    padding: 1.25rem 1.75rem 0;
+  }
+
+  .pst__eyebrow {
+    color: var(--c-accent);
+  }
+
+  .pst__grid {
+    padding: 1.25rem 1.75rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .pst__card {
+    border: 1px solid var(--c-border);
+    border-radius: 2px;
+    padding: 1rem 1.1rem 1.15rem;
+    background: var(--c-base);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .pst__card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .pst__name {
+    font-size: var(--text-base);
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .pst__who {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    color: var(--c-ink-subtle);
+    white-space: nowrap;
+  }
+
+  /* Mock prompt field */
+  .pst__field {
+    position: relative;
+    border: 1px solid var(--c-border-strong);
+    border-radius: 1.25rem;
+    padding: 0.7rem 0.9rem;
+    background: var(--c-surface-raised);
+  }
+
+  .pst__prompt {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+
+  .pst__caret {
+    display: inline-block;
+    width: 1px;
+    height: 1em;
+    background: var(--c-accent);
+    vertical-align: text-bottom;
+    margin-left: 1px;
+  }
+
+  .pst__tags {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .pst__tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+    padding: 0.15rem 0.45rem;
+    border: 1px solid var(--c-border);
+    border-radius: 2px;
+    color: var(--c-ink-mid);
+    white-space: nowrap;
+  }
+
+  .pst__reading {
+    font-size: var(--text-xs);
+    line-height: 1.55;
+    color: var(--c-ink-mid);
+    margin: 0;
+  }
+
+  .pst__tone {
+    margin: 0;
+    padding-top: 0.65rem;
+    border-top: 1px solid var(--c-border);
+    font-size: var(--text-xs);
+    color: var(--c-ink);
+  }
+
+  .pst__tone-key {
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-ink-subtle);
+    margin-right: 0.4rem;
+  }
+
+  .pst__caption {
+    padding: 0 1.75rem 1.5rem;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--c-ink-mid);
+  }
+
+  @media (max-width: 860px) {
+    .pst__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pst__grid {
+      padding: 1rem 1.15rem;
+    }
+
+    .pst__header,
+    .pst__caption {
+      padding-inline: 1.15rem;
+    }
+  }
+</style>

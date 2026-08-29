@@ -8,6 +8,7 @@ summary: "Package holiday consumers are at a transitional moment with AI — wil
 tags: ["Research", "AI", "Discovery", "Findability"]
 featured: true
 order: 3
+image: "/images/findability/mindtrip-text-vs-map.webp"
 problem: "Loveholidays was evaluating how to evolve its search experience with AI. There was no shared picture of how real users interacted with AI travel tools, what they trusted, and where the experience broke down compared to traditional search."
 approach: "Qualitative usability research: 7 sessions of ~60 minutes each. Participants interacted with loveholidays and Mindtrip in real time, while we observed attitudinal behaviour, trust signals, and prompt patterns."
 outcome: "5 major themes identified, 8 product opportunities mapped. Core finding: appetite for AI is genuine, but the safest route is not one input method — it's multiple pathways that meet users where they are."
@@ -16,13 +17,16 @@ outcome: "5 major themes identified, 8 product opportunities mapped. Core findin
 import StatsBlock from '../../components/work/StatsBlock.astro';
 import TextBlock from '../../components/work/TextBlock.astro';
 import MediaBlock from '../../components/work/MediaBlock.astro';
+import MediaPairBlock from '../../components/work/MediaPairBlock.astro';
 import QuoteBlock from '../../components/work/QuoteBlock.astro';
+import SessionFlow from '../../components/work/SessionFlow.astro';
+import PromptStyles from '../../components/work/PromptStyles.astro';
 
 <StatsBlock stats={[
   { value: "7",      label: "Package holiday consumers interviewed" },
   { value: "~60 min", label: "Average session length" },
   { value: "5",      label: "Key themes identified" },
-  { value: "5/7",   label: "Preferred structured input over freeform AI" },
+  { value: "4/7",   label: "Preferred structured input over freeform AI" },
 ]} />
 
 <TextBlock label="Snapshot">
@@ -60,6 +64,8 @@ import QuoteBlock from '../../components/work/QuoteBlock.astro';
   I was present as an observer on every session. Maria Narraway led facilitation.
 </TextBlock>
 
+<SessionFlow />
+
 <TextBlock label="Theme 1" heading="Fatigue, Curation, and Choice Reduction">
   The volume of choice in package holiday search is the single biggest source of frustration. Participants described the research process as long, manual, and emotionally draining. Several described a "give up" mindset — compromising on originally non-negotiable criteria just to get out of the loop.
 
@@ -71,12 +77,38 @@ import QuoteBlock from '../../components/work/QuoteBlock.astro';
 </TextBlock>
 
 <TextBlock label="Theme 2" heading="Familiarity vs. Novelty">
-  5 of 7 participants preferred loveholidays' structured input over Mindtrip's freeform AI chat when planning a package holiday. The reason wasn't distrust of AI — it was control. Structured inputs showed results transparently. Freeform prompts felt like a black box.
+  4 of 7 participants preferred loveholidays' structured input over Mindtrip's freeform AI chat when planning a package holiday. The reason wasn't distrust of AI — it was control. Structured inputs showed results transparently. Freeform prompts felt like a black box.
 
   Mindtrip was widely described as "the future" — impressive in concept, but frustrating in use. Usability failures compounded quickly: itineraries appeared when users expected hotel lists; ATOL protection wasn't surfaced; it wasn't clear how results were generated or whether they were bookable.
 
   A separate observation: 5 of 6 participants didn't spontaneously use loveholidays' keyword filter feature during unprompted site interaction. When prompted, half weren't confident the results were accurate. Feature placement and trust both need addressing.
+</TextBlock>
 
+<MediaPairBlock
+  srcLeft="/images/findability/keyword-filter-desktop.webp"
+  altLeft="loveholidays desktop filter rail with the keyword filter sitting between Popular filters and Board basis"
+  labelLeft="Desktop"
+  srcRight="/images/findability/keyword-filter-mobile.webp"
+  altRight="loveholidays mobile results page with the keyword filter separated from the Filter, Sort and Map controls"
+  labelRight="Mobile"
+  aspectRatio="4/3"
+  caption="Placement, both platforms. On desktop the keyword filter is one card among many in the left rail; on mobile it sits apart from the Filter / Sort / Map row users actually reach for. Most participants never found it unprompted."
+/>
+
+<TextBlock>
+  Trust in the feature was a second, separate problem. One participant searched the keyword `bar` — a facility
+  they reasonably expected almost every hotel to have — and the page returned nothing at all. They described the
+  result as "worrying" and "concerning," and it moved them from questioning the search to questioning the site.
+</TextBlock>
+
+<MediaBlock
+  src="/images/findability/keyword-filter-no-results.webp"
+  alt="loveholidays search results for Barcelona with the keyword filter set to bar, showing the message Sorry, no matching results were found"
+  caption="A single-word keyword search for “bar” returns zero results across Barcelona. The failure is content tagging, not search — but the user has no way to tell the difference."
+  contained
+/>
+
+<TextBlock>
   **Opportunity:** Bridge traditional and AI interfaces rather than replacing one with the other. Integrate selection-based input alongside freeform prompting. Provide guided prompts and templates — a blank text field is cognitively harder than a structured form. New AI patterns demand intentional onboarding.
 </TextBlock>
 
@@ -88,9 +120,22 @@ import QuoteBlock from '../../components/work/QuoteBlock.astro';
   Maps resonated strongly, particularly on desktop. Distance information surfaced contextually — "0.3km from the city centre" — was immediately appreciated and described as "really handy." Spatial context does a job that lists can't.
 </TextBlock>
 
+<MediaBlock
+  src="/images/findability/mindtrip-text-vs-map.webp"
+  alt="Mindtrip interface with a long text list of Barcelona hotel recommendations on the left and a map with priced hotel pins on the right"
+  caption="Mindtrip's split view, mid-session. The left panel is where participants disengaged — dense, unbroken text with no hotel imagery. The right panel is what they responded to: position, proximity and price, readable at a glance."
+/>
+
 <QuoteBlock
   quote="Rather than this big multiple paragraph — something more visual. The image, the grid, the summary of the trip. Something you can click into."
   attribution="UT1"
+/>
+
+<MediaBlock
+  src="/images/findability/mindtrip-asks-for-images.webp"
+  alt="A participant typing the prompt can i isee hotel pictures from sofitel barcelon into the Mindtrip chat input"
+  caption="The gap, stated plainly. After four text-only hotel descriptions, the participant stops evaluating and types a request for the photographs the interface never offered."
+  contained
 />
 
 <TextBlock>
@@ -112,8 +157,12 @@ import QuoteBlock from '../../components/work/QuoteBlock.astro';
 <TextBlock label="Theme 5" heading="Input Methods & Prompt Behaviour">
   Participants varied significantly in how they approached AI prompting — not based on tech familiarity, but on mental model.
 
-  Two clear patterns emerged. Some users wrote compressed, form-like prompts: "Barcelona, 3 nights, September, £200pp, 1km to city centre." Others used natural, conversational language: "I want a 4-day holiday to Barcelona, staying by the beach, 4-star or above." A third group used iterative follow-ups — asking "why are there no all-inclusives in Barcelona?" — treating AI like a domain expert, not a search engine.
+  Three clear patterns emerged. Some users wrote compressed, form-like prompts: "Barcelona, 3 nights, September, £200pp, 1km to city centre." Others used natural, conversational language: "I want a 4-day holiday to Barcelona, staying by the beach, 4-star or above." A third group used iterative follow-ups — asking "why are there no all-inclusives in Barcelona?" — treating AI like a domain expert, not a search engine.
+</TextBlock>
 
+<PromptStyles />
+
+<TextBlock>
   The physical effort of typing and the cognitive effort of knowing what to type are both real barriers. One participant defaulted to established filter-based search explicitly because "ticking boxes is less effort." Another, with a cleft palate, found that voice recognition tools failed to understand them — forcing repeated input and creating a frustrating, exclusionary experience.
 
   **Opportunity:** The AI interface needs to handle all three prompt styles equally well — compressed shorthand, conversational sentences, and iterative clarifying questions. Voice recognition investment must include dialect and speech variation testing. Guided input templates reduce the cognitive load for users who don't know where to start.
