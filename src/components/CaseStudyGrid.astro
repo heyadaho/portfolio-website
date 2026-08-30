@@ -1,23 +1,45 @@
 ---
 import CaseStudyCard from './CaseStudyCard.astro';
+import { getCollection } from 'astro:content';
 
-interface CaseStudy {
-  title: string;
-  company: string;
-  summary: string;
-  role: string;
-  year: number;
-  slug: string;
-  tags?: string[];
-  image?: string;
-}
+const byOrder = (a: any, b: any) => (a.data.order ?? 99) - (b.data.order ?? 99);
 
-interface Props {
-  studies: CaseStudy[];
-}
+const ai = (await getCollection('ai')).sort(byOrder).map(e => ({
+  key:     `ai-${e.id}`,
+  order:   e.data.order ?? 99,
+  href:    `/ai/${e.id}`,
+  title:   e.data.title,
+  company: e.data.company ?? '',
+  summary: e.data.summary,
+  role:    e.data.role ?? '',
+  year:    e.data.year ?? 0,
+  tags:    e.data.tags ?? [],
+  image:   e.data.heroImages?.[0]?.src ?? e.data.image,
+  images:  e.data.heroImages,
+  workInProgress: e.data.workInProgress ?? false,
+  transitionName: undefined as string | undefined,
+}));
 
-const { studies } = Astro.props;
-const count = studies.length;
+const work = (await getCollection('work')).sort(byOrder).map(e => ({
+  key:     `work-${e.id}`,
+  order:   e.data.order ?? 99,
+  href:    `/work/${e.id}`,
+  title:   e.data.title,
+  company: e.data.company,
+  summary: e.data.summary,
+  role:    e.data.role,
+  year:    e.data.year,
+  tags:    e.data.tags ?? [],
+  image:   e.data.image,
+  images:  undefined,
+  workInProgress: false,
+  transitionName: `work-img-${e.id}`,
+}));
+
+/* Newest first; `order` breaks ties within a year. */
+const studies = [...ai, ...work].sort(
+  (a, b) => b.year - a.year || (a.order - b.order),
+);
 ---
 
 <section class="work section" id="work">
@@ -27,31 +49,25 @@ const count = studies.length;
       <span class="label">Case Studies</span>
     </div>
 
-    {count === 0 && (
+    {studies.length === 0 ? (
       <p class="work__empty">Case studies coming soon.</p>
-    )}
-
-    {count === 1 && (
-      <div class="work__single" data-reveal>
-        <CaseStudyCard {...studies[0]} featured={true} />
-      </div>
-    )}
-
-    {count >= 2 && count <= 3 && (
-      <div class="work__grid work__grid--large">
-        {studies.map((study, i) => (
-          <div class="work__cell" data-reveal style={`--reveal-i: ${i}`}>
-            <CaseStudyCard {...study} featured={i === 0} />
-          </div>
-        ))}
-      </div>
-    )}
-
-    {count >= 4 && (
-      <div class="work__grid work__grid--standard">
-        {studies.map((study, i) => (
-          <div class="work__cell" data-reveal style={`--reveal-i: ${i}`}>
-            <CaseStudyCard {...study} />
+    ) : (
+      <div class="work__grid">
+        {studies.map((s, i) => (
+          <div data-reveal style={`--reveal-i: ${i % 3}`}>
+            <CaseStudyCard
+              title={s.title}
+              company={s.company}
+              summary={s.summary}
+              role={s.role}
+              year={s.year}
+              href={s.href}
+              tags={s.tags}
+              image={s.image}
+              images={s.images}
+              workInProgress={s.workInProgress}
+              transitionName={s.transitionName}
+            />
           </div>
         ))}
       </div>
@@ -62,7 +78,7 @@ const count = studies.length;
 
 <style>
   .work__header {
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--c-border);
   }
@@ -72,59 +88,22 @@ const count = studies.length;
     font-size: var(--text-md);
   }
 
-  /* Reveal wrapper — cards fill the grid cell */
-  .work__cell {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .work__cell > :global(.card) {
-    flex: 1;
-  }
-
-  /* Single featured card */
-  .work__single {
-    max-width: 900px;
-  }
-
-  /* 2–3 cards: first spans full width, rest are 2-col */
-  .work__grid--large {
+  .work__grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2rem 1.5rem;
   }
 
-  .work__grid--large > :first-child {
-    grid-column: 1 / -1;
-  }
-
-  /* 2-col for second and third */
-  @media (min-width: 768px) {
-    .work__grid--large {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .work__grid--large > :first-child {
-      grid-column: 1 / -1;
+  @media (min-width: 700px) {
+    .work__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2.75rem 1.5rem;
     }
   }
 
-  /* 4+ cards: responsive 2–3 column grid */
-  .work__grid--standard {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  @media (min-width: 640px) {
-    .work__grid--standard {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .work__grid--standard {
-      grid-template-columns: 1fr 1fr 1fr;
+  @media (min-width: 1100px) {
+    .work__grid {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 </style>
