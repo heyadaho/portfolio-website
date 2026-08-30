@@ -1,0 +1,85 @@
+---
+interface Props {
+  src: string;
+  caption?: string;
+  /* 'contained' keeps it in the text column; default breaks out to content width */
+  contained?: boolean;
+  ratio?: string;
+}
+
+const { src, caption, contained = false, ratio = '16 / 9' } = Astro.props;
+---
+
+<figure class:list={['video-block', { 'video-block--contained': contained }]}>
+  <div class="video-block__frame" style={`aspect-ratio: ${ratio}`}>
+    <video
+      class="video-block__video"
+      src={src}
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      controls
+    ></video>
+  </div>
+  {caption && <figcaption class="video-block__caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .video-block {
+    width: 100%;
+    margin-block: var(--space-lg);
+  }
+
+  .video-block:not(.video-block--contained) {
+    max-width: min(var(--w-content), 100%);
+    margin-inline: auto;
+  }
+
+  .video-block--contained {
+    max-width: var(--w-text);
+    margin-inline: auto;
+    padding-inline: var(--space-md);
+  }
+
+  .video-block__frame {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+  }
+
+  .video-block__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .video-block__caption {
+    margin-top: 0.9rem;
+    font-size: var(--text-sm);
+    color: var(--c-ink-subtle);
+    text-align: center;
+    max-width: 65ch;
+    margin-inline: auto;
+    line-height: 1.55;
+  }
+</style>
+
+<script>
+  // Autoplay only while on screen, and never when the visitor prefers reduced motion.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) {
+    const io = new IntersectionObserver(
+      entries => entries.forEach(e => {
+        const v = e.target as HTMLVideoElement;
+        if (e.isIntersecting) v.play().catch(() => {});
+        else v.pause();
+      }),
+      { threshold: 0.25 },
+    );
+    document.querySelectorAll('.video-block__video').forEach(v => io.observe(v));
+  }
+</script>
