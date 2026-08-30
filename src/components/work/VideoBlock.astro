@@ -68,18 +68,26 @@ const { src, caption, contained = false, ratio = '16 / 9' } = Astro.props;
   }
 </style>
 
-<script>
-  // Autoplay only while on screen, and never when the visitor prefers reduced motion.
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduce) {
+<script data-astro-rerun>
+  // data-astro-rerun is required. Without it this never re-attaches after a
+  // view-transition navigation, so the video sits paused whenever you arrive
+  // by clicking through the site rather than loading the URL directly.
+  (() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const io = new IntersectionObserver(
       entries => entries.forEach(e => {
-        const v = e.target as HTMLVideoElement;
+        const v = e.target;
         if (e.isIntersecting) v.play().catch(() => {});
         else v.pause();
       }),
       { threshold: 0.25 },
     );
-    document.querySelectorAll('.video-block__video').forEach(v => io.observe(v));
-  }
+
+    document.querySelectorAll('.video-block__video').forEach(v => {
+      if (v.dataset.ioBound) return;   // don't stack observers across re-runs
+      v.dataset.ioBound = '1';
+      io.observe(v);
+    });
+  })();
 </script>
