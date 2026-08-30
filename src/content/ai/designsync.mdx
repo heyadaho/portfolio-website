@@ -25,9 +25,9 @@ heroImages:
     caption: "Proto Studio: Describe a UI and I'll build it using only DS components and tokens"
   - src: "/images/ai/ds-08-ai-agents.webp"
     caption: "AI Agents: Chat with specialist agents for design token management, Figma sync, code generation, ClickUp task management, and more"
-problem: "The design system hadn't received meaningful technical investment in four years. As AI-assisted development accelerated, this became a structural liability — AI tools defaulted to generic patterns, and a 10-minute idea required two days of manual engineering correction."
+problem: "The design system hadn't received meaningful technical investment in four years. As AI-assisted development accelerated, this became a structural liability — AI tools defaulted to generic patterns, and ideas that took minutes to generate took days to bring back onto brand."
 approach: "Build machine-readable design system infrastructure — token pipeline, component registry, MCP server layer — that makes brand-aligned AI output the default. Prove it with working code, not a proposal."
-outcome: "One build command generates 9,200+ lines of brand-specific CSS. Icon pipeline saves ~450 hours/year. Prototype benchmarked at 7.6/10 against aspirational industry practices. Q3 engineering investment secured."
+outcome: "One build command generates 9,200+ lines of brand-specific CSS across three brands and two market variants. Prototype self-assessed at 7.6/10 against aspirational industry practice. Q3 engineering investment secured."
 ---
 
 import StatsBlock from '../../components/work/StatsBlock.astro';
@@ -38,13 +38,20 @@ import DesignSyncTokenDiagram from '../../components/work/DesignSyncTokenDiagram
 
 <StatsBlock stats={[
   { value: "9,200+", label: "Lines of brand CSS from one build command" },
-  { value: "~450hrs", label: "Manual icon work automated per year" },
-  { value: "7.6/10", label: "Benchmark score vs. aspirational industry practices" },
+  { value: "3 brands", label: "Themed from one token pipeline, plus two market variants" },
+  { value: "7.6/10", label: "Self-assessed against aspirational industry practice" },
   { value: "Q3", label: "Engineering investment secured for production" },
 ]} />
 
 <TextBlock label="Snapshot">
-  loveholidays' design system hadn't received meaningful technical investment in four years. Documentation was scattered across Figma, Storybook, and Google Docs. No single source of truth. No ownership. As AI-assisted development accelerated across the company, this became a structural liability. AI tools don't interpret undocumented knowledge. They default to generic patterns and ignore brand conventions. The result: 12+ internal AI prototypes that looked like they came from different companies. A 10-minute idea required two days of manual engineering correction.
+  loveholidays' design system hadn't received meaningful technical investment in four years. Documentation was scattered across Figma, Storybook, and Google Docs. No single source of truth. No ownership. As AI-assisted development accelerated across the company, this became a structural liability. AI tools don't interpret undocumented knowledge. They default to generic patterns and ignore brand conventions. The result, as observed across the team: more than a dozen internal AI prototypes that looked like they came from different companies, and ideas that took ten minutes to generate but the better part of two days to bring back onto brand. Both are directional observations rather than tracked measurements — nobody was timing it, which is part of the problem this work set out to fix.
+
+  | | |
+  |---|---|
+  | **Company** | loveholidays |
+  | **Role** | Principal Designer |
+  | **Team** | Two designers, with light-touch support from a web infrastructure engineer. No dedicated engineering headcount. |
+  | **Timeframe** | January – March 2026 |
 
   **The goal:** Build machine-readable design system infrastructure that makes brand-aligned AI output the default, not the exception. Prove it with working code, not a proposal.
 
@@ -61,7 +68,7 @@ import DesignSyncTokenDiagram from '../../components/work/DesignSyncTokenDiagram
   The goal was to prove the infrastructure worked with code, not a proposal. Translating that business risk into an investable programme — and building credibility with engineering by shipping real infrastructure rather than a deck — is what the brief needed.
 </TextBlock>
 
-<TextBlock label="Approach and Key Decisions" heading="Structured the brief before touching any tooling">
+<TextBlock label="Approach" heading="Structured the brief before touching any tooling">
   Before writing a line of code, I mapped what "better" meant:
 
   - Brand-aligned AI output
@@ -108,7 +115,7 @@ import DesignSyncTokenDiagram from '../../components/work/DesignSyncTokenDiagram
   The illustration tool encodes six specific skin tones, enforces a four-colour brand palette, and includes a scored approval workflow ($0.009 for concept drafts, $0.13 for hero banners). Generation costs are tracked per asset by default, not as an afterthought.
 </TextBlock>
 
-<TextBlock label="Outcomes" heading="Infrastructure delivered">
+<TextBlock label="Outcomes and Impact" heading="Infrastructure delivered">
   - Token pipeline: one build command generates CSS, a Tailwind theme, and a JavaScript runtime object across three brands
   - Component library: six fully token-driven components following a strict nine-rule contract that AI tools cannot break accidentally
   - Machine-readable registry: intent, usage rules, and failure modes encoded for every component
@@ -116,6 +123,10 @@ import DesignSyncTokenDiagram from '../../components/work/DesignSyncTokenDiagram
   - AI illustration generation with human approval gates and per-generation cost tracking
   - Competitive analysis agent: full funnel capture (desktop and mobile) with CSS token extraction and structured UX gap analysis
   - Claude Code skills: reusable commands that load the full design system into any AI tool's working memory
+</TextBlock>
+
+<TextBlock heading="How we scored it">
+  The 7.6/10 is our own assessment, not an external audit. We scored the prototype against published accounts of what mature AI-ready design system infrastructure looks like — token architecture, machine-readable component intent, governance, and adoption path. It was built to make the investment case legible internally, and it should be read as a structured self-assessment rather than a third-party benchmark.
 </TextBlock>
 
 <TextBlock heading="Commercial signal">
@@ -130,6 +141,8 @@ import DesignSyncTokenDiagram from '../../components/work/DesignSyncTokenDiagram
   Leading with a working prototype rather than a proposal was the right call. It shifted the conversation from "is this worth investing in?" to "when can we productise this?" That's a better place to be.
 
   What I'd do differently: instrument usage earlier. I have strong proxy metrics (token coverage, automation hours, benchmark score) but no direct evidence yet on time-to-prototype reduction or design-to-dev error rates. Those baselines need to be captured from day one of the Q3 build, before adoption scales.
+
+  **Where it stands now.** This is not in production. As of August 2026 the agreed next step is a protected shared MCP pilot with three to five users, with validation still underway. Engineering investment is backed for Q3; the build has not replaced the prototype.
 
   The next 12 months: get the token pipeline and registry into daily use across all product teams, and measure the reduction in AI prototype correction time against the pre-system baseline. The commercial case becomes significantly stronger once those numbers exist.
 
