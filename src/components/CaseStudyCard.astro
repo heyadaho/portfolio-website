@@ -82,10 +82,13 @@ const rotateId = rotating ? `rotate-${Math.random().toString(36).slice(2, 8)}` :
     display: flex;
     flex-direction: column;
     text-decoration: none;
-    transition: transform var(--dur-mid) var(--ease-expo);
+    /* ease-expo is right for entrances, but on a 3px hover lift it puts 27%
+       of the travel in the first frame, which reads as a jump. */
+    transition: transform var(--dur-mid) var(--ease-in-out);
   }
 
-  .card:hover {
+  /* Keyboard focus gets the same affordance as the mouse, not just the ring. */
+  .card:is(:hover, :focus-visible) {
     transform: translateY(-3px);
   }
 
@@ -104,7 +107,7 @@ const rotateId = rotating ? `rotate-${Math.random().toString(36).slice(2, 8)}` :
     transition: border-color var(--dur-mid) var(--ease-in-out);
   }
 
-  .card:hover .card__visual {
+  .card:is(:hover, :focus-visible) .card__visual {
     border-color: var(--c-border-strong);
   }
 
@@ -117,14 +120,16 @@ const rotateId = rotating ? `rotate-${Math.random().toString(36).slice(2, 8)}` :
     object-position: center top;
     display: block;
     opacity: 0;
-    transition: opacity 0.8s ease, transform var(--dur-slow) var(--ease-expo);
+    /* 0.8s crossfade is the image rotation; the hover zoom matches the
+       card lift so the whole hover state lands at once. */
+    transition: opacity 0.8s ease, transform var(--dur-mid) var(--ease-in-out);
   }
 
   .card__img--active {
     opacity: 1;
   }
 
-  .card:hover .card__img--active {
+  .card:is(:hover, :focus-visible) .card__img {
     transform: scale(1.03);
   }
 
@@ -171,11 +176,12 @@ const rotateId = rotating ? `rotate-${Math.random().toString(36).slice(2, 8)}` :
   .card__arrow {
     flex-shrink: 0;
     color: var(--c-ink-subtle);
-    transition: transform var(--dur-fast), color var(--dur-fast);
+    transition: transform var(--dur-mid) var(--ease-in-out),
+                color var(--dur-mid) var(--ease-in-out);
     display: block;
   }
 
-  .card:hover .card__arrow {
+  .card:is(:hover, :focus-visible) .card__arrow {
     transform: translate(2px, -2px);
     color: var(--c-ink-mid);
   }
@@ -233,10 +239,11 @@ const rotateId = rotating ? `rotate-${Math.random().toString(36).slice(2, 8)}` :
     border: 1px solid var(--c-border);
     padding: 0.2em 0.55em;
     border-radius: 1px;
-    transition: border-color var(--dur-fast), color var(--dur-fast);
+    transition: border-color var(--dur-mid) var(--ease-in-out),
+                color var(--dur-mid) var(--ease-in-out);
   }
 
-  .card:hover .card__tag {
+  .card:is(:hover, :focus-visible) .card__tag {
     border-color: var(--c-border-strong);
     color: var(--c-ink-mid);
   }

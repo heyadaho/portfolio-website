@@ -298,11 +298,10 @@ var terrains  = {};
 var spires    = [];
 var mistPuffs = [];
 var riverPts  = [];
-var grainData = [];
+var grainFrames  = [];
 var GRAIN_FRAMES = 6;
 var GRAIN_RES    = 512;
-var grainCanvas  = null;
-var grainCtxG    = null;
+var baked        = {};
 
 function buildAll() {
   buildTerrains();
@@ -310,6 +309,26 @@ function buildAll() {
   buildMist();
   buildRiver();
   buildGrain();
+  buildBaked();
+}
+
+// Sky, fog, vignette and grade never change — no time, no parallax. Bake them
+// once so each frame blits three images instead of filling four full-screen
+// gradients.
+// ponytail: baked at CSS resolution, not DPR — they're pure smooth gradients
+// with no fine detail, so the upscale is invisible and memory stays small.
+function bake(fn) {
+  var c = document.createElement('canvas');
+  c.width  = Math.max(1, W | 0);
+  c.height = Math.max(1, H | 0);
+  fn(c.getContext('2d'));
+  return c;
+}
+
+function buildBaked() {
+  baked.sky   = bake(drawSky);
+  baked.fog   = bake(drawAtmosphericFog);
+  baked.grade = bake(function(g) { drawVignette(g); drawGrade(g); });
 }
 
 function buildTerrains() {
@@ -329,6 +348,14 @@ function buildTerrains() {
       ys[i] = dome(warpedFbm(x, L.s, ns));
     }
     terrains[L.id] = { ys: ys, startX: startX, step: STEP, bYLifted: L.bY - layerLift };
+  });
+
+  // Each layer is completely hidden below the next layer's lowest possible
+  // ridge, so fill only down to there rather than to the canvas floor. Turns
+  // eight near-full-screen gradient fills per frame into eight thin bands.
+  LAYER_DEFS.forEach(function(L, i) {
+    var next = LAYER_DEFS[i + 1] && terrains[LAYER_DEFS[i + 1].id];
+    terrains[L.id].bottom = next ? next.bYLifted * H + 2 : H + 10;
   });
 }
 
@@ -390,28 +417,28 @@ function buildRiver() {
   }
 }
 
+// Each grain frame gets its own canvas up front. Previously every rendered
+// frame re-uploaded a 512x512 ImageData before it could tile it.
 function buildGrain() {
-  grainData = [];
-  var tmpCanvas = document.createElement('canvas');
-  tmpCanvas.width = tmpCanvas.height = GRAIN_RES;
-  var gc = tmpCanvas.getContext('2d');
+  grainFrames = [];
   for (var f = 0; f < GRAIN_FRAMES; f++) {
+    var c = document.createElement('canvas');
+    c.width = c.height = GRAIN_RES;
+    var gc = c.getContext('2d');
     var id = gc.createImageData(GRAIN_RES, GRAIN_RES);
     for (var k = 0; k < id.data.length; k += 4) {
       var v = (Math.random() * 255) | 0;
       id.data[k] = id.data[k+1] = id.data[k+2] = v;
       id.data[k+3] = 18;
     }
-    grainData.push(id);
+    gc.putImageData(id, 0, 0);
+    grainFrames.push(c);
   }
-  grainCanvas = document.createElement('canvas');
-  grainCanvas.width = grainCanvas.height = GRAIN_RES;
-  grainCtxG = grainCanvas.getContext('2d');
 }
 
 // ── Drawing ──
 
-function drawSky() {
+function drawSky(ctx) {
   var g = ctx.createLinearGradient(0, 0, 0, H * 0.72);
   g.addColorStop(0.00, 'rgb(' + SKY_TOP + ')');
   g.addColorStop(0.45, 'rgb(' + SKY_MID + ')');
@@ -445,9 +472,10 @@ function drawTerrain(L, shiftX) {
     ctx.quadraticCurveTo(x0, y0, (x0 + x1) * 0.5, (y0 + y1) * 0.5);
     x0 = x1; y0 = y1;
   }
+  var bottom = td.bottom;
   ctx.lineTo(x0, y0);
-  ctx.lineTo(x0, H + 10);
-  ctx.lineTo(startX + sx, H + 10);
+  ctx.lineTo(x0, bottom);
+  ctx.lineTo(startX + sx, bottom);
   ctx.closePath();
 
   var r = L.rgb[0], g = L.rgb[1], b = L.rgb[2];
@@ -460,7 +488,7 @@ function drawTerrain(L, shiftX) {
   ctx.fill();
 }
 
-function drawAtmosphericFog() {
+function drawAtmosphericFog(ctx) {
   var fr = FOG_RGB[0], fg2 = FOG_RGB[1], fb = FOG_RGB[2];
   var g = ctx.createLinearGradient(0, 0, 0, H * 0.80);
   g.addColorStop(0.00, 'rgba('+fr+','+fg2+','+fb+',0.88)');
@@ -597,7 +625,7 @@ function drawMist(time, shiftX) {
   });
 }
 
-function drawVignette() {
+function drawVignette(ctx) {
   var g = ctx.createRadialGradient(W*0.5, H*0.42, H*0.05, W*0.5, H*0.42, H*0.92);
   g.addColorStop(0.0, 'rgba(0,0,0,0)');
   g.addColorStop(0.7, 'rgba(0,0,0,0.06)');
@@ -606,7 +634,7 @@ function drawVignette() {
   ctx.fillRect(0, 0, W, H);
 }
 
-function drawGrade() {
+function drawGrade(ctx) {
   var g = ctx.createLinearGradient(0, 0, 0, H);
   g.addColorStop(0.00, 'rgba(72,104,120,0.08)');
   g.addColorStop(0.40, 'rgba(0,0,0,0)');
@@ -617,8 +645,8 @@ function drawGrade() {
 }
 
 function drawGrain(frameIdx) {
-  if (!grainData.length || !grainCanvas) return;
-  grainCtxG.putImageData(grainData[frameIdx % GRAIN_FRAMES], 0, 0);
+  var grainCanvas = grainFrames[frameIdx % GRAIN_FRAMES];
+  if (!grainCanvas) return;
   ctx.save();
   ctx.globalCompositeOperation = 'overlay';
   ctx.globalAlpha = 0.038;
@@ -637,32 +665,35 @@ var running = false, rafId = 0;
 var reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function render(t) {
-  ctx.clearRect(0, 0, W, H);
-
-  drawSky();
+  ctx.drawImage(baked.sky, 0, 0, W, H);
 
   for (var i = 0; i < LAYER_DEFS.length - 2; i++)
     drawTerrain(LAYER_DEFS[i], off.x);
 
-  drawAtmosphericFog();
+  ctx.drawImage(baked.fog, 0, 0, W, H);
   drawTerrain(LAYER_DEFS[LAYER_DEFS.length - 2], off.x);
   drawRiver(t, off.x);
   drawSpires(off.x);
   drawMist(t, off.x);
   drawTerrain(LAYER_DEFS[LAYER_DEFS.length - 1], off.x);
-  drawVignette();
-  drawGrade();
+  ctx.drawImage(baked.grade, 0, 0, W, H);
   drawGrain(frame / 3 | 0);
 }
 
 function tick(ts) {
   // Rebase after a pause so mist/river phase doesn't jump
   if (t0 === null) t0 = ts - elapsedMs;
+  var prevMs = elapsedMs;
   elapsedMs = ts - t0;
+  var dt = Math.min(Math.max(elapsedMs - prevMs, 0), 100);
   frame++;
 
-  off.x = lerp(off.x, tgt.x, 0.038);
-  off.y = lerp(off.y, tgt.y, 0.038);
+  // Frame-rate independent easing. 0.038 per 60Hz frame was the original
+  // feel, but as a fixed per-frame step it settled twice as fast on a 120Hz
+  // display and crawled to a halt whenever frames dropped.
+  var k = 1 - Math.pow(1 - 0.038, dt / 16.667);
+  off.x = lerp(off.x, tgt.x, k);
+  off.y = lerp(off.y, tgt.y, k);
 
   render(elapsedMs * 0.001);
 
