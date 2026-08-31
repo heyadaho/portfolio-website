@@ -12,7 +12,7 @@
     <div class="hero__meta">
       <span class="hero__title">Design leader · Hands-on maker</span>
       <span class="hero__rule" aria-hidden="true"></span>
-      <span class="hero__open">Selected Works</span>
+      <a class="hero__open" href="#work">Selected Works</a>
     </div>
   </div>
 
@@ -29,6 +29,19 @@
     height: 100svh;
     min-height: 600px;
     overflow: hidden;
+  }
+
+  /* Darkens the very top so the transparent nav's white text stays readable
+     over the mid-slate sky. Dark theme only — light theme's nav ink is
+     near-black and already reads at ~5:1. */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 220px;
+    background: linear-gradient(to bottom, rgba(6, 14, 18, 0.55), transparent);
+    pointer-events: none;
+    z-index: 1;
   }
 
   .hero__canvas {
@@ -113,6 +126,19 @@
     border: 1px solid rgba(196, 168, 130, 0.28);
     padding: 0.3em 0.9em 0.28em;
     border-radius: 1px;
+    display: inline-block;
+    /* .hero__content disables pointer events so the canvas can be dragged */
+    pointer-events: auto;
+    transition:
+      color var(--dur-mid) var(--ease-in-out),
+      border-color var(--dur-mid) var(--ease-in-out),
+      background-color var(--dur-mid) var(--ease-in-out);
+  }
+
+  .hero__open:is(:hover, :focus-visible) {
+    color: #C4A882;
+    border-color: rgba(196, 168, 130, 0.55);
+    background-color: rgba(196, 168, 130, 0.08);
   }
 
   /* ── Scroll cue ── */
@@ -168,9 +194,19 @@
     background: rgba(18, 26, 20, 0.25);
   }
 
+  :root[data-theme="light"] .hero::before {
+    display: none;
+  }
+
   :root[data-theme="light"] .hero__open {
     color: rgba(18, 26, 20, 0.80);
     border-color: rgba(18, 26, 20, 0.25);
+  }
+
+  :root[data-theme="light"] .hero__open:is(:hover, :focus-visible) {
+    color: rgba(18, 26, 20, 0.95);
+    border-color: rgba(18, 26, 20, 0.50);
+    background-color: rgba(18, 26, 20, 0.05);
   }
 
   :root[data-theme="light"] .hero__scroll-label {

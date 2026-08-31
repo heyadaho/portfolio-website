@@ -105,7 +105,7 @@ const hasOverview = problem && approach && outcome;
     padding-block: var(--space-lg) 0;
   }
 
-  .cs-body :global(p),
+  .cs-body > :global(p),
   .cs-body :global(li) {
     font-size: var(--text-md);
     font-weight: 300;
@@ -114,8 +114,8 @@ const hasOverview = problem && approach && outcome;
     max-width: 62ch;
   }
 
-  .cs-body :global(h2),
-  .cs-body :global(h3) {
+  .cs-body > :global(h2),
+  .cs-body > :global(h3) {
     margin-top: 2.5em;
     margin-bottom: 0.75em;
   }

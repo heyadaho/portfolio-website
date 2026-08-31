@@ -32,7 +32,8 @@ const { label, heading } = Astro.props;
     letter-spacing: -0.022em;
     line-height: 1.12;
     margin-bottom: 2rem;
-    max-width: 22ch;
+    /* 22ch left ~115px of the text container unused, wrapping headings a line early. */
+    max-width: 28ch;
   }
 
   .text-block__body {
@@ -42,16 +43,19 @@ const { label, heading } = Astro.props;
     line-height: 1.75;
   }
 
-  .text-block__body p {
+  /* MDX content arrives through <slot>, so it carries no scope attribute. */
+  .text-block__body :global(p) {
     max-width: 62ch;
   }
 
-  .text-block__body p + p {
+  .text-block__body :global(p + p) {
     margin-top: 1.1em;
   }
 
-  .text-block__body ul,
-  .text-block__body ol {
+  /* Tailwind's preflight strips list markers and the global reset zeroes
+     padding, so both have to be put back explicitly. */
+  .text-block__body :global(ul),
+  .text-block__body :global(ol) {
     margin-block: 1em;
     padding-left: 1.4em;
     display: flex;
@@ -59,7 +63,10 @@ const { label, heading } = Astro.props;
     gap: 0.5em;
   }
 
-  .text-block__body li {
+  .text-block__body :global(ul) { list-style: disc; }
+  .text-block__body :global(ol) { list-style: decimal; }
+
+  .text-block__body :global(li) {
     max-width: 60ch;
   }
 </style>
