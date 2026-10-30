@@ -17,6 +17,7 @@
     "@fontsource/playfair-display": "^5.2.8",
     "@tailwindcss/vite": "^4.2.2",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/functions": "^3.10.5",
     "astro": "^6.1.5",
     "tailwindcss": "^4.2.2"
   }
